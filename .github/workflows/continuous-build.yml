@@ -1,0 +1,18 @@
+name: Frontend CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  call-build-workflow:
+    uses: ISTEAMX/IS-DevOps/.github/workflows/continuous-build-frontend.yml@main
+    with:
+      node-version: '18.x'
+      branch: ${{ github.ref_name }}
+      working-directory: './'
+      build-command: 'npm ci && npm run build'

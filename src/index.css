@@ -1,0 +1,80 @@
+:root {
+  /* Brand Colors */
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+  --primary-light: #3b82f6;
+  --primary-ring: rgba(59, 130, 246, 0.2);
+
+  /* Text Colors */
+  --text-main: #0f172a;
+  --text-title: #1e293b;
+  --text-label: #334155;
+  --text-muted: #64748b;
+  --text-placeholder: #94a3b8;
+  --icon-color: #6b7280;
+  --icon-color-hover: #0f172a;
+
+  /* Backgrounds & Borders */
+  --bg-card: #ffffff;
+  --bg-secondary: #f8fafc;
+  --border-light: #e2e8f0;
+  --border-input: #cbd5e1;
+  --border-divider: #dee2e6;
+  --border-hover: #93c5fd;
+
+  /* Shapes & spacing */
+  --radius-md: 0.5rem;
+  --radius-lg: 1rem;
+  --space-1: 0.25rem; /* 4px */
+  --space-2: 0.5rem; /* 8px */
+  --space-2-5: 0.625rem; /* 10px */
+  --space-3: 0.75rem; /* 12px */
+  --space-4: 1rem; /* 16px */
+  --space-5: 1.25rem; /* 20px */
+  --space-6: 1.5rem; /* 24px */
+  --space-8: 2rem; /* 32px */
+  --space-10: 2.5rem; /* 40px */
+
+  /* Effects */
+  --shadow-card:
+    0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --transition-fast: 0.2s;
+
+  /* Typography */
+  --font-regular: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+  --text-xs: 0.75rem; /* 12px */
+  --text-sm: 0.875rem; /* 14px */
+  --text-base: 1rem; /* 16px */
+  --text-lg: 1.125rem; /* 18px */
+  --text-xl: 1.25rem; /* 20px */
+  --text-2xl: 1.5rem; /* 24px */
+  --text-3xl: 1.875rem; /* 30px */
+  --text-4xl: 2.25rem; /* 36px */
+
+  --font-main: "Inter", system-ui, -apple-system, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--bg-secondary);
+  color: var(--text-main);
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  input,
+  button,
+  textarea,
+  select {
+    font-family: inherit;
+  }
+}

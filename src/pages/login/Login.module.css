@@ -1,0 +1,143 @@
+.pageWrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+}
+
+.mainContainer {
+  width: 100%;
+  max-width: 28rem;
+  margin-top: var(--space-8);
+}
+
+.brandingHeader {
+  text-align: center;
+  margin-bottom: var(--space-10);
+}
+
+.logoBox {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 4rem;
+  height: 4rem;
+  margin-bottom: var(--space-4);
+}
+
+.brandTitle {
+  font-size: var(--text-4xl);
+  font-weight: var(--font-bold);
+  color: var(--text-main);
+}
+
+.loginCard {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-8);
+}
+
+.cardHeader {
+  margin-bottom: var(--space-6);
+}
+
+.cardTitle {
+  font-size: var(--text-xl);
+  font-weight: var(--font-bold);
+  color: var(--text-title);
+}
+
+.cardSubtitle {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  margin-top: var(--space-1);
+}
+
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.forgotPassword {
+  font-size: var(--text-xs);
+  font-weight: var(--font-medium);
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.forgotPassword:hover {
+  color: var(--primary-light);
+}
+
+.submitButton {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: var(--space-3) var(--space-4);
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: var(--text-base);
+  font-weight: var(--font-bold);
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+}
+
+.submitButton:hover {
+  background-color: var(--primary-hover);
+}
+
+.submitButton:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.publicAccessSection {
+  margin-top: var(--space-8);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--border-divider);
+}
+
+.publicAccessTitle {
+  text-align: center;
+  font-size: var(--text-xs);
+  color: var(--text-placeholder);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: var(--font-semibold);
+  margin-bottom: var(--space-4);
+}
+
+.publicButton {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-2) var(--space-4);
+  background-color: var(--bg-secondary);
+  color: var(--text-muted);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.publicButton:hover {
+  background-color: var(--bg-card);
+  border-color: var(--border-hover);
+}
+
+.footer {
+  margin-top: var(--space-8);
+  text-align: center;
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+}

@@ -1,7 +1,8 @@
+import { MainLayout } from "@/layouts/MainLayout";
+import Login from "@/pages/login/Login";
 import { Route, Routes, Outlet, Navigate, NavLink } from "react-router-dom";
 
 // Page Placeholders
-const Login = () => <h2>Login Page</h2>;
 const Timetable = () => <h2>Timetable</h2>;
 const NotFound = () => <h2>404 Not Found</h2>;
 
@@ -44,8 +45,10 @@ const AdminSubjects = () => <h2>Manage Subjects</h2>;
 const AppRouter = () => {
   return (
     <Routes>
-      {/* Public routes */}
-      <Route path="/" element={<Timetable />} />
+      <Route element={<MainLayout />}>
+        <Route path="/" element={<Timetable />} />
+      </Route>
+
       <Route path="/login" element={<Login />} />
 
       {/* Admin route will be protected */}

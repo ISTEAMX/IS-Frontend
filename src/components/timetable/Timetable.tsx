@@ -2,6 +2,7 @@ import React from "react";
 import type { ScheduleEvent } from "@/types/ScheduleEvent.types";
 import { DAYS, TIME_SLOTS } from "@/constants/timetable.constants";
 import styles from "./Timetable.module.css";
+import ActivityCard from "./ActivityCard";
 
 interface TimetableProps {
   events?: ScheduleEvent[];
@@ -33,7 +34,7 @@ const Timetable = ({ events = [] }: TimetableProps) => {
 
               return (
                 <div key={`${day}-${time}`} className={styles.gridCell}>
-                  {currentEvent ? "EVENT" : null}
+                  {currentEvent ? <ActivityCard event={currentEvent} /> : null}
                 </div>
               );
             })}

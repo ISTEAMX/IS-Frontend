@@ -1,9 +1,9 @@
+import { Route, Routes, Outlet, Navigate, NavLink } from "react-router-dom";
 import { MainLayout } from "@/layouts/MainLayout";
 import Login from "@/pages/login/Login";
-import { Route, Routes, Outlet, Navigate, NavLink } from "react-router-dom";
+import Home from "@/pages/home/Home";
 
 // Page Placeholders
-const Timetable = () => <h2>Timetable</h2>;
 const NotFound = () => <h2>404 Not Found</h2>;
 
 // Admin Layout placeholder
@@ -46,7 +46,7 @@ const AppRouter = () => {
   return (
     <Routes>
       <Route element={<MainLayout />}>
-        <Route path="/" element={<Timetable />} />
+        <Route path="/" element={<Home />} />
       </Route>
 
       <Route path="/login" element={<Login />} />

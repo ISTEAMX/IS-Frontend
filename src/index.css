@@ -23,6 +23,7 @@
   --border-hover: #93c5fd;
 
   /* Shapes & spacing */
+  --radius-sm: 0.25rem;
   --radius-md: 0.5rem;
   --radius-lg: 1rem;
   --space-1: 0.25rem; /* 4px */

@@ -7,8 +7,21 @@ interface ActivityCardProps {
 }
 
 const ActivityCard = ({ event }: ActivityCardProps) => {
+  const getCardStyle = (type: string) => {
+    switch (type) {
+      case "Curs":
+        return styles.cardCurs;
+      case "Laborator":
+        return styles.cardLab;
+      case "Seminar":
+        return styles.cardSeminar;
+      default:
+        return "";
+    }
+  };
+
   return (
-    <div className={styles.card}>
+    <div className={`${styles.card} ${getCardStyle(event.type)}`}>
       <div className={styles.cardHeader}>
         <div className={styles.typeLabel}>{event.type}</div>
         {event.frequency !== "săptămânal" && (

@@ -1,0 +1,62 @@
+.timetableContainer {
+  overflow-x: auto;
+  background-color: white;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-card);
+}
+
+.timetableGrid {
+  display: grid;
+  grid-template-columns: 60px repeat(5, minmax(130px, 1fr));
+  min-width: 750px;
+}
+
+.headerCell {
+  background-color: var(--bg-secondary);
+  border-right: 1px solid var(--border-light);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.dayHeader {
+  text-align: center;
+  padding: var(--space-2) var(--space-1);
+  background-color: var(--bg-secondary);
+  font-weight: var(--font-bold);
+  color: var(--text-label);
+  border-bottom: 1px solid var(--border-light);
+  border-right: 1px solid var(--border-light);
+}
+
+.dayHeader:last-child,
+.gridCell:nth-child(6n) {
+  border-right: none;
+}
+
+.timeLabel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.7rem;
+  font-weight: var(--font-bold);
+  color: var(--text-placeholder);
+  padding: var(--space-1);
+  background-color: var(--bg-secondary);
+  border-right: 1px solid var(--border-light);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.timeDivider {
+  margin: 2px 0;
+}
+
+.gridCell {
+  padding: var(--space-2);
+  min-height: 80px;
+  border-bottom: 1px solid var(--border-light);
+  border-right: 1px solid var(--border-light);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

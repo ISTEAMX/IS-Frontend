@@ -2,6 +2,9 @@ import { DataTable } from "@/components/dataTable/DataTable";
 import { PageHeader } from "@/components/ui/PageHeader";
 import type { Room } from "@/types/Room.types";
 import { columns } from "./RoomsColumns";
+import InfoCard from "@/components/ui/InfoCard";
+import { calculateTotalCapacity } from "@/utils/roomUtils";
+import styles from "./Rooms.module.css";
 
 // Mock Data
 const MOCK_ROOMS: Room[] = [
@@ -33,12 +36,22 @@ const Rooms = () => {
     <>
       <PageHeader title="Săli" onAddClick={() => {}} />
 
-      <DataTable
-        columns={columns}
-        data={MOCK_ROOMS}
-        title="Listă Săli"
-        searchPlaceholder="Caută sală..."
-      />
+      <div className={styles.pageWrapper}>
+        <div className={styles.cardsContainer}>
+          <InfoCard title="Total Săli" info={MOCK_ROOMS.length} />
+          <InfoCard
+            title="Capacitate Totală"
+            info={calculateTotalCapacity(MOCK_ROOMS)}
+          />
+        </div>
+
+        <DataTable
+          columns={columns}
+          data={MOCK_ROOMS}
+          title="Listă Săli"
+          searchPlaceholder="Caută sală..."
+        />
+      </div>
     </>
   );
 };

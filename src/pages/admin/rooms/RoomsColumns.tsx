@@ -5,7 +5,7 @@ import { BiEdit, BiTrash } from "react-icons/bi";
 
 export const getColumns = (
   onEdit: (room: Room) => void,
-  onDelete: (id: string) => void,
+  onDelete: (room: Room) => void,
 ): ColumnDef<Room>[] => [
   {
     accessorKey: "name",
@@ -53,7 +53,7 @@ export const getColumns = (
         </button>
         <button
           className={`${styles.actionBtn} ${styles.deleteBtn}`}
-          onClick={() => onDelete(row.original.id)}
+          onClick={() => onDelete(row.original)}
         >
           <BiTrash className={styles.icon} />
         </button>

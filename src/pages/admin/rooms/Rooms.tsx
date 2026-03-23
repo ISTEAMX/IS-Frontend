@@ -1,10 +1,12 @@
 import { DataTable } from "@/components/dataTable/DataTable";
 import { PageHeader } from "@/components/ui/PageHeader";
 import type { Room } from "@/types/Room.types";
-import { columns } from "./RoomsColumns";
+import { getColumns } from "./RoomsColumns";
+import RoomModal from "@/components/ui/RoomModal";
+import { useState } from "react";
+import styles from "./Rooms.module.css";
 import InfoCard from "@/components/ui/InfoCard";
 import { calculateTotalCapacity } from "@/utils/roomUtils";
-import styles from "./Rooms.module.css";
 
 // Mock Data
 const MOCK_ROOMS: Room[] = [
@@ -32,9 +34,44 @@ const MOCK_ROOMS: Room[] = [
 ];
 
 const Rooms = () => {
+  const [rooms, setRooms] = useState<Room[]>(MOCK_ROOMS);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [roomToEdit, setRoomToEdit] = useState<Room | null>(null);
+
+  const handleOpenAdd = () => {
+    setRoomToEdit(null);
+    setIsModalOpen(true);
+  };
+
+  const handleOpenEdit = (room: Room) => {
+    setRoomToEdit(room);
+    setIsModalOpen(true);
+  };
+
+  const handleSave = (formData: Room) => {
+    if (roomToEdit) {
+      // Simulate EDIT
+      setRooms((prev) =>
+        prev.map((r) => (r.id === formData.id ? formData : r)),
+      );
+    } else {
+      // Simulate ADD
+      const newRoom = {
+        ...formData,
+        id: Math.random().toString(36).substr(2, 9),
+      };
+      setRooms((prev) => [...prev, newRoom]);
+    }
+    setIsModalOpen(false);
+  };
+
+  const tableColumns = getColumns(handleOpenEdit, () => {
+    console.log("Delete");
+  });
+
   return (
     <>
-      <PageHeader title="Săli" onAddClick={() => {}} />
+      <PageHeader title="Săli" onAddClick={handleOpenAdd} />
 
       <div className={styles.pageWrapper}>
         <div className={styles.cardsContainer}>
@@ -46,10 +83,17 @@ const Rooms = () => {
         </div>
 
         <DataTable
-          columns={columns}
-          data={MOCK_ROOMS}
+          columns={tableColumns}
+          data={rooms}
           title="Listă Săli"
           searchPlaceholder="Caută sală..."
+        />
+
+        <RoomModal
+          open={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          onSave={handleSave}
+          roomToEdit={roomToEdit}
         />
       </div>
     </>

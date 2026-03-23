@@ -7,6 +7,7 @@ import { useState } from "react";
 import styles from "./Rooms.module.css";
 import InfoCard from "@/components/ui/InfoCard";
 import { calculateTotalCapacity } from "@/utils/roomUtils";
+import ConfirmModal from "@/components/ui/ConfirmModal";
 
 // Mock Data
 const MOCK_ROOMS: Room[] = [
@@ -37,6 +38,7 @@ const Rooms = () => {
   const [rooms, setRooms] = useState<Room[]>(MOCK_ROOMS);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [roomToEdit, setRoomToEdit] = useState<Room | null>(null);
+  const [roomToDelete, setRoomToDelete] = useState<Room | null>(null);
 
   const handleOpenAdd = () => {
     setRoomToEdit(null);
@@ -46,6 +48,18 @@ const Rooms = () => {
   const handleOpenEdit = (room: Room) => {
     setRoomToEdit(room);
     setIsModalOpen(true);
+  };
+
+  const handleOpenConfirmDelete = (room: Room) => {
+    setRoomToDelete(room);
+  };
+
+  const handleConfirmDelete = () => {
+    if (roomToDelete) {
+      // Simulate DELETE
+      setRooms((prev) => prev.filter((r) => r.id !== roomToDelete.id));
+      setRoomToDelete(null);
+    }
   };
 
   const handleSave = (formData: Room) => {
@@ -65,9 +79,7 @@ const Rooms = () => {
     setIsModalOpen(false);
   };
 
-  const tableColumns = getColumns(handleOpenEdit, () => {
-    console.log("Delete");
-  });
+  const tableColumns = getColumns(handleOpenEdit, handleOpenConfirmDelete);
 
   return (
     <>
@@ -75,10 +87,10 @@ const Rooms = () => {
 
       <div className={styles.pageWrapper}>
         <div className={styles.cardsContainer}>
-          <InfoCard title="Total Săli" info={MOCK_ROOMS.length} />
+          <InfoCard title="Total Săli" info={rooms.length} />
           <InfoCard
             title="Capacitate Totală"
-            info={calculateTotalCapacity(MOCK_ROOMS)}
+            info={calculateTotalCapacity(rooms)}
           />
         </div>
 
@@ -94,6 +106,14 @@ const Rooms = () => {
           onClose={() => setIsModalOpen(false)}
           onSave={handleSave}
           roomToEdit={roomToEdit}
+        />
+
+        <ConfirmModal
+          open={!!roomToDelete}
+          title={`Ștergi sala ${roomToDelete?.name}?`}
+          description="Această acțiune nu va putea fi anulată."
+          onClose={() => setRoomToDelete(null)}
+          onConfirm={handleConfirmDelete}
         />
       </div>
     </>

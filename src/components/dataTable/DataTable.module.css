@@ -20,7 +20,7 @@
   gap: var(--space-4);
 }
 
-@media screen and (max-width: 771px) {
+@media screen and (max-width: 511px) {
   .toolbar {
     justify-content: center;
   }
@@ -138,13 +138,6 @@
   justify-content: space-between;
 }
 
-@media screen and (max-width: 592px) {
-  .pagination {
-    justify-content: center;
-    gap: var(--space-3);
-  }
-}
-
 .pageInfo {
   font-size: var(--text-sm);
   color: var(--text-muted);
@@ -220,4 +213,11 @@
   font-weight: var(--font-medium);
   color: var(--text-label);
   text-align: center;
+}
+
+@media screen and (max-width: 464px) {
+  .pagination {
+    justify-content: center;
+    gap: var(--space-3);
+  }
 }

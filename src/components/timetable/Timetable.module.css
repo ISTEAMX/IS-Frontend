@@ -8,7 +8,7 @@
 
 .timetableGrid {
   display: grid;
-  grid-template-columns: 60px repeat(5, minmax(130px, 1fr));
+  grid-template-columns: 60px repeat(5, minmax(170px, 1fr));
   min-width: 750px;
 }
 

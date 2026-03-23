@@ -6,6 +6,22 @@
   --active: #2563eb;
   --primary-ring: rgba(59, 130, 246, 0.2);
 
+  /* --- Color coding --- */
+  /* curs */
+  --color-curs: #facc15;
+  --color-bg-curs: #fef3c7;
+  --color-type-curs: #92400e;
+
+  /* lab */
+  --color-lab: #60a5fa;
+  --color-bg-lab: #e0e7ff;
+  --color-type-lab: #3730a3;
+
+  /* seminar */
+  --color-seminar: #4ade80;
+  --color-bg-seminar: #d1fae5;
+  --color-type-seminar: #065f46;
+
   /* Text Colors */
   --text-main: #0f172a;
   --text-title: #1e293b;
@@ -17,7 +33,7 @@
 
   /* Backgrounds & Borders */
   --bg-card: #ffffff;
-  --bg-secondary: #f8fafc;
+  --bg-secondary: #f6f7f8;
   --border-light: #e2e8f0;
   --border-input: #cbd5e1;
   --border-divider: #dee2e6;
@@ -27,6 +43,7 @@
   --radius-sm: 0.25rem;
   --radius-md: 0.5rem;
   --radius-lg: 1rem;
+
   --space-1: 0.25rem; /* 4px */
   --space-2: 0.5rem; /* 8px */
   --space-2-5: 0.625rem; /* 10px */
@@ -35,6 +52,7 @@
   --space-5: 1.25rem; /* 20px */
   --space-6: 1.5rem; /* 24px */
   --space-8: 2rem; /* 32px */
+  --space-9: 2.25rem; /* 36px */
   --space-10: 2.5rem; /* 40px */
 
   /* Effects */
@@ -49,6 +67,7 @@
   --font-medium: 500;
   --font-semibold: 600;
   --font-bold: 700;
+
   --text-xs: 0.75rem; /* 12px */
   --text-sm: 0.875rem; /* 14px */
   --text-base: 1rem; /* 16px */

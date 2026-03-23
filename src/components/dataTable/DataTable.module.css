@@ -1,0 +1,223 @@
+.container {
+  background-color: white;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--border-light);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  margin: var(--space-10) var(--space-5);
+}
+
+.toolbar {
+  padding: var(--space-4) var(--space-6);
+  border-bottom: 1px solid var(--border-light);
+  background-color: rgba(249, 250, 251, 0.5);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+@media screen and (max-width: 771px) {
+  .toolbar {
+    justify-content: center;
+  }
+}
+
+.tableTitle {
+  font-size: var(--text-base);
+  font-weight: var(--font-semibold);
+  color: var(--text-label);
+}
+
+.searchWrapper {
+  position: relative;
+  width: 16rem;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--icon-color);
+  width: 1rem;
+  height: 1rem;
+}
+
+.searchInput {
+  width: 100%;
+  padding: var(--space-2) var(--space-3) var(--space-2) var(--space-9);
+  border: 1px solid var(--border-input);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  outline: none;
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.searchInput:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px var(--primary-ring);
+}
+
+.tableWrapper {
+  width: 100%;
+  height: 400px;
+  overflow-x: auto;
+  overflow-y: auto;
+
+  -webkit-overflow-scrolling: touch;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.th {
+  padding: var(--space-3) var(--space-6);
+  text-align: left;
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background-color: #f8fafc;
+  box-shadow: inset 0 -1px 0 var(--border-light);
+  user-select: none;
+
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.th:last-child {
+  text-align: right;
+}
+
+.th:last-child > div {
+  justify-content: flex-end;
+}
+
+.sortableHeader {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  transition: color var(--transition-fast) ease;
+  gap: var(--space-2);
+}
+
+.sortableHeader:hover {
+  color: var(--text-main);
+}
+
+.td {
+  padding: var(--space-4) var(--space-6);
+  white-space: nowrap;
+  border-bottom: 1px solid var(--border-divider);
+  background-color: white;
+  transition: background-color 0.15s;
+}
+
+.tr:hover .td {
+  background-color: #f8fafc;
+}
+
+.pagination {
+  background-color: #f8fafc;
+  padding: var(--space-3) var(--space-6);
+  border-top: 1px solid var(--border-light);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@media screen and (max-width: 592px) {
+  .pagination {
+    justify-content: center;
+    gap: var(--space-3);
+  }
+}
+
+.pageInfo {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
+.pageInfo strong {
+  color: var(--text-label);
+  font-weight: var(--font-semibold);
+}
+
+.pageButtons {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.pageBtn {
+  padding: var(--space-1) var(--space-2);
+  border: 1px solid var(--border-input);
+  border-radius: var(--radius-sm);
+  background-color: white;
+  font-size: var(--text-sm);
+  cursor: pointer;
+  transition: background-color var(--transition-fast) ease;
+}
+
+.pageBtn:hover:not(:disabled) {
+  background-color: #f1f5f9;
+}
+
+.pageBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pageSizeWrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-right: var(--space-4);
+}
+
+.pageSizeLabel {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
+.pageSizeSelect {
+  padding: var(--space-1) var(--space-2);
+  border: 1px solid var(--border-input);
+  border-radius: var(--space-1);
+  background-color: white;
+  font-size: var(--text-sm);
+  color: var(--text-label);
+  cursor: pointer;
+  outline: none;
+  transition: border-color var(--transition-fast);
+}
+
+.pageSizeSelect:focus {
+  border-color: var(--primary);
+}
+
+.paginationControls {
+  display: flex;
+  align-items: center;
+}
+
+.pageNumberDisplay {
+  display: flex;
+  align-items: center;
+  padding: 0 var(--space-2);
+  font-size: var(--text-xs);
+  font-weight: var(--font-medium);
+  color: var(--text-label);
+  text-align: center;
+}

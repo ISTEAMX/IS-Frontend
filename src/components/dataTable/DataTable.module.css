@@ -6,7 +6,7 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  margin: var(--space-10) var(--space-5);
+  margin: var(--space-10) 0;
 }
 
 .toolbar {

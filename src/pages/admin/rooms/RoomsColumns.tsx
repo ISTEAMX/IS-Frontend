@@ -3,7 +3,10 @@ import type { ColumnDef } from "@tanstack/react-table";
 import styles from "./RoomsColumns.module.css";
 import { BiEdit, BiTrash } from "react-icons/bi";
 
-export const columns: ColumnDef<Room>[] = [
+export const getColumns = (
+  onEdit: (room: Room) => void,
+  onDelete: (id: string) => void,
+): ColumnDef<Room>[] => [
   {
     accessorKey: "name",
     header: "Denumire Sală",
@@ -44,13 +47,13 @@ export const columns: ColumnDef<Room>[] = [
       <div className={styles.actionsWrapper}>
         <button
           className={`${styles.actionBtn} ${styles.editBtn}`}
-          onClick={() => console.log("Edit:", row.original.id)}
+          onClick={() => onEdit(row.original)}
         >
           <BiEdit className={styles.icon} />
         </button>
         <button
           className={`${styles.actionBtn} ${styles.deleteBtn}`}
-          onClick={() => console.log("Delete:", row.original.id)}
+          onClick={() => onDelete(row.original.id)}
         >
           <BiTrash className={styles.icon} />
         </button>

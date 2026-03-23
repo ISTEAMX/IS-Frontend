@@ -1,14 +1,14 @@
-export type ActivityType = "Curs" | "Laborator" | "Seminar";
-export type DayOfWeek = "Luni" | "Marți" | "Miercuri" | "Joi" | "Vineri";
-export type TimeSlot =
-  | "08:00 - 10:00"
-  | "10:00 - 12:00"
-  | "12:00 - 14:00"
-  | "14:00 - 15:00"
-  | "15:00 - 17:00"
-  | "17:00 - 19:00"
-  | "19:00 - 21:00";
-export type EventFrequency = "săptămânal" | "pară" | "impară";
+import type {
+  ACTIVITY_TYPES,
+  DAYS,
+  EVENT_FREQUENCIES,
+  TIME_SLOTS,
+} from "@/constants/timetable.constants";
+
+export type DayOfWeek = (typeof DAYS)[number];
+export type TimeSlot = (typeof TIME_SLOTS)[number];
+export type ActivityType = (typeof ACTIVITY_TYPES)[number];
+export type EventFrequency = (typeof EVENT_FREQUENCIES)[number];
 
 export interface ScheduleEvent {
   id: string;

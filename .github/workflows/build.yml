@@ -14,5 +14,5 @@ jobs:
     name: Frontend Build
     uses: ISTEAMX/IS-DevOps/.github/workflows/continuous-build-frontend.yml@main
     with:
-      node-version: "20"
+      node-version: "22"
 

@@ -1,0 +1,25 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      component:
+        description: 'Which component to release (frontend). Use "frontend" for this workflow.'
+        required: true
+        default: 'frontend'
+      release_type:
+        description: 'Semantic version bump: major, minor, or patch'
+        required: true
+        default: 'patch'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Frontend semantic release
+    uses: ISTEAMX/IS-DevOps/.github/workflows/continuous-release-frontend.yml@main
+    with:
+      component: "${{ github.event.inputs.component }}"
+      release_type: "${{ github.event.inputs.release_type }}"
+

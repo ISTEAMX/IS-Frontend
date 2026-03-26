@@ -1,14 +1,19 @@
-import React from "react";
+import React, { useMemo } from "react";
 import type { ScheduleEvent } from "@/types/ScheduleEvent.types";
 import { DAYS, TIME_SLOTS } from "@/constants/timetable.constants";
 import styles from "./Timetable.module.css";
 import ActivityCard from "./ActivityCard";
+import { formatHour, generateSortedTimeSlots } from "@/utils/timetableUtils";
 
 interface TimetableProps {
   events?: ScheduleEvent[];
 }
 
 const Timetable = ({ events = [] }: TimetableProps) => {
+  const activeTimeSlots = useMemo(() => {
+    return generateSortedTimeSlots(events, TIME_SLOTS);
+  }, [events]);
+
   return (
     <div className={styles.timetableContainer}>
       <div className={styles.timetableGrid}>
@@ -19,7 +24,7 @@ const Timetable = ({ events = [] }: TimetableProps) => {
           </div>
         ))}
 
-        {TIME_SLOTS.map((time) => (
+        {activeTimeSlots.map((time) => (
           <React.Fragment key={time}>
             <div className={styles.timeLabel}>
               <span>{time.split(" - ")[0]}</span>
@@ -28,13 +33,18 @@ const Timetable = ({ events = [] }: TimetableProps) => {
             </div>
 
             {DAYS.map((day) => {
-              const currentEvent = events.find(
-                (e) => e.day === day && e.timeSlot === time,
+              const currentEvents = events.filter(
+                (e) =>
+                  e.day === day &&
+                  `${formatHour(e.startHour)} - ${formatHour(e.endHour)}` ===
+                    time,
               );
 
               return (
                 <div key={`${day}-${time}`} className={styles.gridCell}>
-                  {currentEvent ? <ActivityCard event={currentEvent} /> : null}
+                  {currentEvents.map((event) => (
+                    <ActivityCard key={event.id} event={event} />
+                  ))}
                 </div>
               );
             })}

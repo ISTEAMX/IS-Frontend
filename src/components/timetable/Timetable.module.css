@@ -1,7 +1,11 @@
 .timetableContainer {
   overflow-x: auto;
+  overflow-y: auto;
+  max-height: 80vh;
+  width: 100%;
+  max-width: 1200px;
   background-color: white;
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-md);
   border: 1px solid var(--border-light);
   box-shadow: var(--shadow-card);
 }
@@ -16,6 +20,12 @@
   background-color: var(--bg-secondary);
   border-right: 1px solid var(--border-light);
   border-bottom: 1px solid var(--border-light);
+
+  width: 100%;
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 30;
 }
 
 .dayHeader {
@@ -26,6 +36,10 @@
   color: var(--text-label);
   border-bottom: 1px solid var(--border-light);
   border-right: 1px solid var(--border-light);
+
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .dayHeader:last-child,
@@ -45,6 +59,10 @@
   background-color: var(--bg-secondary);
   border-right: 1px solid var(--border-light);
   border-bottom: 1px solid var(--border-light);
+
+  position: sticky;
+  left: 0;
+  z-index: 20;
 }
 
 .timeDivider {
@@ -56,7 +74,36 @@
   min-height: 80px;
   border-bottom: 1px solid var(--border-light);
   border-right: 1px solid var(--border-light);
+
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+/* Scroll bar */
+/* Firefox */
+.timetableContainer {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-divider) transparent;
+}
+
+/* Chrome, Edge, Safari */
+.timetableContainer::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.timetableContainer::-webkit-scrollbar-track {
+  background: transparent;
+  margin: 4px;
+}
+
+.timetableContainer::-webkit-scrollbar-thumb {
+  background-color: var(--border-divider);
+  border-radius: 10px;
+  border: 2px solid white;
+}
+
+.timetableContainer::-webkit-scrollbar-thumb:hover {
+  background-color: #94a3b8;
 }

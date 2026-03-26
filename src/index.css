@@ -23,6 +23,10 @@
   --color-bg-seminar: #d1fae5;
   --color-type-seminar: #065f46;
 
+  --color-proiect: #c084fc; /* Border / Accent */
+  --color-bg-proiect: #f3e8ff; /* Background pastel */
+  --color-type-proiect: #581c87;
+
   /* Text Colors */
   --text-main: #0f172a;
   --text-title: #1e293b;

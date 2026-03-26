@@ -15,6 +15,8 @@ const ActivityCard = ({ event }: ActivityCardProps) => {
         return styles.cardLab;
       case "Seminar":
         return styles.cardSeminar;
+      case "Proiect":
+        return styles.cardProiect;
       default:
         return "";
     }

@@ -61,19 +61,23 @@ The app will be available at [http://localhost:3000](http://localhost:3000).
 
 ## AWS Deployment
 
-In production, the frontend is built locally and deployed as a static site to an **S3 bucket** with website hosting enabled.
+In production, the frontend is deployed as a static website to an **AWS S3 bucket**. It communicates with the backend EC2 server via the `VITE_API_BASE_URL` defined in `.env.production`.
 
 ```bash
-# Build
+# 1. Update .env.production with the active backend IP
+# VITE_API_BASE_URL=http://35.158.14.254:8080
+
+# 2. Build the production application
 npm run build
 
-# Deploy to S3
-aws s3 sync dist s3://isteamx-frontend-bucket-for-devops
+# 3. Deploy to S3
+aws s3 sync dist s3://isteamx-unisync
 ```
-
-The site is served at the S3 website endpoint. See the [IS-DevOps README](../IS-DevOps/README.md) for full deployment instructions.
 
 | Resource | Details                                    |
 |----------|--------------------------------------------|
 | S3 Bucket | `isteamx-unisync`                        |
 | Region    | `eu-central-1`                            |
+
+### AWS Cost Management (Power Scheduler)
+Need to pause the infrastructure to save money? See the **AWS Power Scheduler** feature documented in the [IS-DevOps README](../IS-DevOps/README.md) to safely start and stop the backend servers without losing data.

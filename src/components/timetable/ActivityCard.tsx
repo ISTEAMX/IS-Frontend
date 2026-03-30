@@ -23,9 +23,9 @@ const ActivityCard = ({ event }: ActivityCardProps) => {
   };
 
   return (
-    <div className={`${styles.card} ${getCardStyle(event.type)}`}>
+    <div className={`${styles.card} ${getCardStyle(event.subject.type)}`}>
       <div className={styles.cardHeader}>
-        <div className={styles.typeLabel}>{event.type}</div>
+        <div className={styles.typeLabel}>{event.subject.type}</div>
         {event.frequency !== "săptămânal" && (
           <div className={styles.frequencyBadge}>
             {event.frequency === "pară" ? "Pară" : "Impară"}
@@ -33,23 +33,23 @@ const ActivityCard = ({ event }: ActivityCardProps) => {
         )}
       </div>
 
-      <div className={styles.eventName} title={event.name}>
-        {event.name}
+      <div className={styles.eventName} title={event.subject.name}>
+        {event.subject.name}
       </div>
 
       <div className={styles.detailsRow}>
         <FiUser className={styles.icon} />
-        <span>{event.teacher}</span>
+        <span>{event.teacher.lastName + " " + event.teacher.firstName}</span>
       </div>
 
       <div className={styles.detailsRow}>
         <FiTag className={styles.icon} />
-        <span>{event.group}</span>
+        <span>{event.group.name}</span>
       </div>
 
       <div className={styles.detailsRow}>
         <FiMapPin className={styles.icon} />
-        <span>{event.room}</span>
+        <span>{event.room.name}</span>
       </div>
     </div>
   );

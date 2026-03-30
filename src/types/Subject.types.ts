@@ -1,0 +1,9 @@
+import type { ACTIVITY_TYPES } from "@/constants/timetable.constants";
+
+export type ActivityType = (typeof ACTIVITY_TYPES)[number];
+
+export interface Subject {
+  id: string;
+  name: string;
+  type: ActivityType;
+}

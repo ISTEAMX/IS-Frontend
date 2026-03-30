@@ -1,6 +1,7 @@
 import type {
   EventFrequency,
   ScheduleEvent,
+  ScheduleEventDTO,
 } from "@/types/ScheduleEvent.types";
 import { useState } from "react";
 import BaseModal from "./BaseModal";
@@ -10,22 +11,16 @@ import {
   EVENT_FREQUENCIES,
   HOURS,
 } from "@/constants/timetable.constants";
+import { MOCK_SUBJECTS } from "@/mocks/subjects";
+import { MOCK_ROOMS } from "@/mocks/rooms";
+import { MOCK_GROUPS } from "@/mocks/groups";
 
 interface ScheduleEventModalProps {
   open: boolean;
   onClose: () => void;
-  onSave: (data: Partial<ScheduleEvent>) => void;
+  onSave: (data: ScheduleEventDTO) => void;
   initialData?: ScheduleEvent | null;
 }
-
-const DEFAULT_FORM_STATE: Partial<ScheduleEvent> = {
-  name: "",
-  type: "Curs",
-  day: "Luni",
-  startHour: 8,
-  endHour: 10,
-  frequency: "săptămânal",
-};
 
 const ScheduleEventModal = ({
   open,
@@ -33,8 +28,22 @@ const ScheduleEventModal = ({
   onSave,
   initialData,
 }: ScheduleEventModalProps) => {
-  const [formData, setFormData] = useState<Partial<ScheduleEvent>>(
-    initialData || DEFAULT_FORM_STATE,
+  const mapInitialData = (
+    data: ScheduleEvent | null | undefined,
+  ): ScheduleEventDTO => ({
+    id: data?.id,
+    subjectId: data?.subject?.id || "",
+    teacherId: data?.teacher?.id || "",
+    roomId: data?.room?.id || "",
+    groupId: data?.group?.id || "",
+    day: data?.day || "Luni",
+    startHour: data?.startHour || 8,
+    endHour: data?.endHour || 10,
+    frequency: data?.frequency || "săptămânal",
+  });
+
+  const [formData, setFormData] = useState<ScheduleEventDTO>(
+    mapInitialData(initialData),
   );
 
   const startHourOptions = HOURS.slice(0, -1);
@@ -44,7 +53,12 @@ const ScheduleEventModal = ({
 
   const duration = (formData.endHour || 0) - (formData.startHour || 0);
   const isValid =
-    formData.name && formData.name.length > 2 && duration > 0 && duration <= 2;
+    formData.subjectId &&
+    formData.roomId &&
+    formData.groupId &&
+    // formData.teacherId &&
+    duration > 0 &&
+    duration <= 2;
 
   return (
     <BaseModal
@@ -127,36 +141,56 @@ const ScheduleEventModal = ({
 
         <div className={styles.formField}>
           <label className={styles.label}>Disciplină</label>
-          <input
+          <select
             className={styles.input}
-            value={formData.name}
-            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            placeholder="Ex: Sisteme de Operare"
-          />
+            value={formData.subjectId}
+            onChange={(e) =>
+              setFormData({ ...formData, subjectId: e.target.value })
+            }
+          >
+            <option value="">Selectează Disciplina</option>
+            {MOCK_SUBJECTS.map((s) => (
+              <option key={s.id} value={s.id}>
+                {s.name} ({s.type})
+              </option>
+            ))}
+          </select>
         </div>
 
         <div className={styles.formRow}>
           <div className={styles.formField}>
             <label className={styles.label}>Sală</label>
-            <input
+            <select
               className={styles.input}
-              value={formData.room}
+              value={formData.roomId}
               onChange={(e) =>
-                setFormData({ ...formData, room: e.target.value })
+                setFormData({ ...formData, roomId: e.target.value })
               }
-              placeholder="Ex: V202"
-            />
+            >
+              <option value="">Selectează Sala</option>
+              {MOCK_ROOMS.map((r) => (
+                <option key={r.id} value={r.id}>
+                  {r.name}
+                </option>
+              ))}
+            </select>
           </div>
           <div className={styles.formField}>
             <label className={styles.label}>Grupă</label>
-            <input
+            <select
               className={styles.input}
-              value={formData.group}
+              value={formData.groupId}
               onChange={(e) =>
-                setFormData({ ...formData, group: e.target.value })
+                setFormData({ ...formData, groupId: e.target.value })
               }
-              placeholder="Ex: 1631"
-            />
+            >
+              <option value="">Selectează Grupa</option>
+              {MOCK_GROUPS.map((g) => (
+                <option key={g.id} value={g.id}>
+                  {g.name}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
 

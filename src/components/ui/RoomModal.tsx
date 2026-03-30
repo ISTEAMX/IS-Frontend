@@ -73,11 +73,14 @@ const RoomModal = ({ open, onClose, onSave, roomToEdit }: RoomModalProps) => {
       onClose={onClose}
       title={roomToEdit ? "Editează Sala" : "Adaugă Sală Nouă"}
       onSubmit={handleSubmit}
+      submitLabel={
+        isSubmitting ? "Se salvează..." : roomToEdit ? "Editează" : "Adaugă"
+      }
       disabled={isInvalid || isSubmitting}
     >
       <form onSubmit={handleSubmit} className={styles.formContainer}>
         <div className={styles.formField}>
-          <label htmlFor="room-name">Nume Sală</label>
+          <label htmlFor="room-name">Nume</label>
           <input
             id="room-name"
             type="text"
@@ -101,7 +104,7 @@ const RoomModal = ({ open, onClose, onSave, roomToEdit }: RoomModalProps) => {
         </div>
 
         <div className={styles.formField}>
-          <label htmlFor="room-type">Tip Sală</label>
+          <label htmlFor="room-type">Tip</label>
           <select
             id="room-type"
             value={formData.type}

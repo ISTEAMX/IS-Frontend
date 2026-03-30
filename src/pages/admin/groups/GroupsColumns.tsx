@@ -1,42 +1,37 @@
-import type { Room } from "@/types/Room.types";
 import type { ColumnDef } from "@tanstack/react-table";
 import styles from "@/components/dataTable/Columns.module.css";
 import { BiEdit, BiTrash } from "react-icons/bi";
+import type { Group } from "@/types/Group.types";
 
 export const getColumns = (
-  onEdit: (room: Room) => void,
-  onDelete: (room: Room) => void,
-): ColumnDef<Room>[] => [
+  onEdit: (group: Group) => void,
+  onDelete: (group: Group) => void,
+): ColumnDef<Group>[] => [
   {
     accessorKey: "name",
-    header: "Denumire Sală",
+    header: "Nume",
     cell: ({ row }) => (
       <div>
         <div className={styles.primaryText}>{row.original.name}</div>
-        <div className={styles.secondaryText}>{row.original.location}</div>
       </div>
     ),
   },
   {
-    accessorKey: "type",
-    header: "Tip",
-    cell: ({ row }) => {
-      const roomType = row.original.type.toLowerCase();
-
-      return (
-        <span className={`${styles.roomTypeBadge} ${styles[roomType] || ""}`}>
-          {row.original.type}
-        </span>
-      );
-    },
+    accessorKey: "specialization",
+    header: "Specializare",
+    cell: ({ row }) => (
+      <div>
+        <div className={styles.metaText}>{row.original.specialization}</div>
+      </div>
+    ),
   },
   {
-    accessorKey: "capacity",
-    header: "Capacitate",
+    accessorKey: "year",
+    header: "An",
     cell: ({ row }) => (
-      <span
-        className={styles.metaText}
-      >{`${row.original.capacity} locuri`}</span>
+      <div>
+        <div className={styles.metaText}>{row.original.year}</div>
+      </div>
     ),
   },
   {

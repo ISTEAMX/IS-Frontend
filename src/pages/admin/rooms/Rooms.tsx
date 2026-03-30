@@ -1,38 +1,14 @@
+import { useState } from "react";
 import { DataTable } from "@/components/dataTable/DataTable";
 import { PageHeader } from "@/components/ui/PageHeader";
-import type { Room } from "@/types/Room.types";
-import { getColumns } from "./RoomsColumns";
-import RoomModal from "@/components/ui/RoomModal";
-import { useState } from "react";
-import styles from "./Rooms.module.css";
 import InfoCard from "@/components/ui/InfoCard";
-import { calculateTotalCapacity } from "@/utils/roomUtils";
+import RoomModal from "@/components/ui/RoomModal";
 import ConfirmModal from "@/components/ui/ConfirmModal";
-
-// Mock Data
-const MOCK_ROOMS: Room[] = [
-  {
-    id: "1",
-    name: "A101",
-    location: "Corp A, Etaj 1",
-    type: "Amfiteatru",
-    capacity: 150,
-  },
-  {
-    id: "2",
-    name: "L204",
-    location: "Corp B, Etaj 2",
-    type: "Laborator",
-    capacity: 25,
-  },
-  {
-    id: "3",
-    name: "A102",
-    location: "Corp A, Etaj 1",
-    type: "Seminar",
-    capacity: 100,
-  },
-];
+import type { Room } from "@/types/Room.types";
+import { calculateTotalCapacity } from "@/utils/roomUtils";
+import { MOCK_ROOMS } from "@/mocks/rooms";
+import { getColumns } from "./RoomsColumns";
+import styles from "../Page.module.css";
 
 const Rooms = () => {
   const [rooms, setRooms] = useState<Room[]>(MOCK_ROOMS);

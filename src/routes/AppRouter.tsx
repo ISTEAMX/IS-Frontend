@@ -2,6 +2,7 @@ import { Route, Routes, Navigate } from "react-router-dom";
 import { MainLayout } from "@/layouts/MainLayout";
 import AdminLayout from "@/layouts/AdminLayout";
 import Login from "@/pages/login/Login";
+import Register from "@/pages/register/Register";
 import Home from "@/pages/home/Home";
 import NotFound from "@/pages/notFound/NotFound";
 import Rooms from "@/pages/admin/rooms/Rooms";
@@ -18,6 +19,7 @@ const AppRouter = () => {
       </Route>
 
       <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
 
       {/* Admin route will be protected */}
       <Route path="/admin" element={<AdminLayout />}>

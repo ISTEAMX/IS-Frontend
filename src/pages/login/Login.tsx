@@ -4,25 +4,31 @@ import styles from "./Login.module.css";
 import logo from "@/assets/logo.svg";
 import { useNavigate } from "react-router-dom";
 import React, { useState } from "react";
+import { api } from "@/services/api";
 
 const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) return;
 
     setIsLoading(true);
+    setError("");
 
-    // simulate API call for login
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      console.log("Sent to backend:", { email, password });
+      const data = await api.login({ email, password });
+      localStorage.setItem("token", data.token);
+      navigate("/");
     } catch (err) {
       console.error("Eroare la autentificare", err);
+      setError(
+        err instanceof Error ? err.message : "Eroare la autentificare"
+      );
     } finally {
       setIsLoading(false);
     }
@@ -74,6 +80,8 @@ const Login = () => {
               }
             />
 
+            {error && <p className={styles.errorMessage}>{error}</p>}
+
             <button
               type="submit"
               disabled={isLoading}
@@ -82,6 +90,17 @@ const Login = () => {
               {isLoading ? "Se autentifică..." : "Autentificare"}
             </button>
           </form>
+
+          <div className={styles.publicAccessSection}>
+            <p className={styles.publicAccessTitle}>Nu ai cont?</p>
+            <button
+              type="button"
+              onClick={() => navigate("/register")}
+              className={styles.publicButton}
+            >
+              Creează cont
+            </button>
+          </div>
 
           <div className={styles.publicAccessSection}>
             <p className={styles.publicAccessTitle}>Acces Public</p>

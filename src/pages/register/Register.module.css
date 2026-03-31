@@ -127,3 +127,15 @@
   font-size: var(--text-xs);
   color: var(--text-muted);
 }
+
+@media screen and (max-width: 555px) {
+  .nameRow {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .pageWrapper {
+    padding: var(--space-4);
+  }
+}

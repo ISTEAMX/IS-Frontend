@@ -19,7 +19,6 @@ const AppRouter = () => {
       </Route>
 
       <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
 
       {/* Admin route will be protected */}
       <Route path="/admin" element={<AdminLayout />}>
@@ -29,6 +28,8 @@ const AppRouter = () => {
         <Route path="teachers" element={<Teachers />} />
         <Route path="groups" element={<Groups />} />
         <Route path="subjects" element={<Subjects />} />
+
+        <Route path="register" element={<Register />} />
       </Route>
     </Routes>
   );

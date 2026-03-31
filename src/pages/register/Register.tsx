@@ -4,7 +4,8 @@ import styles from "./Register.module.css";
 import logo from "@/assets/logo.svg";
 import { useNavigate } from "react-router-dom";
 import React, { useState } from "react";
-import { api } from "@/services/api";
+import toast from "react-hot-toast";
+import { authService } from "@/services/auth";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -14,7 +15,6 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,21 +22,19 @@ const Register = () => {
       return;
 
     if (password !== confirmPassword) {
-      setError("Parolele nu se potrivesc.");
+      toast.error("Parolele nu se potrivesc.");
       return;
     }
 
-    setError("");
     setIsLoading(true);
-
     try {
-      await api.register({ firstName, lastName, email, password });
-      navigate("/login");
+      await authService.register({ firstName, lastName, email, password });
+      
+      toast.success("Profesor înregistrat cu succes.");
+      navigate("/admin/teachers");
     } catch (err) {
       console.error("Eroare la înregistrare", err);
-      setError(
-        err instanceof Error ? err.message : "A apărut o eroare. Încercați din nou."
-      );
+      toast.error("A apărut o eroare. Încercați din nou.");
     } finally {
       setIsLoading(false);
     }
@@ -54,9 +52,9 @@ const Register = () => {
 
         <section className={styles.registerCard}>
           <div className={styles.cardHeader}>
-            <h2 className={styles.cardTitle}>Înregistrare</h2>
+            <h2 className={styles.cardTitle}>Înregistrare Profesor</h2>
             <p className={styles.cardSubtitle}>
-              Creează un cont pentru a accesa panoul de gestiune.
+              Creează un cont pentru un profesor.
             </p>
           </div>
 
@@ -68,7 +66,7 @@ const Register = () => {
                 label="Prenume"
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
-                placeholder="Prenumele tău..."
+                placeholder="Prenumele..."
                 icon={<FiUser />}
                 required
               />
@@ -79,7 +77,7 @@ const Register = () => {
                 label="Nume"
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
-                placeholder="Numele tău..."
+                placeholder="Numele..."
                 icon={<FiUser />}
                 required
               />
@@ -91,7 +89,7 @@ const Register = () => {
               label="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Adresa ta de email..."
+              placeholder="Adresa de email..."
               icon={<FiMail />}
               required
             />
@@ -102,7 +100,7 @@ const Register = () => {
               label="Parolă"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Alege o parolă..."
+              placeholder="Parolă..."
               icon={<FiLock />}
               required
             />
@@ -118,8 +116,6 @@ const Register = () => {
               required
             />
 
-            {error && <p className={styles.errorMessage}>{error}</p>}
-
             <button
               type="submit"
               disabled={isLoading}
@@ -128,22 +124,6 @@ const Register = () => {
               {isLoading ? "Se creează contul..." : "Creează cont"}
             </button>
           </form>
-
-          <div className={styles.loginRedirectSection}>
-            <p className={styles.loginRedirectText}>
-              Ai deja un cont?{" "}
-              <a
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  navigate("/login");
-                }}
-                className={styles.loginLink}
-              >
-                Autentifică-te
-              </a>
-            </p>
-          </div>
         </section>
 
         <footer className={styles.footer}>

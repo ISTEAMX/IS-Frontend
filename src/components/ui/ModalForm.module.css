@@ -21,6 +21,7 @@
 .formField input,
 .formField select {
   width: 100%;
+  max-height: 42px;
   padding: var(--space-2-5) var(--space-3);
   font-size: var(--text-base);
   color: var(--text-main);

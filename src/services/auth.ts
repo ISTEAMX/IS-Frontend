@@ -1,4 +1,4 @@
-import type { AuthResponse } from "@/types/Auth.types";
+import type { AuthResponse, RegisterDTO } from "@/types/Auth.types";
 import api from "../api/axiosInstance";
 
 export const authService = {
@@ -10,12 +10,7 @@ export const authService = {
     return data;
   },
 
-  async register(credentials: {
-    firstName: string;
-    lastName: string;
-    email: string;
-    password: string;
-  }): Promise<void> {
+  async register(credentials: RegisterDTO): Promise<void> {
     await api.post("/user/register", credentials);
   },
 };

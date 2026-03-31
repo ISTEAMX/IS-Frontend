@@ -1,6 +1,5 @@
 export interface User {
   id: string;
-  email: string;
   firstName: string;
   lastName: string;
   role: string;
@@ -8,11 +7,24 @@ export interface User {
 
 export interface AuthResponse {
   token: string;
-  user?: User;
+  userData: User;
 }
 
 export interface AuthState {
-  user: User | null;
+  userData: User | null;
   token: string | null;
   isAuthenticated: boolean;
+}
+
+export type UserRole = "ADMIN" | "PROFESSOR";
+
+export interface RegisterDTO {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  role: UserRole;
+  professor: {
+    department: string;
+  };
 }

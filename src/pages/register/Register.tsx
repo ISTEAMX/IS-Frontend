@@ -1,11 +1,12 @@
 import { InputField } from "@/components/ui/InputField";
-import { FiMail, FiLock, FiUser } from "react-icons/fi";
+import { FiMail, FiLock, FiUser, FiBriefcase } from "react-icons/fi";
 import styles from "./Register.module.css";
 import logo from "@/assets/logo.svg";
 import { useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { authService } from "@/services/auth";
+import type { RegisterDTO, UserRole } from "@/types/Auth.types";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -14,12 +15,19 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [role, setRole] = useState<UserRole>("PROFESSOR");
+  const [department, setDepartment] = useState(
+    "Calculatoare și Tehnologia Informației",
+  );
   const [isLoading, setIsLoading] = useState(false);
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!firstName || !lastName || !email || !password || !confirmPassword)
+
+    if (!firstName || !lastName || !email || !password || !confirmPassword) {
+      toast.error("Toate câmpurile sunt obligatorii.");
       return;
+    }
 
     if (password !== confirmPassword) {
       toast.error("Parolele nu se potrivesc.");
@@ -27,14 +35,29 @@ const Register = () => {
     }
 
     setIsLoading(true);
+
+    const payload: RegisterDTO = {
+      firstName,
+      lastName,
+      email,
+      password,
+      role,
+      professor: {
+        department: department,
+      },
+    };
+
     try {
-      await authService.register({ firstName, lastName, email, password });
-      
-      toast.success("Profesor înregistrat cu succes.");
+      await authService.register(payload);
+      toast.success(
+        `${role === "ADMIN" ? "Admin" : "Profesor"} înregistrat cu succes.`,
+      );
       navigate("/admin/teachers");
     } catch (err) {
       console.error("Eroare la înregistrare", err);
-      toast.error("A apărut o eroare. Încercați din nou.");
+      toast.error(
+        "A apărut o eroare. Verificați datele sau dacă email-ul există deja.",
+      );
     } finally {
       setIsLoading(false);
     }
@@ -52,13 +75,24 @@ const Register = () => {
 
         <section className={styles.registerCard}>
           <div className={styles.cardHeader}>
-            <h2 className={styles.cardTitle}>Înregistrare Profesor</h2>
-            <p className={styles.cardSubtitle}>
-              Creează un cont pentru un profesor.
-            </p>
+            <h2 className={styles.cardTitle}>Înregistrare</h2>
           </div>
 
           <form onSubmit={handleRegister} className={styles.registerForm}>
+            <div className={styles.formField}>
+              <label className={styles.label}>Rol</label>
+              <div className={styles.selectWrapper}>
+                <select
+                  className={styles.selectInput}
+                  value={role}
+                  onChange={(e) => setRole(e.target.value as UserRole)}
+                >
+                  <option value="PROFESSOR">Profesor</option>
+                  <option value="ADMIN">Administrator</option>
+                </select>
+              </div>
+            </div>
+
             <div className={styles.nameRow}>
               <InputField
                 id="firstName"
@@ -113,6 +147,17 @@ const Register = () => {
               onChange={(e) => setConfirmPassword(e.target.value)}
               placeholder="Repetă parola..."
               icon={<FiLock />}
+              required
+            />
+
+            <InputField
+              id="department"
+              type="text"
+              label="Departament"
+              value={department}
+              onChange={(e) => setDepartment(e.target.value)}
+              placeholder="Ex: Calculatoare..."
+              icon={<FiBriefcase />}
               required
             />
 

@@ -23,8 +23,8 @@ const Login = () => {
     setIsLoading(true);
     try {
       const response = await authService.login({ email, password });
-      const { token, user } = response;
-      setAuth(token, user);
+      const { token, userData } = response;
+      setAuth(token, userData);
       navigate("/", { replace: true });
     } catch (err) {
       console.error("Eroare la autentificare", err);

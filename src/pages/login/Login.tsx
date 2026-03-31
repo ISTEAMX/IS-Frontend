@@ -15,6 +15,7 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const setAuth = useAuthStore((state) => state.setAuth);
+  console.log("login form")
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();

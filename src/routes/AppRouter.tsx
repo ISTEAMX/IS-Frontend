@@ -9,6 +9,7 @@ import Rooms from "@/pages/admin/rooms/Rooms";
 import Teachers from "@/pages/admin/teachers/Teachers";
 import Groups from "@/pages/admin/groups/Groups";
 import Subjects from "@/pages/admin/subjects/Subjects";
+import ProtectedRoute from "./ProtectedRoute";
 
 const AppRouter = () => {
   return (
@@ -20,16 +21,17 @@ const AppRouter = () => {
 
       <Route path="/login" element={<Login />} />
 
-      {/* Admin route will be protected */}
-      <Route path="/admin" element={<AdminLayout />}>
-        <Route index element={<Navigate to="rooms" replace />} />
+      <Route element={<ProtectedRoute allowedRoles={["ADMIN"]} />}>
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<Navigate to="rooms" replace />} />
 
-        <Route path="rooms" element={<Rooms />} />
-        <Route path="teachers" element={<Teachers />} />
-        <Route path="groups" element={<Groups />} />
-        <Route path="subjects" element={<Subjects />} />
+          <Route path="rooms" element={<Rooms />} />
+          <Route path="teachers" element={<Teachers />} />
+          <Route path="groups" element={<Groups />} />
+          <Route path="subjects" element={<Subjects />} />
 
-        <Route path="register" element={<Register />} />
+          <Route path="register" element={<Register />} />
+        </Route>
       </Route>
     </Routes>
   );

@@ -25,7 +25,11 @@ const Login = () => {
       const response = await authService.login({ email, password });
       const { token, userData } = response;
       setAuth(token, userData);
-      navigate("/", { replace: true });
+      if (userData.role === "ADMIN") {
+        navigate("/admin", { replace: true });
+      } else {
+        navigate("/", { replace: true });
+      }
     } catch (err) {
       console.error("Eroare la autentificare", err);
       toast.error("Eroare la autentificare");

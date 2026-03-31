@@ -50,7 +50,7 @@ const Register = () => {
     try {
       await authService.register(payload);
       toast.success(
-        `${role === "ADMIN" ? "Admin" : "Profesor"} înregistrat cu succes.`,
+        `${role === "ADMIN" ? "Administrator" : "Profesor"} înregistrat cu succes.`,
       );
       navigate("/admin/teachers");
     } catch (err) {

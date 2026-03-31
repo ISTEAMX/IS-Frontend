@@ -4,31 +4,31 @@ import styles from "./Login.module.css";
 import logo from "@/assets/logo.svg";
 import { useNavigate } from "react-router-dom";
 import React, { useState } from "react";
-import { api } from "@/services/api";
+import toast from "react-hot-toast";
+import { authService } from "@/services/auth";
+import { useAuthStore } from "@/store/useAuthStore";
 
 const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
+
+  const setAuth = useAuthStore((state) => state.setAuth);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) return;
 
     setIsLoading(true);
-    setError("");
-
     try {
-      const data = await api.login({ email, password });
-      localStorage.setItem("token", data.token);
-      navigate("/");
+      const response = await authService.login({ email, password });
+      const { token, user } = response;
+      setAuth(token, user);
+      navigate("/", { replace: true });
     } catch (err) {
       console.error("Eroare la autentificare", err);
-      setError(
-        err instanceof Error ? err.message : "Eroare la autentificare"
-      );
+      toast.error("Eroare la autentificare");
     } finally {
       setIsLoading(false);
     }
@@ -80,8 +80,6 @@ const Login = () => {
               }
             />
 
-            {error && <p className={styles.errorMessage}>{error}</p>}
-
             <button
               type="submit"
               disabled={isLoading}
@@ -90,17 +88,6 @@ const Login = () => {
               {isLoading ? "Se autentifică..." : "Autentificare"}
             </button>
           </form>
-
-          <div className={styles.publicAccessSection}>
-            <p className={styles.publicAccessTitle}>Nu ai cont?</p>
-            <button
-              type="button"
-              onClick={() => navigate("/register")}
-              className={styles.publicButton}
-            >
-              Creează cont
-            </button>
-          </div>
 
           <div className={styles.publicAccessSection}>
             <p className={styles.publicAccessTitle}>Acces Public</p>

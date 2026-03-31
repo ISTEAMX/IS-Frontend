@@ -1,21 +1,19 @@
 .pageWrapper {
   min-height: 100vh;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: var(--space-4);
+  padding: var(--space-9);
 }
 
 .mainContainer {
   width: 100%;
-  max-width: 28rem;
-  margin-top: var(--space-8);
+  max-width: 500px;
 }
 
 .brandingHeader {
   text-align: center;
-  margin-bottom: var(--space-10);
+  margin-bottom: var(--space-9);
 }
 
 .logoBox {
@@ -69,13 +67,6 @@
   gap: var(--space-4);
 }
 
-.errorMessage {
-  font-size: var(--text-sm);
-  color: var(--danger, #dc2626);
-  text-align: center;
-  margin: 0;
-}
-
 .submitButton {
   width: 100%;
   display: flex;
@@ -98,28 +89,6 @@
 .submitButton:disabled {
   opacity: 0.7;
   cursor: not-allowed;
-}
-
-.loginRedirectSection {
-  margin-top: var(--space-6);
-  padding-top: var(--space-6);
-  border-top: 1px solid var(--border-divider);
-  text-align: center;
-}
-
-.loginRedirectText {
-  font-size: var(--text-sm);
-  color: var(--text-muted);
-}
-
-.loginLink {
-  font-weight: var(--font-semibold);
-  color: var(--primary);
-  text-decoration: none;
-}
-
-.loginLink:hover {
-  color: var(--primary-light);
 }
 
 .footer {

@@ -89,13 +89,6 @@
   transition: background-color var(--transition-fast);
 }
 
-.errorMessage {
-  font-size: var(--text-sm);
-  color: var(--danger, #dc2626);
-  text-align: center;
-  margin: 0;
-}
-
 .submitButton:hover {
   background-color: var(--primary-hover);
 }

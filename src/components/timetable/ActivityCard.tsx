@@ -44,7 +44,7 @@ const ActivityCard = ({ event }: ActivityCardProps) => {
 
       <div className={styles.detailsRow}>
         <FiTag className={styles.icon} />
-        <span>{event.group.name}</span>
+        <span>{event.group.identifier}</span>
       </div>
 
       <div className={styles.detailsRow}>

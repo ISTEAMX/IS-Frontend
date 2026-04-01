@@ -1,6 +1,6 @@
 export interface Group {
   id: number;
-  name: string;
+  identifier: string;
   specialization: string;
   year: number;
 }

@@ -187,7 +187,7 @@ const ScheduleEventModal = ({
               <option value="">Selectează Grupa</option>
               {MOCK_GROUPS.map((g) => (
                 <option key={g.id} value={g.id}>
-                  {g.name}
+                  {g.identifier}
                 </option>
               ))}
             </select>

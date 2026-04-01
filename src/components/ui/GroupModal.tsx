@@ -11,7 +11,7 @@ interface GroupModalProps {
 }
 
 const emptyGroup: GroupDTO = {
-  name: "",
+  identifier: "",
   specialization: "",
   year: 1,
 };
@@ -39,7 +39,7 @@ const GroupModal = ({
   };
 
   const isInvalid =
-    !formData.name.trim() ||
+    !formData.identifier.trim() ||
     !formData.specialization.trim() ||
     formData.year < 1;
 
@@ -65,7 +65,13 @@ const GroupModal = ({
       title={groupToEdit ? "Editează Grupa" : "Adaugă Grupă Nouă"}
       onSubmit={handleSubmit}
       submitLabel={
-        isSubmitting ? "Se salvează..." : groupToEdit ? "Editează" : "Adaugă"
+        isSubmitting ? (
+          <div className={styles.btnSpinner}></div>
+        ) : groupToEdit ? (
+          "Editează"
+        ) : (
+          "Adaugă"
+        )
       }
       disabled={isInvalid || isSubmitting}
     >
@@ -75,9 +81,11 @@ const GroupModal = ({
           <input
             id="group-name"
             type="text"
-            value={formData.name}
+            value={formData.identifier}
             placeholder="ex: 1631"
-            onChange={(e) => handleChange("name", e.target.value.toUpperCase())}
+            onChange={(e) =>
+              handleChange("identifier", e.target.value.toUpperCase())
+            }
             autoFocus
             autoComplete="off"
           />

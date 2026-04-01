@@ -7,7 +7,7 @@ interface BaseModalProps {
   title: string;
   onClose: () => void;
   onSubmit?: () => void;
-  submitLabel?: string;
+  submitLabel?: React.ReactNode;
   disabled?: boolean;
   children?: ReactNode;
 }

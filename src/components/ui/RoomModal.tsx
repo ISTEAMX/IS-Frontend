@@ -1,4 +1,4 @@
-import type { Room, RoomType } from "@/types/Room.types";
+import type { Room, RoomDTO, RoomType } from "@/types/Room.types";
 import { useEffect, useState } from "react";
 import BaseModal from "./BaseModal";
 import { ROOM_TYPES } from "@/constants/rooms.constants";
@@ -8,12 +8,11 @@ import { generateLocation } from "@/utils/roomUtils";
 interface RoomModalProps {
   open: boolean;
   onClose: () => void;
-  onSave: (data: Room) => void;
+  onSave: (data: RoomDTO) => void;
   roomToEdit?: Room | null;
 }
 
-const emptyRoom: Room = {
-  id: "",
+const emptyRoom: RoomDTO = {
   name: "",
   location: "",
   type: "Amfiteatru",
@@ -21,14 +20,12 @@ const emptyRoom: Room = {
 };
 
 const RoomModal = ({ open, onClose, onSave, roomToEdit }: RoomModalProps) => {
-  const [formData, setFormData] = useState<Room>(emptyRoom);
+  const [formData, setFormData] = useState<RoomDTO>(emptyRoom);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isLocationManual, setIsLocationManual] = useState(false);
 
   useEffect(() => {
     if (open) {
       setFormData(roomToEdit || emptyRoom);
-      setIsLocationManual(!!roomToEdit);
     }
   }, [open, roomToEdit]);
 
@@ -36,7 +33,7 @@ const RoomModal = ({ open, onClose, onSave, roomToEdit }: RoomModalProps) => {
     setFormData((prev) => {
       const newData = { ...prev, [field]: value };
 
-      if (field === "name" && !isLocationManual) {
+      if (field === "name") {
         newData.location = generateLocation(value as string);
       }
 
@@ -46,11 +43,13 @@ const RoomModal = ({ open, onClose, onSave, roomToEdit }: RoomModalProps) => {
 
   const handleLocationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setIsLocationManual(true);
     setFormData((prev) => ({ ...prev, location: value }));
   };
 
-  const isInvalid = !formData.name.trim() || formData.capacity <= 0;
+  const isInvalid =
+    !formData.name.trim() ||
+    !formData.location.trim() ||
+    formData.capacity <= 0;
 
   const handleSubmit = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
@@ -74,7 +73,13 @@ const RoomModal = ({ open, onClose, onSave, roomToEdit }: RoomModalProps) => {
       title={roomToEdit ? "Editează Sala" : "Adaugă Sală Nouă"}
       onSubmit={handleSubmit}
       submitLabel={
-        isSubmitting ? "Se salvează..." : roomToEdit ? "Editează" : "Adaugă"
+        isSubmitting ? (
+          <div className={styles.btnSpinner}></div>
+        ) : roomToEdit ? (
+          "Editează"
+        ) : (
+          "Adaugă"
+        )
       }
       disabled={isInvalid || isSubmitting}
     >

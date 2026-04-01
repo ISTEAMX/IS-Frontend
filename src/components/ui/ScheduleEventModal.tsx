@@ -32,10 +32,10 @@ const ScheduleEventModal = ({
     data: ScheduleEvent | null | undefined,
   ): ScheduleEventDTO => ({
     id: data?.id,
-    subjectId: data?.subject?.id || "",
-    teacherId: data?.teacher?.id || "",
-    roomId: data?.room?.id || "",
-    groupId: data?.group?.id || "",
+    subjectId: data?.subject?.id || 0,
+    teacherId: data?.teacher?.id || 0,
+    roomId: data?.room?.id || 0,
+    groupId: data?.group?.id || 0,
     day: data?.day || "Luni",
     startHour: data?.startHour || 8,
     endHour: data?.endHour || 10,
@@ -145,7 +145,7 @@ const ScheduleEventModal = ({
             className={styles.input}
             value={formData.subjectId}
             onChange={(e) =>
-              setFormData({ ...formData, subjectId: e.target.value })
+              setFormData({ ...formData, subjectId: parseInt(e.target.value) })
             }
           >
             <option value="">Selectează Disciplina</option>
@@ -164,7 +164,7 @@ const ScheduleEventModal = ({
               className={styles.input}
               value={formData.roomId}
               onChange={(e) =>
-                setFormData({ ...formData, roomId: e.target.value })
+                setFormData({ ...formData, roomId: parseInt(e.target.value) })
               }
             >
               <option value="">Selectează Sala</option>
@@ -181,7 +181,7 @@ const ScheduleEventModal = ({
               className={styles.input}
               value={formData.groupId}
               onChange={(e) =>
-                setFormData({ ...formData, groupId: e.target.value })
+                setFormData({ ...formData, groupId: parseInt(e.target.value) })
               }
             >
               <option value="">Selectează Grupa</option>

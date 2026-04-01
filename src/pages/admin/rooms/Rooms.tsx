@@ -4,19 +4,21 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import InfoCard from "@/components/ui/InfoCard";
 import RoomModal from "@/components/ui/RoomModal";
 import ConfirmModal from "@/components/ui/ConfirmModal";
-import type { Room } from "@/types/Room.types";
+import type { Room, RoomDTO } from "@/types/Room.types";
 import { calculateTotalCapacity } from "@/utils/roomUtils";
 import { getColumns } from "./RoomsColumns";
 import styles from "../Page.module.css";
 import useRooms from "@/hooks/useRooms";
+import api from "@/api/axiosInstance";
+import toast from "react-hot-toast";
 
 const Rooms = () => {
-  const { rooms, isLoading } = useRooms();
+  const { rooms, isLoading, refetch } = useRooms();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [roomToEdit, setRoomToEdit] = useState<Room | null>(null);
   const [roomToDelete, setRoomToDelete] = useState<Room | null>(null);
-  // const [isActionLoading] = useState(false);
+  const [isActionLoading, setIsActionLoading] = useState(false);
 
   const handleOpenAdd = () => {
     setRoomToEdit(null);
@@ -32,30 +34,50 @@ const Rooms = () => {
     setRoomToDelete(room);
   };
 
-  const handleConfirmDelete = () => {
+  const handleConfirmDelete = async () => {
     if (roomToDelete) {
-      // Simulate DELETE
-      // setRooms((prev) => prev.filter((r) => r.id !== roomToDelete.id));
-      // setRoomToDelete(null);
+      // DELETE
+      setIsActionLoading(true);
+      try {
+        await api.delete(`/room/delete/${roomToDelete.id}`);
+        toast.success(`Sala ${roomToDelete.name} a fost ștearsă cu succes.`);
+        refetch();
+        setRoomToDelete(null);
+      } catch (err) {
+        console.error(err);
+        toast.error("Eroare la ștergerea sălii.");
+      } finally {
+        setIsActionLoading(false);
+      }
     }
   };
 
-  // formData: Room - param
-  const handleSave = () => {
-    if (roomToEdit) {
-      // Simulate EDIT
-      // setRooms((prev) =>
-      //   prev.map((r) => (r.id === formData.id ? formData : r)),
-      // );
-    } else {
-      // Simulate ADD
-      // const newRoom = {
-      //   ...formData,
-      //   id: Math.random().toString(36).substr(2, 9),
-      // };
-      // setRooms((prev) => [...prev, newRoom]);
+  const handleSave = async (formData: RoomDTO) => {
+    setIsActionLoading(true);
+    try {
+      if (roomToEdit) {
+        // EDIT
+        await api.put("/room/update", {
+          ...formData,
+          id: roomToEdit.id,
+        });
+
+        toast.success("Sala a fost modificată cu succes.");
+        refetch();
+      } else {
+        // ADD
+        await api.post("/room/create", formData);
+
+        toast.success("Sala a fost adăugată cu succes.");
+        refetch();
+      }
+      setIsModalOpen(false);
+    } catch (err) {
+      console.error(err);
+      toast.error("Eroare la salvarea sălii.");
+    } finally {
+      setIsActionLoading(false);
     }
-    setIsModalOpen(false);
   };
 
   const tableColumns = getColumns(handleOpenEdit, handleOpenConfirmDelete);
@@ -97,6 +119,7 @@ const Rooms = () => {
           description="Această acțiune nu va putea fi anulată."
           onClose={() => setRoomToDelete(null)}
           onConfirm={handleConfirmDelete}
+          isLoading={isActionLoading}
         />
       </div>
     </>

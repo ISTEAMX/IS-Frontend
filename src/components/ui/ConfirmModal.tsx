@@ -8,6 +8,7 @@ interface ConfirmModalProps {
   onConfirm: () => void;
   title: string;
   description: string;
+  isLoading?: boolean;
 }
 
 const ConfirmModal = ({
@@ -16,16 +17,17 @@ const ConfirmModal = ({
   onConfirm,
   title,
   description,
+  isLoading = false,
 }: ConfirmModalProps) => {
   const isOverlayClick = useRef(false);
 
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape" && !isLoading) onClose();
     };
     if (open) window.addEventListener("keydown", handleEsc);
     return () => window.removeEventListener("keydown", handleEsc);
-  }, [open, onClose]);
+  }, [open, onClose, isLoading]);
 
   useEffect(() => {
     if (open) {
@@ -47,7 +49,7 @@ const ConfirmModal = ({
   };
 
   const handleMouseUp = (e: React.MouseEvent) => {
-    if (e.target === e.currentTarget && isOverlayClick.current) {
+    if (e.target === e.currentTarget && isOverlayClick.current && !isLoading) {
       onClose();
     }
     isOverlayClick.current = false;
@@ -74,11 +76,19 @@ const ConfirmModal = ({
         </div>
 
         <div className={styles.actions}>
-          <button className={styles.btnCancel} onClick={onClose}>
+          <button
+            className={styles.btnCancel}
+            onClick={onClose}
+            disabled={isLoading}
+          >
             Anulează
           </button>
-          <button className={styles.btnDelete} onClick={onConfirm}>
-            Șterge
+          <button
+            className={styles.btnDelete}
+            onClick={onConfirm}
+            disabled={isLoading}
+          >
+            {isLoading ? <div className={styles.btnSpinner}></div> : "Șterge"}
           </button>
         </div>
       </div>

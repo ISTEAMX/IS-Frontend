@@ -17,12 +17,14 @@ import {
   LuSearch,
 } from "react-icons/lu";
 import { CgChevronLeft, CgChevronRight } from "react-icons/cg";
+import { Spinner } from "../ui/Spinner";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   title?: string;
   searchPlaceholder?: string;
+  isLoading?: boolean;
 }
 
 export function DataTable<TData, TValue>({
@@ -30,6 +32,7 @@ export function DataTable<TData, TValue>({
   data,
   title = "Listă resurse",
   searchPlaceholder = "Caută...",
+  isLoading = false,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = useState("");
@@ -51,7 +54,6 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className={styles.container}>
-      {/* Title & Search */}
       <div className={styles.toolbar}>
         <h2 className={styles.tableTitle}>{title}</h2>
         <div className={styles.searchWrapper}>
@@ -65,7 +67,6 @@ export function DataTable<TData, TValue>({
         </div>
       </div>
 
-      {/* Table */}
       <div className={styles.tableWrapper}>
         <table className={styles.table}>
           <thead>
@@ -91,7 +92,6 @@ export function DataTable<TData, TValue>({
                             header.column.columnDef.header,
                             header.getContext(),
                           )}
-                          {/* Sorting icons */}
                           {{
                             asc: <LuArrowUp size={14} />,
                             desc: <LuArrowDown size={14} />,
@@ -109,7 +109,13 @@ export function DataTable<TData, TValue>({
           </thead>
 
           <tbody>
-            {table.getRowModel().rows?.length ? (
+            {isLoading ? (
+              <tr>
+                <td colSpan={columns.length} className={styles.loaderCell}>
+                  <Spinner text="Se încarcă datele..." />
+                </td>
+              </tr>
+            ) : table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <tr key={row.id} className={styles.tr}>
                   {row.getVisibleCells().map((cell) => (
@@ -141,7 +147,6 @@ export function DataTable<TData, TValue>({
         </table>
       </div>
 
-      {/* Pagination */}
       <div className={styles.pagination}>
         <div className={styles.pageSizeWrapper}>
           <span className={styles.pageSizeLabel}>Rânduri:</span>

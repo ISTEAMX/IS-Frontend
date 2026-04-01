@@ -1,5 +1,9 @@
 export interface Teacher {
-  id: string;
+  id: number;
   firstName: string;
   lastName: string;
+}
+
+export interface TeacherDTO extends Omit<Teacher, "id"> {
+  id?: number;
 }

@@ -13,7 +13,7 @@ export type ActivityType = (typeof ACTIVITY_TYPES)[number];
 export type EventFrequency = (typeof EVENT_FREQUENCIES)[number];
 
 export interface ScheduleEvent {
-  id: string;
+  id: number;
   subject: Subject;
   teacher: Teacher;
   group: Group;
@@ -25,11 +25,11 @@ export interface ScheduleEvent {
 }
 
 export interface ScheduleEventDTO {
-  id?: string;
-  subjectId: string;
-  teacherId: string;
-  groupId: string;
-  roomId: string;
+  id?: number;
+  subjectId: number;
+  teacherId: number;
+  groupId: number;
+  roomId: number;
   day: DayOfWeek;
   startHour: number;
   endHour: number;

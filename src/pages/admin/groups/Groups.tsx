@@ -37,15 +37,16 @@ const Groups = () => {
     }
   };
 
-  const handleSave = (formData: Group) => {
+  // formData: GroupDTO
+  const handleSave = () => {
     if (groupToEdit) {
       // Simulate EDIT
-      setGroups((prev) =>
-        prev.map((g) => (g.id === groupToEdit.id ? formData : g)),
-      );
+      // setGroups((prev) =>
+      //   prev.map((g) => (g.id === groupToEdit.id ? formData : g)),
+      // );
     } else {
       // Simulate ADD
-      setGroups((prev) => [...prev, formData]);
+      // setGroups((prev) => [...prev, formData]);
     }
     setIsModalOpen(false);
   };

@@ -1,17 +1,16 @@
 import { useEffect, useState } from "react";
 import BaseModal from "./BaseModal";
 import styles from "./ModalForm.module.css";
-import type { Group } from "@/types/Group.types";
+import type { Group, GroupDTO } from "@/types/Group.types";
 
 interface GroupModalProps {
   open: boolean;
   onClose: () => void;
-  onSave: (data: Group) => void;
+  onSave: (data: GroupDTO) => void;
   groupToEdit?: Group | null;
 }
 
-const emptyGroup: Group = {
-  id: "",
+const emptyGroup: GroupDTO = {
   name: "",
   specialization: "",
   year: 1,
@@ -23,7 +22,7 @@ const GroupModal = ({
   onSave,
   groupToEdit,
 }: GroupModalProps) => {
-  const [formData, setFormData] = useState<Group>(emptyGroup);
+  const [formData, setFormData] = useState<GroupDTO>(emptyGroup);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
@@ -78,9 +77,7 @@ const GroupModal = ({
             type="text"
             value={formData.name}
             placeholder="ex: 1631"
-            onChange={(e) =>
-              handleChange("name", e.target.value.toUpperCase())
-            }
+            onChange={(e) => handleChange("name", e.target.value.toUpperCase())}
             autoFocus
             autoComplete="off"
           />

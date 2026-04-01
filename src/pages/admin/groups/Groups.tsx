@@ -3,17 +3,21 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import InfoCard from "@/components/ui/InfoCard";
 import { DataTable } from "@/components/dataTable/DataTable";
 import ConfirmModal from "@/components/ui/ConfirmModal";
-import type { Group } from "@/types/Group.types";
-import { MOCK_GROUPS } from "@/mocks/groups";
+import type { Group, GroupDTO } from "@/types/Group.types";
 import { getColumns } from "./GroupsColumns";
 import styles from "../Page.module.css";
 import GroupModal from "@/components/ui/GroupModal";
+import useGroups from "@/hooks/useGroups";
+import api from "@/api/axiosInstance";
+import toast from "react-hot-toast";
 
 const Groups = () => {
-  const [groups, setGroups] = useState<Group[]>(MOCK_GROUPS);
+  const { groups, isLoading, refetch } = useGroups();
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [groupToEdit, setGroupToEdit] = useState<Group | null>(null);
   const [groupToDelete, setGroupToDelete] = useState<Group | null>(null);
+  const [isActionLoading, setIsActionLoading] = useState(false);
 
   const handleOpenAdd = () => {
     setGroupToEdit(null);
@@ -29,26 +33,51 @@ const Groups = () => {
     setGroupToDelete(group);
   };
 
-  const handleConfirmDelete = () => {
+  const handleConfirmDelete = async () => {
     if (groupToDelete) {
-      // Simulate DELETE
-      setGroups((prev) => prev.filter((g) => g.id !== groupToDelete.id));
-      setGroupToDelete(null);
+      // DELETE
+      setIsActionLoading(true);
+      try {
+        await api.delete(`/group/delete/${groupToDelete.id}`);
+        toast.success(
+          `Grupa ${groupToDelete.identifier} a fost ștearsă cu succes.`,
+        );
+        refetch();
+        setGroupToDelete(null);
+      } catch (err) {
+        console.error(err);
+        toast.error("Eroare la ștergerea grupei.");
+      } finally {
+        setIsActionLoading(false);
+      }
     }
   };
 
-  // formData: GroupDTO
-  const handleSave = () => {
-    if (groupToEdit) {
-      // Simulate EDIT
-      // setGroups((prev) =>
-      //   prev.map((g) => (g.id === groupToEdit.id ? formData : g)),
-      // );
-    } else {
-      // Simulate ADD
-      // setGroups((prev) => [...prev, formData]);
+  const handleSave = async (formData: GroupDTO) => {
+    setIsActionLoading(true);
+    try {
+      if (groupToEdit) {
+        // EDIT
+        await api.put("/group/update", {
+          ...formData,
+          id: groupToEdit.id,
+        });
+
+        toast.success("Grupa a fost modificată cu succes.");
+        refetch();
+      } else {
+        // ADD
+        await api.post("/group/create", formData);
+
+        toast.success("Grupa a fost adăugată cu succes.");
+        refetch();
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Eroare la salvarea grupei.");
+    } finally {
+      setIsActionLoading(false);
     }
-    setIsModalOpen(false);
   };
 
   const tableColumns = getColumns(handleOpenEdit, handleOpenConfirmDelete);
@@ -59,7 +88,10 @@ const Groups = () => {
 
       <div className={styles.pageWrapper}>
         <div className={styles.cardsContainer}>
-          <InfoCard title="Total Grupe" info={groups.length} />
+          <InfoCard
+            title="Total Grupe"
+            info={isLoading ? "..." : groups.length}
+          />
         </div>
 
         <DataTable
@@ -67,6 +99,7 @@ const Groups = () => {
           data={groups}
           title="Listă Grupe"
           searchPlaceholder="Caută grupă..."
+          isLoading={isLoading}
         />
 
         <GroupModal
@@ -78,10 +111,11 @@ const Groups = () => {
 
         <ConfirmModal
           open={!!groupToDelete}
-          title={`Ștergi grupa ${groupToDelete?.name}?`}
+          title={`Ștergi grupa ${groupToDelete?.identifier}?`}
           description="Această acțiune nu va putea fi anulată."
           onClose={() => setGroupToDelete(null)}
           onConfirm={handleConfirmDelete}
+          isLoading={isActionLoading}
         />
       </div>
     </>

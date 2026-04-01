@@ -71,7 +71,6 @@ const Rooms = () => {
         toast.success("Sala a fost adăugată cu succes.");
         refetch();
       }
-      setIsModalOpen(false);
     } catch (err) {
       console.error(err);
       toast.error("Eroare la salvarea sălii.");

@@ -11,16 +11,15 @@ export const generateLocation = (name: string): string => {
   const etajChar = name[1];
   const salaRaw = name.slice(2);
 
-  if (
-    !/[A-Z]/.test(corp) ||
-    !/[0-9]/.test(etajChar) ||
-    !/^[0-9]+$/.test(salaRaw)
-  ) {
+  const salaMatch = salaRaw.match(/^([0-9]+)([A-Za-z]?)$/);
+
+  if (!/[A-Z]/.test(corp) || !/[0-9]/.test(etajChar) || !salaMatch) {
     return "";
   }
 
   const etajLabel = etajChar === "0" ? "Parter" : `Etaj ${etajChar}`;
-  const salaNumber = parseInt(salaRaw, 10);
+  const numericPart = parseInt(salaMatch[1], 10);
+  const letterPart = salaMatch[2].toUpperCase();
 
-  return `Corp ${corp}, ${etajLabel}, Sala ${salaNumber}`;
+  return `Corp ${corp}, ${etajLabel}, Sala ${numericPart}${letterPart}`;
 };

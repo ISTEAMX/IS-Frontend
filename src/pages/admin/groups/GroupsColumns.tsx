@@ -8,11 +8,11 @@ export const getColumns = (
   onDelete: (group: Group) => void,
 ): ColumnDef<Group>[] => [
   {
-    accessorKey: "name",
+    accessorKey: "identifier",
     header: "Nume",
     cell: ({ row }) => (
       <div>
-        <div className={styles.primaryText}>{row.original.name}</div>
+        <div className={styles.primaryText}>{row.original.identifier}</div>
       </div>
     ),
   },

@@ -221,3 +221,10 @@
     gap: var(--space-3);
   }
 }
+
+.loaderCell {
+  text-align: center;
+  padding: 4rem 0;
+  vertical-align: middle;
+  background-color: white;
+}

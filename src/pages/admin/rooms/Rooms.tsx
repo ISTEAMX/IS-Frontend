@@ -6,15 +6,17 @@ import RoomModal from "@/components/ui/RoomModal";
 import ConfirmModal from "@/components/ui/ConfirmModal";
 import type { Room } from "@/types/Room.types";
 import { calculateTotalCapacity } from "@/utils/roomUtils";
-import { MOCK_ROOMS } from "@/mocks/rooms";
 import { getColumns } from "./RoomsColumns";
 import styles from "../Page.module.css";
+import useRooms from "@/hooks/useRooms";
 
 const Rooms = () => {
-  const [rooms, setRooms] = useState<Room[]>(MOCK_ROOMS);
+  const { rooms, isLoading } = useRooms();
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [roomToEdit, setRoomToEdit] = useState<Room | null>(null);
   const [roomToDelete, setRoomToDelete] = useState<Room | null>(null);
+  // const [isActionLoading] = useState(false);
 
   const handleOpenAdd = () => {
     setRoomToEdit(null);
@@ -33,24 +35,25 @@ const Rooms = () => {
   const handleConfirmDelete = () => {
     if (roomToDelete) {
       // Simulate DELETE
-      setRooms((prev) => prev.filter((r) => r.id !== roomToDelete.id));
-      setRoomToDelete(null);
+      // setRooms((prev) => prev.filter((r) => r.id !== roomToDelete.id));
+      // setRoomToDelete(null);
     }
   };
 
-  const handleSave = (formData: Room) => {
+  // formData: Room - param
+  const handleSave = () => {
     if (roomToEdit) {
       // Simulate EDIT
-      setRooms((prev) =>
-        prev.map((r) => (r.id === formData.id ? formData : r)),
-      );
+      // setRooms((prev) =>
+      //   prev.map((r) => (r.id === formData.id ? formData : r)),
+      // );
     } else {
       // Simulate ADD
-      const newRoom = {
-        ...formData,
-        id: Math.random().toString(36).substr(2, 9),
-      };
-      setRooms((prev) => [...prev, newRoom]);
+      // const newRoom = {
+      //   ...formData,
+      //   id: Math.random().toString(36).substr(2, 9),
+      // };
+      // setRooms((prev) => [...prev, newRoom]);
     }
     setIsModalOpen(false);
   };
@@ -63,10 +66,13 @@ const Rooms = () => {
 
       <div className={styles.pageWrapper}>
         <div className={styles.cardsContainer}>
-          <InfoCard title="Total Săli" info={rooms.length} />
+          <InfoCard
+            title="Total Săli"
+            info={isLoading ? "..." : rooms.length}
+          />
           <InfoCard
             title="Capacitate Totală"
-            info={calculateTotalCapacity(rooms)}
+            info={isLoading ? "..." : calculateTotalCapacity(rooms)}
           />
         </div>
 
@@ -75,6 +81,7 @@ const Rooms = () => {
           data={rooms}
           title="Listă Săli"
           searchPlaceholder="Caută sală..."
+          isLoading={isLoading}
         />
 
         <RoomModal

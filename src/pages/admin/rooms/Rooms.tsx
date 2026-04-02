@@ -42,12 +42,12 @@ const Rooms = () => {
         await api.delete(`/room/delete/${roomToDelete.id}`);
         toast.success(`Sala ${roomToDelete.name} a fost ștearsă cu succes.`);
         refetch();
-        setRoomToDelete(null);
       } catch (err) {
         console.error(err);
         toast.error("Eroare la ștergerea sălii.");
       } finally {
         setIsActionLoading(false);
+        setRoomToDelete(null);
       }
     }
   };

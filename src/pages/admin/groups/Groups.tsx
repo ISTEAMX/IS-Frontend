@@ -43,12 +43,12 @@ const Groups = () => {
           `Grupa ${groupToDelete.identifier} a fost ștearsă cu succes.`,
         );
         refetch();
-        setGroupToDelete(null);
       } catch (err) {
         console.error(err);
         toast.error("Eroare la ștergerea grupei.");
       } finally {
         setIsActionLoading(false);
+        setGroupToDelete(null);
       }
     }
   };

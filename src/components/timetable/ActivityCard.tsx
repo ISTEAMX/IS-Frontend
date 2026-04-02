@@ -23,9 +23,9 @@ const ActivityCard = ({ event }: ActivityCardProps) => {
   };
 
   return (
-    <div className={`${styles.card} ${getCardStyle(event.subject.type)}`}>
+    <div className={`${styles.card} ${getCardStyle(event.subject.activityType)}`}>
       <div className={styles.cardHeader}>
-        <div className={styles.typeLabel}>{event.subject.type}</div>
+        <div className={styles.typeLabel}>{event.subject.activityType}</div>
         {event.frequency !== "săptămânal" && (
           <div className={styles.frequencyBadge}>
             {event.frequency === "pară" ? "Pară" : "Impară"}

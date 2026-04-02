@@ -5,7 +5,7 @@ export type ActivityType = (typeof ACTIVITY_TYPES)[number];
 export interface Subject {
   id: number;
   name: string;
-  type: ActivityType;
+  activityType: ActivityType;
 }
 
 export interface SubjectDTO extends Omit<Subject, "id"> {

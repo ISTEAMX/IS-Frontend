@@ -1,5 +1,5 @@
 .primaryText {
-  font-weight: var(--font-bold);
+  font-weight: var(--font-semibold);
   color: var(--text-main);
 }
 
@@ -60,7 +60,8 @@
   display: inline-block;
 }
 
-.amfiteatru {
+.amfiteatru,
+.curs {
   background-color: var(--color-bg-curs);
   color: var(--color-type-curs);
 }
@@ -73,4 +74,9 @@
 .seminar {
   background-color: var(--color-bg-seminar);
   color: var(--color-type-seminar);
+}
+
+.proiect {
+  background-color: var(--color-bg-proiect);
+  color: var(--color-type-proiect);
 }

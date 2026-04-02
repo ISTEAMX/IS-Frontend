@@ -1,43 +1,35 @@
-import type { Room } from "@/types/Room.types";
+import type { Subject } from "@/types/Subject.types";
 import type { ColumnDef } from "@tanstack/react-table";
 import styles from "@/components/dataTable/Columns.module.css";
 import { BiEdit, BiTrash } from "react-icons/bi";
 
 export const getColumns = (
-  onEdit: (room: Room) => void,
-  onDelete: (room: Room) => void,
-): ColumnDef<Room>[] => [
+  onEdit: (subject: Subject) => void,
+  onDelete: (subject: Subject) => void,
+): ColumnDef<Subject>[] => [
   {
     accessorKey: "name",
     header: "Nume",
     cell: ({ row }) => (
       <div>
         <div className={styles.primaryText}>{row.original.name}</div>
-        <div className={styles.secondaryText}>{row.original.location}</div>
       </div>
     ),
   },
   {
-    accessorKey: "type",
+    accessorKey: "activityType",
     header: "Tip",
     cell: ({ row }) => {
-      const roomType = row.original.type.toLowerCase();
+      const subjectType = row.original.activityType.toLowerCase();
 
       return (
-        <span className={`${styles.roomTypeBadge} ${styles[roomType] || ""}`}>
-          {row.original.type}
+        <span
+          className={`${styles.roomTypeBadge} ${styles[subjectType] || ""}`}
+        >
+          {row.original.activityType}
         </span>
       );
     },
-  },
-  {
-    accessorKey: "capacity",
-    header: "Capacitate",
-    cell: ({ row }) => (
-      <span
-        className={styles.metaText}
-      >{`${row.original.capacity} locuri`}</span>
-    ),
   },
   {
     id: "actions",

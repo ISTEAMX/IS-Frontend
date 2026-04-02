@@ -151,7 +151,7 @@ const ScheduleEventModal = ({
             <option value="">Selectează Disciplina</option>
             {MOCK_SUBJECTS.map((s) => (
               <option key={s.id} value={s.id}>
-                {s.name} ({s.type})
+                {s.name} ({s.activityType})
               </option>
             ))}
           </select>

@@ -5,7 +5,7 @@ import logo from "@/assets/logo.svg";
 import { useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
-import { authService } from "@/services/auth";
+import { authService } from "@/services/authService";
 import type { RegisterDTO, UserRole } from "@/types/Auth.types";
 
 const Register = () => {

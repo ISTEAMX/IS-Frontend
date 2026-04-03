@@ -1,4 +1,4 @@
-import api from "@/api/axiosInstance";
+import { roomService } from "@/services/roomService";
 import type { Room } from "@/types/Room.types";
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
@@ -14,8 +14,8 @@ const useRooms = () => {
     setError(null);
 
     try {
-      const response = await api.get<Room[]>("/room/user/rooms");
-      setRooms(response.data);
+      const data = await roomService.getAll();
+      setRooms(data);
     } catch (err) {
       let message = "Nu s-au putut încărca sălile.";
       if (axios.isAxiosError(err)) {

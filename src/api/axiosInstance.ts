@@ -1,12 +1,16 @@
 import { useAuthStore } from "@/store/useAuthStore";
-import axios from "axios";
+import axios, { type InternalAxiosRequestConfig } from "axios";
+
+export interface CustomConfig extends InternalAxiosRequestConfig {
+  noAuth?: boolean;
+}
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || "http://localhost:8080/api",
 });
 
-api.interceptors.request.use((config) => {
-  if (config.url?.includes("/user/login")) {
+api.interceptors.request.use((config: CustomConfig) => {
+  if (config.noAuth) {
     return config;
   }
 
@@ -23,7 +27,10 @@ api.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       useAuthStore.getState().logout();
-      window.location.href = "/login";
+
+      if (!window.location.pathname.includes("/login")) {
+        window.location.href = "/login";
+      }
     }
 
     return Promise.reject(error);

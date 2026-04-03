@@ -1,4 +1,3 @@
-import api from "@/api/axiosInstance";
 import { PageHeader } from "@/components/ui/PageHeader";
 import type { Subject, SubjectDTO } from "@/types/Subject.types";
 import { useState } from "react";
@@ -10,6 +9,7 @@ import { DataTable } from "@/components/dataTable/DataTable";
 import ConfirmModal from "@/components/ui/ConfirmModal";
 import SubjectModal from "@/components/ui/SubjectModal";
 import useSubjects from "@/hooks/useSubjects";
+import { subjectService } from "@/services/subjectService";
 
 const Subjects = () => {
   const { subjects, isLoading, refetch } = useSubjects();
@@ -38,7 +38,8 @@ const Subjects = () => {
       // DELETE
       setIsActionLoading(true);
       try {
-        await api.delete(`/subject/delete/${subjectToDelete.id}`);
+        await subjectService.delete(subjectToDelete.id);
+
         toast.success(
           `Disciplina ${subjectToDelete.name} a fost ștearsă cu succes.`,
         );
@@ -58,16 +59,13 @@ const Subjects = () => {
     try {
       if (subjectToEdit) {
         // EDIT
-        await api.put("/subject/update", {
-          ...formData,
-          id: subjectToEdit.id,
-        });
+        await subjectService.update({ ...formData, id: subjectToEdit.id });
 
         toast.success("Disciplina a fost modificată cu succes.");
         refetch();
       } else {
         // ADD
-        await api.post("/subject/create", formData);
+        await subjectService.create(formData);
 
         toast.success("Disciplina a fost adăugată cu succes.");
         refetch();

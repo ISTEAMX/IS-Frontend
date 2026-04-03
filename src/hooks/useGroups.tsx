@@ -1,4 +1,4 @@
-import api from "@/api/axiosInstance";
+import { groupService } from "@/services/groupService";
 import type { Group } from "@/types/Group.types";
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
@@ -14,8 +14,8 @@ const useGroups = () => {
     setError(null);
 
     try {
-      const response = await api.get<Group[]>("/group/user/groups");
-      setGroups(response.data);
+      const data = await groupService.getAll();
+      setGroups(data);
     } catch (err) {
       let message = "Nu s-au putut încărca grupele.";
       if (axios.isAxiosError(err)) {

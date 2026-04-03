@@ -9,8 +9,8 @@ import { calculateTotalCapacity } from "@/utils/roomUtils";
 import { getColumns } from "./RoomsColumns";
 import styles from "../Page.module.css";
 import useRooms from "@/hooks/useRooms";
-import api from "@/api/axiosInstance";
 import toast from "react-hot-toast";
+import { roomService } from "@/services/roomService";
 
 const Rooms = () => {
   const { rooms, isLoading, refetch } = useRooms();
@@ -39,7 +39,8 @@ const Rooms = () => {
       // DELETE
       setIsActionLoading(true);
       try {
-        await api.delete(`/room/delete/${roomToDelete.id}`);
+        await roomService.delete(roomToDelete.id);
+        
         toast.success(`Sala ${roomToDelete.name} a fost ștearsă cu succes.`);
         refetch();
       } catch (err) {
@@ -57,16 +58,13 @@ const Rooms = () => {
     try {
       if (roomToEdit) {
         // EDIT
-        await api.put("/room/update", {
-          ...formData,
-          id: roomToEdit.id,
-        });
+        await roomService.update({ ...formData, id: roomToEdit.id });
 
         toast.success("Sala a fost modificată cu succes.");
         refetch();
       } else {
         // ADD
-        await api.post("/room/create", formData);
+        await roomService.create(formData);
 
         toast.success("Sala a fost adăugată cu succes.");
         refetch();

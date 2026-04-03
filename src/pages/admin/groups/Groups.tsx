@@ -8,8 +8,8 @@ import { getColumns } from "./GroupsColumns";
 import styles from "../Page.module.css";
 import GroupModal from "@/components/ui/GroupModal";
 import useGroups from "@/hooks/useGroups";
-import api from "@/api/axiosInstance";
 import toast from "react-hot-toast";
+import { groupService } from "@/services/groupService";
 
 const Groups = () => {
   const { groups, isLoading, refetch } = useGroups();
@@ -38,7 +38,8 @@ const Groups = () => {
       // DELETE
       setIsActionLoading(true);
       try {
-        await api.delete(`/group/delete/${groupToDelete.id}`);
+        await groupService.delete(groupToDelete.id);
+
         toast.success(
           `Grupa ${groupToDelete.identifier} a fost ștearsă cu succes.`,
         );
@@ -58,16 +59,13 @@ const Groups = () => {
     try {
       if (groupToEdit) {
         // EDIT
-        await api.put("/group/update", {
-          ...formData,
-          id: groupToEdit.id,
-        });
+        await groupService.update({ ...formData, id: groupToEdit.id });
 
         toast.success("Grupa a fost modificată cu succes.");
         refetch();
       } else {
         // ADD
-        await api.post("/group/create", formData);
+        await groupService.create(formData);
 
         toast.success("Grupa a fost adăugată cu succes.");
         refetch();

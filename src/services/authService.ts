@@ -1,12 +1,14 @@
 import type { AuthResponse, RegisterDTO } from "@/types/Auth.types";
-import api from "../api/axiosInstance";
+import api, { type CustomConfig } from "../api/axiosInstance";
 
 export const authService = {
   async login(credentials: {
     email: string;
     password: string;
   }): Promise<AuthResponse> {
-    const { data } = await api.post<AuthResponse>("/user/login", credentials);
+    const { data } = await api.post<AuthResponse>("/user/login", credentials, {
+      noAuth: true,
+    } as CustomConfig);
     return data;
   },
 

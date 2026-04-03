@@ -1,4 +1,4 @@
-import api from "@/api/axiosInstance";
+import { subjectService } from "@/services/subjectService";
 import type { Subject } from "@/types/Subject.types";
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
@@ -14,8 +14,8 @@ const useSubjects = () => {
     setError(null);
 
     try {
-      const response = await api.get<Subject[]>("/subject/user");
-      setSubjects(response.data);
+      const data = await subjectService.getAll();
+      setSubjects(data);
     } catch (err) {
       let message = "Nu s-au putut încărca disciplinele.";
       if (axios.isAxiosError(err)) {

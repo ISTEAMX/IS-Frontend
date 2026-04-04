@@ -1,9 +1,11 @@
 .timetableContainer {
-  overflow-x: auto;
-  overflow-y: auto;
-  max-height: 80vh;
+  margin-left: auto;
+  margin-right: auto;
   width: 100%;
   max-width: 1200px;
+  max-height: 90vh;
+  overflow-x: auto;
+  overflow-y: auto;
   background-color: white;
   border-radius: var(--radius-md);
   border: 1px solid var(--border-light);

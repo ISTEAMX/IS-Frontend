@@ -90,6 +90,7 @@
   border-radius: var(--radius-md);
   transition: all var(--transition-fast) ease;
   outline: none;
+  cursor: pointer;
 }
 
 .formField select:focus {

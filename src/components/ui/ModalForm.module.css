@@ -32,6 +32,10 @@
   outline: none;
 }
 
+.formField select {
+  cursor: pointer;
+}
+
 .formField input:focus,
 .formField select:focus {
   border-color: var(--primary);

@@ -3,44 +3,56 @@ import type {
   ScheduleEvent,
   ScheduleEventDTO,
 } from "@/types/ScheduleEvent.types";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import BaseModal from "./BaseModal";
 import styles from "./ModalForm.module.css";
 import {
   DAYS,
   EVENT_FREQUENCIES,
+  EVENT_FREQUENCY_LABELS,
   HOURS,
 } from "@/constants/timetable.constants";
-import { MOCK_SUBJECTS } from "@/mocks/subjects";
-import { MOCK_ROOMS } from "@/mocks/rooms";
-import { MOCK_GROUPS } from "@/mocks/groups";
+import useRooms from "@/hooks/useRooms";
+import useSubjects from "@/hooks/useSubjects";
+import useGroups from "@/hooks/useGroups";
+import useTeachers from "@/hooks/useTeachers";
+import { FiAlertCircle, FiTrash2 } from "react-icons/fi";
 
 interface ScheduleEventModalProps {
   open: boolean;
   onClose: () => void;
   onSave: (data: ScheduleEventDTO) => void;
+  onDelete?: (id: number) => void;
   initialData?: ScheduleEvent | null;
+  conflict?: string | null;
 }
 
 const ScheduleEventModal = ({
   open,
   onClose,
   onSave,
+  onDelete,
   initialData,
+  conflict,
 }: ScheduleEventModalProps) => {
   const mapInitialData = (
     data: ScheduleEvent | null | undefined,
   ): ScheduleEventDTO => ({
     id: data?.id,
-    subjectId: data?.subject?.id || 0,
-    teacherId: data?.teacher?.id || 0,
-    roomId: data?.room?.id || 0,
-    groupId: data?.group?.id || 0,
-    day: data?.day || "Luni",
-    startHour: data?.startHour || 8,
-    endHour: data?.endHour || 10,
-    frequency: data?.frequency || "săptămânal",
+    subjectId: data?.subjectDTO?.id || 0,
+    professorId: data?.professorDTO?.id || 0,
+    roomId: data?.roomDTO?.id || 0,
+    groupId: data?.groupDTO?.id || 0,
+    scheduleDay: data?.scheduleDay || "Luni",
+    startingHour: data?.startingHour || 8,
+    endingHour: data?.endingHour || 10,
+    frequency: data?.frequency || "SAPTAMANAL",
   });
+
+  const { rooms } = useRooms();
+  const { subjects } = useSubjects();
+  const { groups } = useGroups();
+  const { teachers } = useTeachers();
 
   const [formData, setFormData] = useState<ScheduleEventDTO>(
     mapInitialData(initialData),
@@ -48,17 +60,29 @@ const ScheduleEventModal = ({
 
   const startHourOptions = HOURS.slice(0, -1);
   const endHourOptions = HOURS.filter(
-    (h) => h > (formData.startHour || 0) && h <= (formData.startHour || 0) + 2,
+    (h) =>
+      h > (formData.startingHour || 0) && h <= (formData.startingHour || 0) + 2,
   );
 
-  const duration = (formData.endHour || 0) - (formData.startHour || 0);
+  const duration = (formData.endingHour || 0) - (formData.startingHour || 0);
   const isValid =
     formData.subjectId &&
     formData.roomId &&
     formData.groupId &&
-    // formData.teacherId &&
+    formData.professorId &&
     duration > 0 &&
     duration <= 2;
+
+  const conflictRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (conflict && conflictRef.current) {
+      conflictRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }
+  }, [conflict]);
 
   return (
     <BaseModal
@@ -69,17 +93,16 @@ const ScheduleEventModal = ({
       submitLabel={initialData ? "Editează" : "Adaugă"}
       disabled={!isValid}
     >
-      {/*Placeholder form, text inputs will be replaced with selects */}
       <div className={styles.formContainer}>
         <div className={styles.formField}>
           <label className={styles.label}>Ziua</label>
           <select
             className={styles.select}
-            value={formData.day}
+            value={formData.scheduleDay}
             onChange={(e) =>
               setFormData({
                 ...formData,
-                day: e.target.value as (typeof DAYS)[number],
+                scheduleDay: e.target.value as (typeof DAYS)[number],
               })
             }
           >
@@ -96,10 +119,10 @@ const ScheduleEventModal = ({
             <label className={styles.label}>Ora Început</label>
             <select
               className={styles.select}
-              value={formData.startHour}
+              value={formData.startingHour}
               onChange={(e) => {
                 const newStart = parseInt(e.target.value);
-                const currentEnd = formData.endHour || 10;
+                const currentEnd = formData.endingHour || 10;
 
                 let newEnd = currentEnd;
                 if (currentEnd <= newStart || currentEnd > newStart + 2) {
@@ -108,8 +131,8 @@ const ScheduleEventModal = ({
 
                 setFormData({
                   ...formData,
-                  startHour: newStart,
-                  endHour: newEnd,
+                  startingHour: newStart,
+                  endingHour: newEnd,
                 });
               }}
             >
@@ -125,9 +148,12 @@ const ScheduleEventModal = ({
             <label className={styles.label}>Ora Sfârșit</label>
             <select
               className={styles.select}
-              value={formData.endHour}
+              value={formData.endingHour}
               onChange={(e) =>
-                setFormData({ ...formData, endHour: parseInt(e.target.value) })
+                setFormData({
+                  ...formData,
+                  endingHour: parseInt(e.target.value),
+                })
               }
             >
               {endHourOptions.map((h) => (
@@ -149,9 +175,30 @@ const ScheduleEventModal = ({
             }
           >
             <option value="">Selectează Disciplina</option>
-            {MOCK_SUBJECTS.map((s) => (
+            {subjects.map((s) => (
               <option key={s.id} value={s.id}>
                 {s.name} ({s.activityType})
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className={styles.formField}>
+          <label className={styles.label}>Profesor</label>
+          <select
+            className={styles.input}
+            value={formData.professorId}
+            onChange={(e) =>
+              setFormData({
+                ...formData,
+                professorId: parseInt(e.target.value),
+              })
+            }
+          >
+            <option value="">Selectează Profesorul</option>
+            {teachers.map((t) => (
+              <option key={t.id} value={t.id}>
+                {t.lastName + " " + t.firstName}
               </option>
             ))}
           </select>
@@ -168,7 +215,7 @@ const ScheduleEventModal = ({
               }
             >
               <option value="">Selectează Sala</option>
-              {MOCK_ROOMS.map((r) => (
+              {rooms.map((r) => (
                 <option key={r.id} value={r.id}>
                   {r.name}
                 </option>
@@ -185,7 +232,7 @@ const ScheduleEventModal = ({
               }
             >
               <option value="">Selectează Grupa</option>
-              {MOCK_GROUPS.map((g) => (
+              {groups.map((g) => (
                 <option key={g.id} value={g.id}>
                   {g.identifier}
                 </option>
@@ -208,12 +255,35 @@ const ScheduleEventModal = ({
           >
             {EVENT_FREQUENCIES.map((f) => (
               <option key={f} value={f}>
-                {f}
+                {EVENT_FREQUENCY_LABELS[f]}
               </option>
             ))}
           </select>
         </div>
+
+        {initialData?.id && onDelete && (
+          <div className={styles.deleteSection}>
+            <button
+              type="button"
+              className={styles.deleteButton}
+              onClick={() => onDelete(initialData.id!)}
+            >
+              <FiTrash2 /> Șterge Activitatea
+            </button>
+
+            <p className={styles.deleteText}>
+              Această acțiune este ireversibilă.
+            </p>
+          </div>
+        )}
       </div>
+
+      {conflict && (
+        <div ref={conflictRef} className={styles.conflictAlert}>
+          <FiAlertCircle className={styles.alertIcon} />
+          <span>{conflict}</span>
+        </div>
+      )}
     </BaseModal>
   );
 };

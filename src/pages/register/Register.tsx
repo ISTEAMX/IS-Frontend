@@ -95,17 +95,6 @@ const Register = () => {
 
             <div className={styles.nameRow}>
               <InputField
-                id="firstName"
-                type="text"
-                label="Prenume"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-                placeholder="Prenumele..."
-                icon={<FiUser />}
-                required
-              />
-
-              <InputField
                 id="lastName"
                 type="text"
                 label="Nume"
@@ -113,6 +102,19 @@ const Register = () => {
                 onChange={(e) => setLastName(e.target.value)}
                 placeholder="Numele..."
                 icon={<FiUser />}
+                autoComplete="off"
+                required
+              />
+
+              <InputField
+                id="firstName"
+                type="text"
+                label="Prenume"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                placeholder="Prenumele..."
+                icon={<FiUser />}
+                autoComplete="off"
                 required
               />
             </div>

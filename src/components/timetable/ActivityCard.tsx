@@ -4,9 +4,10 @@ import { FiMapPin, FiTag, FiUser } from "react-icons/fi";
 
 interface ActivityCardProps {
   event: ScheduleEvent;
+  handleClick: () => void;
 }
 
-const ActivityCard = ({ event }: ActivityCardProps) => {
+const ActivityCard = ({ event, handleClick }: ActivityCardProps) => {
   const getCardStyle = (type: string) => {
     switch (type) {
       case "Curs":
@@ -23,33 +24,38 @@ const ActivityCard = ({ event }: ActivityCardProps) => {
   };
 
   return (
-    <div className={`${styles.card} ${getCardStyle(event.subject.activityType)}`}>
+    <div
+      className={`${styles.card} ${getCardStyle(event.subjectDTO.activityType)}`}
+      onClick={handleClick}
+    >
       <div className={styles.cardHeader}>
-        <div className={styles.typeLabel}>{event.subject.activityType}</div>
-        {event.frequency !== "săptămânal" && (
+        <div className={styles.typeLabel}>{event.subjectDTO.activityType}</div>
+        {event.frequency !== "SAPTAMANAL" && (
           <div className={styles.frequencyBadge}>
-            {event.frequency === "pară" ? "Pară" : "Impară"}
+            {event.frequency === "PARA" ? "Pară" : "Impară"}
           </div>
         )}
       </div>
 
-      <div className={styles.eventName} title={event.subject.name}>
-        {event.subject.name}
+      <div className={styles.eventName} title={event.subjectDTO.name}>
+        {event.subjectDTO.name}
       </div>
 
       <div className={styles.detailsRow}>
         <FiUser className={styles.icon} />
-        <span>{event.teacher.lastName + " " + event.teacher.firstName}</span>
+        <span>
+          {event.professorDTO.lastName + " " + event.professorDTO.firstName}
+        </span>
       </div>
 
       <div className={styles.detailsRow}>
         <FiTag className={styles.icon} />
-        <span>{event.group.identifier}</span>
+        <span>{event.groupDTO.identifier}</span>
       </div>
 
       <div className={styles.detailsRow}>
         <FiMapPin className={styles.icon} />
-        <span>{event.room.name}</span>
+        <span>{event.roomDTO.name}</span>
       </div>
     </div>
   );

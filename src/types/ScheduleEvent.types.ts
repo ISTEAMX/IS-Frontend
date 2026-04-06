@@ -14,24 +14,24 @@ export type EventFrequency = (typeof EVENT_FREQUENCIES)[number];
 
 export interface ScheduleEvent {
   id: number;
-  subject: Subject;
-  teacher: Teacher;
-  group: Group;
-  room: Room;
-  day: DayOfWeek;
-  startHour: number;
-  endHour: number;
+  subjectDTO: Subject;
+  professorDTO: Teacher;
+  groupDTO: Group;
+  roomDTO: Room;
+  scheduleDay: DayOfWeek;
+  startingHour: number;
+  endingHour: number;
   frequency: EventFrequency;
 }
 
 export interface ScheduleEventDTO {
   id?: number;
   subjectId: number;
-  teacherId: number;
+  professorId: number;
   groupId: number;
   roomId: number;
-  day: DayOfWeek;
-  startHour: number;
-  endHour: number;
+  scheduleDay: DayOfWeek;
+  startingHour: number;
+  endingHour: number;
   frequency: EventFrequency;
 }

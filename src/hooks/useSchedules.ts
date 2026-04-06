@@ -15,7 +15,13 @@ const useSchedules = () => {
 
     try {
       const data = await scheduleEventService.getAll();
-      setSchedules(data);
+      if (Array.isArray(data)) {
+        setSchedules(data);
+      } else {
+        console.error("Unexpected data format from API:", data);
+        setSchedules([]);
+        throw new Error("Datele primite nu sunt într-un format valid (Array expected).");
+      }
     } catch (err) {
       let message = "Nu s-au putut încărca evenimentele.";
       if (axios.isAxiosError(err)) {

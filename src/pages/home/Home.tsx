@@ -12,9 +12,11 @@ import ScheduleEventModal from "@/components/ui/ScheduleEventModal";
 import useSchedules from "@/hooks/useSchedules";
 import axios from "axios";
 import ConfirmModal from "@/components/ui/ConfirmModal";
+import { useAuthStore } from "@/store/useAuthStore";
 
 const Home = () => {
   const { schedules, refetch } = useSchedules();
+  const { isAuthenticated, userData } = useAuthStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [scheduleToEdit, setScheduleToEdit] = useState<ScheduleEvent | null>(
     null,
@@ -99,12 +101,11 @@ const Home = () => {
       <ScheduleFilters />
 
       <div className={styles.contentWrapper}>
-        <button
-          onClick={handleOpenAdd}
-          style={{ background: "red", width: "50px", height: "50px" }}
-        >
-          Add event
-        </button>
+        {isAuthenticated && userData?.role === "ADMIN" && (
+          <button onClick={handleOpenAdd} className={styles.addEventButton}>
+            + Adaugă eveniment
+          </button>
+        )}
 
         <Timetable events={schedules} handleOpenEdit={handleOpenEdit} />
 

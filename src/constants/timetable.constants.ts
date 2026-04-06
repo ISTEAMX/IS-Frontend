@@ -18,4 +18,12 @@ export const ACTIVITY_TYPES = [
   "Seminar",
 ] as const;
 
-export const EVENT_FREQUENCIES = ["săptămânal", "pară", "impară"] as const;
+export const EVENT_FREQUENCIES = ["SAPTAMANAL", "PARA", "INPARA"] as const;
+export const EVENT_FREQUENCY_LABELS: Record<
+  (typeof EVENT_FREQUENCIES)[number],
+  string
+> = {
+  SAPTAMANAL: "Săptămânal",
+  PARA: "Pară",
+  INPARA: "Impară",
+};

@@ -13,8 +13,8 @@ export const generateSortedTimeSlots = (
 
   // Extract intervals from events
   const eventSlots = events
-    .filter((e) => e.startHour !== undefined && e.endHour !== undefined)
-    .map((e) => `${formatHour(e.startHour)} - ${formatHour(e.endHour)}`);
+    .filter((e) => e.startingHour !== undefined && e.endingHour !== undefined)
+    .map((e) => `${formatHour(e.startingHour)} - ${formatHour(e.endingHour)}`);
 
   // Combine with default slots and eliminate duplicates
   const combinedSlots = Array.from(new Set([...defaultSlots, ...eventSlots]));

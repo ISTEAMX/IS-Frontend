@@ -7,9 +7,10 @@ import { formatHour, generateSortedTimeSlots } from "@/utils/timetableUtils";
 
 interface TimetableProps {
   events?: ScheduleEvent[];
+  handleOpenEdit: (event: ScheduleEvent) => void;
 }
 
-const Timetable = ({ events = [] }: TimetableProps) => {
+const Timetable = ({ events = [], handleOpenEdit }: TimetableProps) => {
   const activeTimeSlots = useMemo(() => {
     return generateSortedTimeSlots(events, TIME_SLOTS);
   }, [events]);
@@ -35,15 +36,19 @@ const Timetable = ({ events = [] }: TimetableProps) => {
             {DAYS.map((day) => {
               const currentEvents = events.filter(
                 (e) =>
-                  e.day === day &&
-                  `${formatHour(e.startHour)} - ${formatHour(e.endHour)}` ===
+                  e.scheduleDay === day &&
+                  `${formatHour(e.startingHour)} - ${formatHour(e.endingHour)}` ===
                     time,
               );
 
               return (
                 <div key={`${day}-${time}`} className={styles.gridCell}>
                   {currentEvents.map((event) => (
-                    <ActivityCard key={event.id} event={event} />
+                    <ActivityCard
+                      key={event.id}
+                      event={event}
+                      handleClick={() => handleOpenEdit(event)}
+                    />
                   ))}
                 </div>
               );

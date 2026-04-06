@@ -12,6 +12,7 @@ interface InputFieldProps {
   required?: boolean;
   icon?: ReactNode;
   rightAction?: ReactNode;
+  autoComplete?: "off" | "on";
 }
 
 export const InputField = ({
@@ -24,6 +25,7 @@ export const InputField = ({
   required = false,
   icon,
   rightAction,
+  autoComplete = "on",
 }: InputFieldProps) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const isPasswordField = type === "password";
@@ -52,6 +54,7 @@ export const InputField = ({
           placeholder={placeholder}
           required={required}
           className={`${styles.input} ${isPasswordField ? styles.inputWithToggle : ""}`}
+          autoComplete={autoComplete}
         />
 
         {isPasswordField && (

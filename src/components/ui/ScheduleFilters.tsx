@@ -23,7 +23,7 @@ const ScheduleFilters = () => {
         <FilterSelect
           label="Profesor"
           options={teachers}
-          getLabel={(t) => `${t.firstName} ${t.lastName}`}
+          getLabel={(t) => `${t.lastName} ${t.firstName}`}
           getValue={(t) => t.id}
           placeHolder="Toți profesorii"
         />

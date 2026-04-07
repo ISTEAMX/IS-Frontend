@@ -1,10 +1,12 @@
 import { roomService } from "@/services/roomService";
 import type { Room } from "@/types/Room.types";
 import axios from "axios";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 
-const useRooms = () => {
+export type SortOrder = "asc" | "desc" | null;
+
+const useRooms = (sortOrder: SortOrder = "asc") => {
   const [rooms, setRooms] = useState<Room[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -29,11 +31,24 @@ const useRooms = () => {
     }
   }, []);
 
+  const sortedRooms = useMemo(() => {
+    if (!sortOrder) return rooms;
+
+    return [...rooms].sort((a, b) => {
+      const valA = a.name.toLowerCase();
+      const valB = b.name.toLowerCase();
+
+      return sortOrder === "asc"
+        ? valA.localeCompare(valB)
+        : valB.localeCompare(valA);
+    });
+  }, [rooms, sortOrder]);
+
   useEffect(() => {
     fetchRooms();
   }, [fetchRooms]);
 
-  return { rooms, isLoading, error, refetch: fetchRooms };
+  return { rooms: sortedRooms, isLoading, error, refetch: fetchRooms };
 };
 
 export default useRooms;

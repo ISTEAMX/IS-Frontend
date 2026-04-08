@@ -1,10 +1,12 @@
 import { groupService } from "@/services/groupService";
 import type { Group } from "@/types/Group.types";
 import axios from "axios";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 
-const useGroups = () => {
+export type SortOrder = "asc" | "desc" | null;
+
+const useGroups = (sortOrder: SortOrder = "asc") => {
   const [groups, setGroups] = useState<Group[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -33,7 +35,25 @@ const useGroups = () => {
     fetchGroups();
   }, [fetchGroups]);
 
-  return { groups, isLoading, error, refetch: fetchGroups };
+  const sortedGroups = useMemo(() => {
+    if (!sortOrder) return groups;
+
+    return [...groups].sort((a, b) => {
+      const valA = a.identifier.toLowerCase();
+      const valB = b.identifier.toLowerCase();
+
+      return sortOrder === "asc"
+        ? valA.localeCompare(valB)
+        : valB.localeCompare(valA);
+    });
+  }, [groups, sortOrder]);
+
+  return {
+    groups: sortedGroups,
+    isLoading,
+    error,
+    refetch: fetchGroups,
+  };
 };
 
 export default useGroups;

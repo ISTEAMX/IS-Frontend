@@ -40,7 +40,7 @@ const Rooms = () => {
       setIsActionLoading(true);
       try {
         await roomService.delete(roomToDelete.id);
-        
+
         toast.success(`Sala ${roomToDelete.name} a fost ștearsă cu succes.`);
         refetch();
       } catch (err) {

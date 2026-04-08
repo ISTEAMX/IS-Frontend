@@ -4,7 +4,11 @@ import useTeachers from "@/hooks/useTeachers";
 import styles from "./Filters.module.css";
 import FilterSelect from "./FilterSelect";
 
-const ScheduleFilters = () => {
+interface ScheduleFiltersProps {
+  children?: React.ReactNode;
+}
+
+const ScheduleFilters = ({ children }: ScheduleFiltersProps) => {
   const { rooms } = useRooms();
   const { teachers } = useTeachers();
   const { groups } = useGroups();
@@ -36,6 +40,8 @@ const ScheduleFilters = () => {
           placeHolder="Toate sălile"
         />
       </div>
+
+      {children && <div className={styles.actionsWrapper}>{children}</div>}
     </div>
   );
 };

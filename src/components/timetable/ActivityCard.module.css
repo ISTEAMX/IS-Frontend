@@ -9,6 +9,7 @@
   border-left: 4px solid transparent;
   display: flex;
   flex-direction: column;
+  cursor: pointer;
 }
 
 .cardCurs {

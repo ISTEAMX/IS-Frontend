@@ -1,5 +1,6 @@
 import { scheduleEventService } from "@/services/scheduleEventService";
 import type {
+  DayOfWeek,
   ScheduleEvent,
   ScheduleEventDTO,
 } from "@/types/ScheduleEvent.types";
@@ -15,6 +16,8 @@ const useScheduleActions = (refetch: () => void) => {
   const [scheduleToDelete, setScheduleToDelete] =
     useState<ScheduleEvent | null>(null);
   const [isActionLoading, setIsActionLoading] = useState(false);
+  const [initialModalData, setInitialModalData] =
+    useState<Partial<ScheduleEvent> | null>(null);
   const [conflict, setConflict] = useState<string | null>(null);
 
   const handleOpenAdd = () => {
@@ -87,9 +90,26 @@ const useScheduleActions = (refetch: () => void) => {
     }
   };
 
+  const handleOpenAddAtSlot = (day: string, timeSlot: string) => {
+    const [startStr, endStr] = timeSlot.split(" - ");
+    const startingHour = parseInt(startStr.split(":")[0]);
+    const endingHour = parseInt(endStr.split(":")[0]);
+
+    setScheduleToEdit(null);
+    setInitialModalData({
+      scheduleDay: day as DayOfWeek,
+      startingHour: startingHour,
+      endingHour: endingHour,
+    } as Partial<ScheduleEvent>);
+
+    setIsModalOpen(true);
+    setConflict(null);
+  };
+
   return {
     state: {
       isModalOpen,
+      initialModalData,
       scheduleToEdit,
       scheduleToDelete,
       isActionLoading,
@@ -99,6 +119,7 @@ const useScheduleActions = (refetch: () => void) => {
       setIsModalOpen,
       setScheduleToDelete,
       handleOpenAdd,
+      handleOpenAddAtSlot,
       handleOpenEdit,
       handleOpenConfirmDelete,
       handleConfirmDelete,

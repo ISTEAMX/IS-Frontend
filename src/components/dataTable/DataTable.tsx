@@ -34,6 +34,7 @@ export function DataTable<TData, TValue>({
   searchPlaceholder = "Caută...",
   isLoading = false,
 }: DataTableProps<TData, TValue>) {
+  "use no memo";
   const [sorting, setSorting] = useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = useState("");
 

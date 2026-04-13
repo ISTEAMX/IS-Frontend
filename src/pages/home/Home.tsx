@@ -7,12 +7,14 @@ import ConfirmModal from "@/components/ui/ConfirmModal";
 import { useAuthStore } from "@/store/useAuthStore";
 import AddEventButton from "@/components/ui/AddEventButton";
 import useScheduleActions from "@/hooks/actions/useScheduleActions";
+import type { ScheduleEvent } from "@/types/ScheduleEvent.types";
 
 const Home = () => {
   const { schedules, refetch } = useSchedules();
   const {
     state: {
       isModalOpen,
+      initialModalData,
       scheduleToEdit,
       scheduleToDelete,
       isActionLoading,
@@ -20,6 +22,7 @@ const Home = () => {
     },
     actions: {
       handleOpenAdd,
+      handleOpenAddAtSlot,
       handleOpenEdit,
       handleOpenConfirmDelete,
       handleConfirmDelete,
@@ -40,7 +43,11 @@ const Home = () => {
       </ScheduleFilters>
 
       <div className={styles.contentWrapper}>
-        <Timetable events={schedules} handleOpenEdit={handleOpenEdit} />
+        <Timetable
+          events={schedules}
+          handleOpenEdit={handleOpenEdit}
+          handleOpenAddAtSlot={handleOpenAddAtSlot}
+        />
 
         {isModalOpen && (
           <ScheduleEventModal
@@ -52,7 +59,7 @@ const Home = () => {
               setIsModalOpen(false);
               if (scheduleToEdit) handleOpenConfirmDelete(scheduleToEdit);
             }}
-            initialData={scheduleToEdit}
+            initialData={scheduleToEdit || (initialModalData as ScheduleEvent)}
             conflict={conflict}
           />
         )}

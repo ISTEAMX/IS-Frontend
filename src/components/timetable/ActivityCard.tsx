@@ -4,7 +4,7 @@ import { FiMapPin, FiTag, FiUser } from "react-icons/fi";
 
 interface ActivityCardProps {
   event: ScheduleEvent;
-  handleClick: () => void;
+  handleClick: (e: React.MouseEvent<HTMLDivElement>) => void;
 }
 
 const ActivityCard = ({ event, handleClick }: ActivityCardProps) => {

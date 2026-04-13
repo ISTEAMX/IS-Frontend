@@ -16,7 +16,15 @@ import useRooms from "@/hooks/api/useRooms";
 import useSubjects from "@/hooks/api/useSubjects";
 import useGroups from "@/hooks/api/useGroups";
 import useTeachers from "@/hooks/api/useTeachers";
-import { FiAlertCircle, FiTrash2 } from "react-icons/fi";
+import { FiAlertCircle, FiMapPin, FiTag, FiTrash2 } from "react-icons/fi";
+import {
+  BiBook,
+  BiCalendar,
+  BiRepeat,
+  BiSolidHourglassBottom,
+  BiSolidHourglassTop,
+  BiUser,
+} from "react-icons/bi";
 
 interface ScheduleEventModalProps {
   open: boolean;
@@ -36,18 +44,20 @@ const ScheduleEventModal = ({
   conflict,
 }: ScheduleEventModalProps) => {
   const mapInitialData = (
-    data: ScheduleEvent | null | undefined,
+    data: ScheduleEvent | Partial<ScheduleEvent> | null | undefined,
   ): ScheduleEventDTO => ({
-    id: data?.id,
-    subjectId: data?.subjectDTO?.id || 0,
-    professorId: data?.professorDTO?.id || 0,
-    roomId: data?.roomDTO?.id || 0,
-    groupId: data?.groupDTO?.id || 0,
+    id: (data as ScheduleEvent)?.id || undefined,
+    subjectId: (data as ScheduleEvent)?.subjectDTO?.id || 0,
+    professorId: (data as ScheduleEvent)?.professorDTO?.id || 0,
+    roomId: (data as ScheduleEvent)?.roomDTO?.id || 0,
+    groupId: (data as ScheduleEvent)?.groupDTO?.id || 0,
     scheduleDay: data?.scheduleDay || "Luni",
     startingHour: data?.startingHour || 8,
     endingHour: data?.endingHour || 10,
     frequency: data?.frequency || "SAPTAMANAL",
   });
+
+  const isEditing = !!initialData?.id;
 
   const { rooms } = useRooms();
   const { subjects } = useSubjects();
@@ -87,15 +97,17 @@ const ScheduleEventModal = ({
   return (
     <BaseModal
       open={open}
-      title={initialData ? "Editează Activitatea" : "Activitate Nouă"}
+      title={isEditing ? "Editează Activitatea" : "Activitate Nouă"}
       onClose={onClose}
       onSubmit={() => onSave(formData)}
-      submitLabel={initialData ? "Editează" : "Adaugă"}
+      submitLabel={isEditing ? "Editează" : "Adaugă"}
       disabled={!isValid}
     >
       <div className={styles.formContainer}>
         <div className={styles.formField}>
-          <label className={styles.label}>Ziua</label>
+          <label className={styles.label}>
+            <BiCalendar className={styles.icon} /> Ziua
+          </label>
           <select
             className={styles.select}
             value={formData.scheduleDay}
@@ -116,7 +128,10 @@ const ScheduleEventModal = ({
 
         <div className={styles.formRow}>
           <div className={styles.formField}>
-            <label className={styles.label}>Ora Început</label>
+            <label className={styles.label}>
+              <BiSolidHourglassTop className={styles.icon} />
+              Ora Început
+            </label>
             <select
               className={styles.select}
               value={formData.startingHour}
@@ -145,7 +160,10 @@ const ScheduleEventModal = ({
           </div>
 
           <div className={styles.formField}>
-            <label className={styles.label}>Ora Sfârșit</label>
+            <label className={styles.label}>
+              <BiSolidHourglassBottom className={styles.icon} />
+              Ora Sfârșit
+            </label>
             <select
               className={styles.select}
               value={formData.endingHour}
@@ -166,7 +184,10 @@ const ScheduleEventModal = ({
         </div>
 
         <div className={styles.formField}>
-          <label className={styles.label}>Disciplină</label>
+          <label className={styles.label}>
+            <BiBook className={styles.icon} />
+            Disciplină
+          </label>
           <select
             className={styles.input}
             value={formData.subjectId}
@@ -184,7 +205,10 @@ const ScheduleEventModal = ({
         </div>
 
         <div className={styles.formField}>
-          <label className={styles.label}>Profesor</label>
+          <label className={styles.label}>
+            <BiUser className={styles.icon} />
+            Profesor
+          </label>
           <select
             className={styles.input}
             value={formData.professorId}
@@ -206,7 +230,10 @@ const ScheduleEventModal = ({
 
         <div className={styles.formRow}>
           <div className={styles.formField}>
-            <label className={styles.label}>Sală</label>
+            <label className={styles.label}>
+              <FiMapPin className={styles.icon} />
+              Sală
+            </label>
             <select
               className={styles.input}
               value={formData.roomId}
@@ -223,7 +250,10 @@ const ScheduleEventModal = ({
             </select>
           </div>
           <div className={styles.formField}>
-            <label className={styles.label}>Grupă</label>
+            <label className={styles.label}>
+              <FiTag className={styles.icon} />
+              Grupă
+            </label>
             <select
               className={styles.input}
               value={formData.groupId}
@@ -242,7 +272,10 @@ const ScheduleEventModal = ({
         </div>
 
         <div className={styles.formField}>
-          <label className={styles.label}>Frecvență</label>
+          <label className={styles.label}>
+            <BiRepeat className={styles.icon} />
+            Frecvență
+          </label>
           <select
             className={styles.select}
             value={formData.frequency}

@@ -12,10 +12,19 @@
 }
 
 .formField label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
   font-size: var(--text-sm);
   font-weight: var(--font-semibold);
   color: var(--text-label);
   cursor: pointer;
+}
+
+.formField label .icon {
+  width: 15px;
+  height: 15px;
+  color: var(--primary);
 }
 
 .formField input,

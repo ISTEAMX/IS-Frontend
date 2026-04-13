@@ -1,6 +1,6 @@
-import useGroups from "@/hooks/useGroups";
-import useRooms from "@/hooks/useRooms";
-import useTeachers from "@/hooks/useTeachers";
+import useGroups from "@/hooks/api/useGroups";
+import useRooms from "@/hooks/api/useRooms";
+import useTeachers from "@/hooks/api/useTeachers";
 import styles from "./Filters.module.css";
 import FilterSelect from "./FilterSelect";
 

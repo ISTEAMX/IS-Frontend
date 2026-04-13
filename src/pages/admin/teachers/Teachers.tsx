@@ -1,9 +1,5 @@
 import { PageHeader } from "@/components/ui/PageHeader";
-import useTeachers from "@/hooks/useTeachers";
-import { teacherService } from "@/services/teacherService";
-import type { Teacher, TeacherDTO } from "@/types/Teacher.types";
-import { useState } from "react";
-import toast from "react-hot-toast";
+import useTeachers from "@/hooks/api/useTeachers";
 import { useNavigate } from "react-router-dom";
 import styles from "../Page.module.css";
 import InfoCard from "@/components/ui/InfoCard";
@@ -11,64 +7,22 @@ import { DataTable } from "@/components/dataTable/DataTable";
 import ConfirmModal from "@/components/ui/ConfirmModal";
 import { getColumns } from "./TeacherColumns";
 import TeacherModal from "@/components/ui/TeacherModal";
+import useTeachersActions from "@/hooks/actions/useTeachersActions";
 
 const Teachers = () => {
   const { teachers, isLoading, refetch } = useTeachers();
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [teacherToEdit, setTeacherToEdit] = useState<Teacher | null>(null);
-  const [teacherToDelete, setTeacherToDelete] = useState<Teacher | null>(null);
-  const [isActionLoading, setIsActionLoading] = useState(false);
-
+  const {
+    state: { isModalOpen, teacherToEdit, teacherToDelete, isActionLoading },
+    actions: {
+      handleOpenEdit,
+      handleOpenConfirmDelete,
+      setIsModalOpen,
+      handleSave,
+      setTeacherToDelete,
+      handleConfirmDelete,
+    },
+  } = useTeachersActions(refetch);
   const navigate = useNavigate();
-
-  const handleOpenEdit = (teacher: Teacher) => {
-    setTeacherToEdit(teacher);
-    setIsModalOpen(true);
-  };
-
-  const handleOpenConfirmDelete = (teacher: Teacher) => {
-    setTeacherToDelete(teacher);
-  };
-
-  const handleConfirmDelete = async () => {
-    if (teacherToDelete) {
-      // DELETE
-      setIsActionLoading(true);
-      try {
-        await teacherService.delete(teacherToDelete.id);
-
-        toast.success(
-          `Profesorul ${teacherToDelete.firstName + " " + teacherToDelete.lastName} a fost șters cu succes.`,
-        );
-        refetch();
-      } catch (err) {
-        console.error(err);
-        toast.error("Eroare la ștergerea profesorului.");
-      } finally {
-        setIsActionLoading(false);
-        setTeacherToDelete(null);
-      }
-    }
-  };
-
-  const handleSave = async (formData: TeacherDTO) => {
-    setIsActionLoading(true);
-    try {
-      if (teacherToEdit) {
-        // EDIT
-        await teacherService.update({ ...formData, id: teacherToEdit.id });
-
-        toast.success("Profesorul a fost modificat cu succes.");
-        refetch();
-      }
-    } catch (err) {
-      console.error(err);
-      toast.error("Eroare la salvarea profesorului.");
-    } finally {
-      setIsActionLoading(false);
-    }
-  };
 
   const tableColumns = getColumns(handleOpenEdit, handleOpenConfirmDelete);
 

@@ -1,82 +1,27 @@
-import { useState } from "react";
 import { PageHeader } from "@/components/ui/PageHeader";
 import InfoCard from "@/components/ui/InfoCard";
 import { DataTable } from "@/components/dataTable/DataTable";
 import ConfirmModal from "@/components/ui/ConfirmModal";
-import type { Group, GroupDTO } from "@/types/Group.types";
 import { getColumns } from "./GroupsColumns";
 import styles from "../Page.module.css";
 import GroupModal from "@/components/ui/GroupModal";
-import useGroups from "@/hooks/useGroups";
-import toast from "react-hot-toast";
-import { groupService } from "@/services/groupService";
+import useGroups from "@/hooks/api/useGroups";
+import useGroupsActions from "@/hooks/actions/useGroupsActions";
 
 const Groups = () => {
   const { groups, isLoading, refetch } = useGroups();
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [groupToEdit, setGroupToEdit] = useState<Group | null>(null);
-  const [groupToDelete, setGroupToDelete] = useState<Group | null>(null);
-  const [isActionLoading, setIsActionLoading] = useState(false);
-
-  const handleOpenAdd = () => {
-    setGroupToEdit(null);
-    setIsModalOpen(true);
-  };
-
-  const handleOpenEdit = (group: Group) => {
-    setGroupToEdit(group);
-    setIsModalOpen(true);
-  };
-
-  const handleOpenConfirmDelete = (group: Group) => {
-    setGroupToDelete(group);
-  };
-
-  const handleConfirmDelete = async () => {
-    if (groupToDelete) {
-      // DELETE
-      setIsActionLoading(true);
-      try {
-        await groupService.delete(groupToDelete.id);
-
-        toast.success(
-          `Grupa ${groupToDelete.identifier} a fost ștearsă cu succes.`,
-        );
-        refetch();
-      } catch (err) {
-        console.error(err);
-        toast.error("Eroare la ștergerea grupei.");
-      } finally {
-        setIsActionLoading(false);
-        setGroupToDelete(null);
-      }
-    }
-  };
-
-  const handleSave = async (formData: GroupDTO) => {
-    setIsActionLoading(true);
-    try {
-      if (groupToEdit) {
-        // EDIT
-        await groupService.update({ ...formData, id: groupToEdit.id });
-
-        toast.success("Grupa a fost modificată cu succes.");
-        refetch();
-      } else {
-        // ADD
-        await groupService.create(formData);
-
-        toast.success("Grupa a fost adăugată cu succes.");
-        refetch();
-      }
-    } catch (err) {
-      console.error(err);
-      toast.error("Eroare la salvarea grupei.");
-    } finally {
-      setIsActionLoading(false);
-    }
-  };
+  const {
+    state: { isModalOpen, groupToEdit, groupToDelete, isActionLoading },
+    actions: {
+      handleOpenEdit,
+      handleOpenConfirmDelete,
+      handleOpenAdd,
+      setGroupToDelete,
+      setIsModalOpen,
+      handleSave,
+      handleConfirmDelete,
+    },
+  } = useGroupsActions(refetch);
 
   const tableColumns = getColumns(handleOpenEdit, handleOpenConfirmDelete);
 

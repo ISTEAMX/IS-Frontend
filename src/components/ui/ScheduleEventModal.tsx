@@ -12,10 +12,10 @@ import {
   EVENT_FREQUENCY_LABELS,
   HOURS,
 } from "@/constants/timetable.constants";
-import useRooms from "@/hooks/useRooms";
-import useSubjects from "@/hooks/useSubjects";
-import useGroups from "@/hooks/useGroups";
-import useTeachers from "@/hooks/useTeachers";
+import useRooms from "@/hooks/api/useRooms";
+import useSubjects from "@/hooks/api/useSubjects";
+import useGroups from "@/hooks/api/useGroups";
+import useTeachers from "@/hooks/api/useTeachers";
 import { FiAlertCircle, FiTrash2 } from "react-icons/fi";
 
 interface ScheduleEventModalProps {

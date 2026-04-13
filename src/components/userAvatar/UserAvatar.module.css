@@ -64,9 +64,12 @@
   background-color: #fee2e2;
 }
 
-@media (max-width: 640px) {
-  .userName,
-  .logoutButton span {
+@media (max-width: 500px) {
+  .userName {
     display: none;
+  }
+
+  .container {
+    gap: var(--space-2);
   }
 }

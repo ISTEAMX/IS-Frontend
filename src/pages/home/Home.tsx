@@ -13,6 +13,7 @@ import useSchedules from "@/hooks/useSchedules";
 import axios from "axios";
 import ConfirmModal from "@/components/ui/ConfirmModal";
 import { useAuthStore } from "@/store/useAuthStore";
+import AddEventButton from "@/components/ui/AddEventButton";
 
 const Home = () => {
   const { schedules, refetch } = useSchedules();
@@ -98,15 +99,14 @@ const Home = () => {
 
   return (
     <>
-      <ScheduleFilters />
+      <ScheduleFilters>
+        {isAuthenticated &&
+          (userData?.role === "ADMIN" || userData?.role === "PROFESSOR") && (
+            <AddEventButton handleClick={handleOpenAdd} />
+          )}
+      </ScheduleFilters>
 
       <div className={styles.contentWrapper}>
-        {isAuthenticated && userData?.role === "ADMIN" && (
-          <button onClick={handleOpenAdd} className={styles.addEventButton}>
-            + Adaugă eveniment
-          </button>
-        )}
-
         <Timetable events={schedules} handleOpenEdit={handleOpenEdit} />
 
         {isModalOpen && (

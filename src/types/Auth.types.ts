@@ -1,5 +1,6 @@
 export interface User {
   id: number;
+  professorId: number;
   firstName: string;
   lastName: string;
   role: string;

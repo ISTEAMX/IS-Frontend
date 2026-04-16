@@ -25,6 +25,7 @@ import {
   BiSolidHourglassTop,
   BiUser,
 } from "react-icons/bi";
+import { useAuthStore } from "@/store/useAuthStore";
 
 interface ScheduleEventModalProps {
   open: boolean;
@@ -43,12 +44,18 @@ const ScheduleEventModal = ({
   initialData,
   conflict,
 }: ScheduleEventModalProps) => {
+  const user = useAuthStore((state) => state.userData);
+  const isProfessor = user?.role === "PROFESSOR";
+  const professorIdFromStore = user?.professorId;
+
   const mapInitialData = (
     data: ScheduleEvent | Partial<ScheduleEvent> | null | undefined,
   ): ScheduleEventDTO => ({
     id: (data as ScheduleEvent)?.id || undefined,
     subjectId: (data as ScheduleEvent)?.subjectDTO?.id || 0,
-    professorId: (data as ScheduleEvent)?.professorDTO?.id || 0,
+    professorId: isProfessor
+      ? professorIdFromStore || 0
+      : (data as ScheduleEvent)?.professorDTO?.id || 0,
     roomId: (data as ScheduleEvent)?.roomDTO?.id || 0,
     groupId: (data as ScheduleEvent)?.groupDTO?.id || 0,
     scheduleDay: data?.scheduleDay || "Luni",
@@ -204,29 +211,31 @@ const ScheduleEventModal = ({
           </select>
         </div>
 
-        <div className={styles.formField}>
-          <label className={styles.label}>
-            <BiUser className={styles.icon} />
-            Profesor
-          </label>
-          <select
-            className={styles.input}
-            value={formData.professorId}
-            onChange={(e) =>
-              setFormData({
-                ...formData,
-                professorId: parseInt(e.target.value),
-              })
-            }
-          >
-            <option value="">Selectează Profesorul</option>
-            {teachers.map((t) => (
-              <option key={t.id} value={t.id}>
-                {t.lastName + " " + t.firstName}
-              </option>
-            ))}
-          </select>
-        </div>
+        {!isProfessor && (
+          <div className={styles.formField}>
+            <label className={styles.label}>
+              <BiUser className={styles.icon} />
+              Profesor
+            </label>
+            <select
+              className={styles.input}
+              value={formData.professorId}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  professorId: parseInt(e.target.value),
+                })
+              }
+            >
+              <option value="">Selectează Profesorul</option>
+              {teachers.map((t) => (
+                <option key={t.id} value={t.id}>
+                  {t.lastName + " " + t.firstName}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
 
         <div className={styles.formRow}>
           <div className={styles.formField}>

@@ -36,7 +36,7 @@ const UserAvatar = () => {
           {userData.lastName[0]}
         </div>
         <span className={styles.userName}>
-          {userData.firstName} {userData.lastName}
+          {userData.lastName} {userData.firstName}
         </span>
       </div>
 

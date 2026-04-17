@@ -1,6 +1,8 @@
 import type { ScheduleEvent } from "@/types/ScheduleEvent.types";
 import styles from "./ActivityCard.module.css";
 import { FiMapPin, FiTag, FiUser } from "react-icons/fi";
+import { useAuthStore } from "@/store/useAuthStore";
+import React, { useMemo } from "react";
 
 interface ActivityCardProps {
   event: ScheduleEvent;
@@ -8,6 +10,25 @@ interface ActivityCardProps {
 }
 
 const ActivityCard = ({ event, handleClick }: ActivityCardProps) => {
+  const { userData } = useAuthStore();
+
+  const canEdit = useMemo(() => {
+    if (!userData) return false;
+    if (userData?.role === "ADMIN") return true;
+    if (userData?.role === "PROFESSOR") {
+      return event.professorDTO.id === userData.professorId;
+    }
+    return false;
+  }, [userData, event.professorDTO.id]);
+
+  const handleInternalClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (canEdit) {
+      handleClick(e);
+    } else {
+      e.stopPropagation();
+    }
+  };
+
   const getCardStyle = (type: string) => {
     switch (type) {
       case "Curs":
@@ -26,7 +47,10 @@ const ActivityCard = ({ event, handleClick }: ActivityCardProps) => {
   return (
     <div
       className={`${styles.card} ${getCardStyle(event.subjectDTO.activityType)}`}
-      onClick={handleClick}
+      onClick={handleInternalClick}
+      style={{
+        cursor: canEdit ? "pointer" : "default",
+      }}
     >
       <div className={styles.cardHeader}>
         <div className={styles.typeLabel}>{event.subjectDTO.activityType}</div>

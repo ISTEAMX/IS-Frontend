@@ -1,8 +1,8 @@
 import { FiLogOut } from "react-icons/fi";
 import styles from "./UserAvatar.module.css";
-import toast from "react-hot-toast";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useNavigate } from "react-router-dom";
+import { showConfirmToast } from "@/utils/showConfirmToast";
 
 const UserAvatar = () => {
   const navigate = useNavigate();
@@ -21,7 +21,15 @@ const UserAvatar = () => {
   const handleLogout = () => {
     logout();
     navigate("/login", { replace: true });
-    toast.success("Te-ai deconectat cu succes!");
+  };
+
+  const handleLogoutClick = () => {
+    showConfirmToast({
+      message: "Sigur vreți să vă deconectați?",
+      confirmText: "Da",
+      cancelText: "Nu",
+      onConfirm: handleLogout,
+    });
   };
 
   return (
@@ -42,7 +50,7 @@ const UserAvatar = () => {
 
       <button
         className={styles.logoutButton}
-        onClick={handleLogout}
+        onClick={handleLogoutClick}
         title="Deconectare"
       >
         <FiLogOut />

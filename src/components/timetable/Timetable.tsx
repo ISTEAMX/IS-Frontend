@@ -5,6 +5,7 @@ import styles from "./Timetable.module.css";
 import ActivityCard from "./ActivityCard";
 import { formatHour, generateSortedTimeSlots } from "@/utils/timetableUtils";
 import { BiPlus } from "react-icons/bi";
+import { useAuthStore } from "@/store/useAuthStore";
 
 interface TimetableProps {
   events?: ScheduleEvent[];
@@ -17,6 +18,11 @@ const Timetable = ({
   handleOpenEdit,
   handleOpenAddAtSlot,
 }: TimetableProps) => {
+  const { isAuthenticated, userData } = useAuthStore();
+  const canAdd =
+    isAuthenticated &&
+    (userData?.role === "ADMIN" || userData?.role === "PROFESSOR");
+
   const activeTimeSlots = useMemo(() => {
     return generateSortedTimeSlots(events, TIME_SLOTS);
   }, [events]);
@@ -48,33 +54,36 @@ const Timetable = ({
               );
 
               const isEmpty = currentEvents.length === 0;
+              const canClickEmpty = isEmpty && canAdd;
 
               return (
                 <div
                   key={`${day}-${time}`}
-                  className={`${styles.gridCell} ${isEmpty ? styles.emptyCell : ""}`}
-                  onClick={() => isEmpty && handleOpenAddAtSlot(day, time)}
-                  role={isEmpty ? "button" : undefined}
-                  tabIndex={isEmpty ? 0 : undefined}
+                  className={`${styles.gridCell} ${canClickEmpty ? styles.emptyCell : ""}`}
+                  onClick={() =>
+                    canClickEmpty && handleOpenAddAtSlot(day, time)
+                  }
+                  role={isEmpty && canAdd ? "button" : undefined}
+                  style={{ cursor: canClickEmpty ? "pointer" : "default" }}
                 >
-                  {isEmpty ? (
-                    <div className={styles.addSuggestion}>
-                      <div className={styles.iconContainer}>
-                        <BiPlus className={styles.icon} />
-                      </div>
-                    </div>
-                  ) : (
-                    currentEvents.map((event) => (
-                      <ActivityCard
-                        key={event.id}
-                        event={event}
-                        handleClick={(e) => {
-                          e?.stopPropagation();
-                          handleOpenEdit(event);
-                        }}
-                      />
-                    ))
-                  )}
+                  {isEmpty
+                    ? canAdd && (
+                        <div className={styles.addSuggestion}>
+                          <div className={styles.iconContainer}>
+                            <BiPlus className={styles.icon} />
+                          </div>
+                        </div>
+                      )
+                    : currentEvents.map((event) => (
+                        <ActivityCard
+                          key={event.id}
+                          event={event}
+                          handleClick={(e) => {
+                            e?.stopPropagation();
+                            handleOpenEdit(event);
+                          }}
+                        />
+                      ))}
                 </div>
               );
             })}

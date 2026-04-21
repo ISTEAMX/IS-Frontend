@@ -3,12 +3,19 @@ import useRooms from "@/hooks/api/useRooms";
 import useTeachers from "@/hooks/api/useTeachers";
 import styles from "./Filters.module.css";
 import FilterSelect from "./FilterSelect";
+import type { ScheduleFilterValues } from "@/types/ScheduleFilters.types";
 
 interface ScheduleFiltersProps {
   children?: React.ReactNode;
+  filters: ScheduleFilterValues;
+  onFilterChange: (key: keyof ScheduleFilterValues, value: number | null) => void;
 }
 
-const ScheduleFilters = ({ children }: ScheduleFiltersProps) => {
+const ScheduleFilters = ({
+  children,
+  filters,
+  onFilterChange,
+}: ScheduleFiltersProps) => {
   const { rooms } = useRooms();
   const { teachers } = useTeachers();
   const { groups } = useGroups();
@@ -22,6 +29,8 @@ const ScheduleFilters = ({ children }: ScheduleFiltersProps) => {
           getLabel={(g) => g.identifier}
           getValue={(g) => g.id}
           placeHolder="Toate grupele"
+          value={filters.groupId?.toString()}
+          onChange={(val) => onFilterChange("groupId", val)}
         />
 
         <FilterSelect
@@ -30,6 +39,8 @@ const ScheduleFilters = ({ children }: ScheduleFiltersProps) => {
           getLabel={(t) => `${t.lastName} ${t.firstName}`}
           getValue={(t) => t.id}
           placeHolder="Toți profesorii"
+          value={filters.professorId?.toString()}
+          onChange={(val) => onFilterChange("professorId", val)}
         />
 
         <FilterSelect
@@ -38,6 +49,8 @@ const ScheduleFilters = ({ children }: ScheduleFiltersProps) => {
           getLabel={(r) => r.name}
           getValue={(r) => r.id}
           placeHolder="Toate sălile"
+          value={filters.roomId?.toString()}
+          onChange={(val) => onFilterChange("roomId", val)}
         />
       </div>
 

@@ -1,5 +1,4 @@
 import Timetable from "@/components/timetable/Timetable";
-import ScheduleFilters from "@/components/ui/ScheduleFilters";
 import styles from "./Home.module.css";
 import ScheduleEventModal from "@/components/ui/ScheduleEventModal";
 import useSchedules from "@/hooks/api/useSchedules";
@@ -8,9 +7,18 @@ import { useAuthStore } from "@/store/useAuthStore";
 import AddEventButton from "@/components/ui/AddEventButton";
 import useScheduleActions from "@/hooks/actions/useScheduleActions";
 import type { ScheduleEvent } from "@/types/ScheduleEvent.types";
+import ScheduleFilters from "@/components/ui/ScheduleFilters";
+import { useState } from "react";
+import type { ScheduleFilterValues } from "@/types/ScheduleFilters.types";
 
 const Home = () => {
-  const { schedules, refetch } = useSchedules();
+  const [filters, setFilters] = useState<ScheduleFilterValues>({
+    groupId: null,
+    professorId: null,
+    roomId: null,
+  });
+
+  const { schedules, refetch } = useSchedules(filters);
   const {
     state: {
       isModalOpen,
@@ -31,11 +39,17 @@ const Home = () => {
       setScheduleToDelete,
     },
   } = useScheduleActions(refetch);
+
   const { isAuthenticated, userData } = useAuthStore();
 
   return (
     <>
-      <ScheduleFilters>
+      <ScheduleFilters
+        filters={filters}
+        onFilterChange={(key, value) =>
+          setFilters((prev) => ({ ...prev, [key]: value }))
+        }
+      >
         {isAuthenticated &&
           (userData?.role === "ADMIN" || userData?.role === "PROFESSOR") && (
             <AddEventButton handleClick={handleOpenAdd} />

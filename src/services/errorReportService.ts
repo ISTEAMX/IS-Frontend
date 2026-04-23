@@ -21,8 +21,10 @@ export function reportError(error: unknown, source = "unknown") {
       }
     ).catch(() => {});
   } catch {
+    void 0;
   }
 }
+
 
 
 

@@ -16,7 +16,7 @@ IS-frontend is a modern Single-Page Application (SPA) built using **React 19** a
 
 ### Component Interactions
 The application's architecture is based on functional components and hooks. Hierarchically:
-- **Layouts**: Global page structures (e.g., `AdminLayout`, `AuthLayout`).
+- **Layouts**: Global page structures (e.g., `MainLayout`, `AdminLayout`).
 - **Pages**: Top-level route components representing different views.
 - **Store**: Global state management powered by Zustand for centralized data access.
 - **Hooks**: Custom logic reusable across multiple components (e.g., data fetching, form handling).
@@ -34,10 +34,14 @@ We use Zustand for its lightweight nature and simplicity. Typical stores include
 
 ## Key Directory Structure
 - `src/api`: Axios instance and common API utilities.
-- `src/components`: Reusable UI elements (buttons, inputs, tables).
-- `src/pages`: Feature-specific page components.
-- `src/store`: Zustand state definitions.
+- `src/components`: Reusable UI elements (dataTable, header, footer, timetable, ui, userAvatar).
+- `src/constants`: Application constants (rooms, timetable).
+- `src/hooks`: Custom hooks for actions and API interactions.
+- `src/layouts`: Page layout wrappers (`MainLayout`, `AdminLayout`, `Sidebar`).
+- `src/pages`: Feature-specific page components (home, login, register, admin/*, notFound).
+- `src/routes`: Application routing (`AppRouter`, `ProtectedRoute`).
 - `src/services`: API service modules and error reporting (`errorReportService.ts`).
+- `src/store`: Zustand state definitions.
 - `src/types`: Centralized TypeScript interfaces and types.
 - `src/utils`: Helper functions for date formatting, validation, etc.
 

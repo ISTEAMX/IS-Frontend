@@ -15,8 +15,8 @@ The core functionality revolves around the administration of various academic en
 
 ### 3. Subject Management
 - **Description**: Define the academic curriculum.
-- **Actions**: Create subjects, set credit hours, and categorize them by department.
-- **Workflow**: Links subjects to relevant student groups and teachers.
+- **Actions**: Create, edit, and delete subjects with name and activity type (e.g., lecture, lab).
+- **Workflow**: Links subjects to relevant schedule entries alongside groups and teachers.
 
 ### 4. Teacher Management
 - **Description**: Manage the list of educators.
@@ -25,8 +25,8 @@ The core functionality revolves around the administration of various academic en
 
 ## User Authentication
 - **Secure Login**: Access control via JWT-based authentication.
-- **Registration**: Onboarding of new users with role-based permissions (Admin/User).
-- **Session Management**: Automatic token refresh and session persistence.
+- **Registration**: Onboarding of new users with role-based permissions (Admin/User). Registration is accessible only to Admin users.
+- **Session Management**: Token persistence via Zustand store. On 401 responses, the user is automatically logged out and redirected to login.
 
 ## Dashboard & Scheduling (Work-in-Progress)
 - **Visual Schedule**: View upcoming events and classes.

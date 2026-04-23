@@ -2,8 +2,8 @@
 
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/isteamx/is-frontend)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![React](https://img.shields.io/badge/React-19.0-blue.svg)](https://react.dev/)
-[![Vite](https://img.shields.io/badge/Vite-7.0-purple.svg)](https://vitejs.dev/)
+[![React](https://img.shields.io/badge/React-19.2-blue.svg)](https://react.dev/)
+[![Vite](https://img.shields.io/badge/Vite-7.3-purple.svg)](https://vitejs.dev/)
 
 A modern, responsive administrative interface for educational resource management, built with **React 19**, **TypeScript**, and **Vite**.
 

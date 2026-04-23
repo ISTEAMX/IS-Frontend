@@ -4,13 +4,18 @@
 We follow a feature-based organization to ensure that related files are grouped together. The core directories are:
 ```text
 src/
-├── api/            # API instance and service definitions
-├── components/     # Reusable UI elements
-├── hooks/          # Custom hooks for logic and state
-├── pages/          # Full page components
+├── api/            # Axios instance and common API utilities
+├── assets/         # Static assets (e.g., logo SVG)
+├── components/     # Reusable UI elements (dataTable, header, footer, timetable, ui, userAvatar)
+├── constants/      # Application constants (rooms, timetable)
+├── hooks/          # Custom hooks for actions and API interactions
+├── layouts/        # Page layout wrappers (MainLayout, AdminLayout, Sidebar)
+├── pages/          # Full page components (home, login, register, admin/*, notFound)
+├── routes/         # Application routing (AppRouter, ProtectedRoute)
+├── services/       # API service modules (auth, group, room, subject, teacher, scheduleEvent, errorReport)
 ├── store/          # Zustand global state management
-├── types/          # Centralized TypeScript types
-├── utils/          # Helper functions and formatting
+├── types/          # Centralized TypeScript interfaces and types
+└── utils/          # Helper functions and formatting
 ```
 
 ## Branching Strategy
@@ -39,8 +44,18 @@ When adding new endpoints:
 2.  Use the `api` instance from `src/api/axiosInstance.ts`.
 3.  Implement the data fetching logic within the relevant page or a custom hook.
 
-## Testing Strategy (Future Work)
-Currently, the project does not have automated tests. Planned additions include:
-- **Unit Testing**: [Jest](https://jestjs.io/) or [Vitest](https://vitest.dev/).
-- **Component Testing**: [React Testing Library](https://testing-library.com/).
+## Testing Strategy
+The project uses **Vitest** for unit testing. Tests are co-located alongside their source files (e.g., `authService.test.ts` alongside `authService.ts`).
+
+### Running Tests
+```bash
+npm run test
+```
+
+### Current Test Coverage
+- **Service Tests**: All API service modules (`authService`, `groupService`, `roomService`, `subjectService`, `teacherService`, `scheduleEventService`) have unit tests that mock Axios calls.
+- **Component Tests**: `App.test.tsx` provides basic component rendering tests.
+
+### Planned Additions
+- **Component Testing**: Expanded tests with [React Testing Library](https://testing-library.com/).
 - **E2E Testing**: [Cypress](https://www.cypress.io/) or [Playwright](https://playwright.dev/).

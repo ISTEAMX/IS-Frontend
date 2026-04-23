@@ -11,32 +11,35 @@ The application uses **Axios** for all HTTP requests to the backend API. The con
 
 ### Example Request
 ```typescript
-import api from "@/api/axiosInstance";
+import api, { type CustomConfig } from "@/api/axiosInstance";
+import type { Group } from "@/types/Group.types";
 
-export const getGroups = async () => {
-    try {
-        const response = await api.get("/groups");
-        return response.data;
-    } catch (error) {
-        console.error("Failed to fetch groups", error);
-        throw error;
-    }
+export const groupService = {
+  getAll: async () => {
+    const response = await api.get<Group[]>("/group/user/groups", {
+      noAuth: true,
+    } as CustomConfig);
+    return response.data;
+  },
 };
 ```
 
 ## Authentication Mechanism
 Authentication is handled via **JSON Web Tokens (JWT)**.
-- **Login**: Sends credentials to `/login`. Upon success, the backend returns a JWT access token.
-- **Storage**: The token is stored in the `useAuthStore` (powered by Zustand) and persisted in common storage.
+- **Login**: Sends credentials to `/api/user/login`. Upon success, the backend returns a JWT access token and user data (`ResponseLoginDTO`).
+- **Storage**: The token is stored in the `useAuthStore` (powered by Zustand) and persisted via Zustand's persistence middleware.
 - **Revocation**: Logout clears the token and redirects the user to the login screen.
+- **noAuth Requests**: Public endpoints (e.g., fetching rooms, groups) use `{ noAuth: true }` in the Axios config to skip the Authorization header.
 
 ## Endpoints Consumed
-The frontend interacts with the following endpoint prefixes:
-- `/api/groups`: Management of student cohorts.
-- `/api/rooms`: Classroom and facility data.
-- `/api/subjects`: Academic subject definitions.
-- `/api/teachers`: Staff profiles and availability.
-- `/api/auth`: Login, registration, and session management.
+The frontend interacts with the following backend endpoint prefixes:
+- `/api/user`: Authentication — login (`POST /user/login`) and registration (`POST /user/register`).
+- `/api/group`: Management of student cohorts (`/group/user/groups`, `/group/create`, `/group/update`, `/group/delete/{id}`).
+- `/api/room`: Classroom and facility data (`/room/user/rooms`, `/room/create`, `/room/update`, `/room/delete/{id}`).
+- `/api/subject`: Academic subject definitions (`/subject/user`, `/subject/create`, `/subject/update`, `/subject/delete/{id}`).
+- `/api/professor`: Teacher/professor profiles (`/professor/user`, `PUT /professor`, `DELETE /professor/{id}`).
+- `/api/schedule`: Schedule entries and filtering (`/schedule/user`, `/schedule/user/filter`, `/schedule/add`, `/schedule/update`, `/schedule/delete/{id}`).
+- `/api/monitoring`: Frontend error reporting (`POST /monitoring/error`).
 
 ## Request/Response Formats
 - **Content-Type**: `application/json` for both requests and responses.

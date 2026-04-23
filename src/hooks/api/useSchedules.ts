@@ -1,10 +1,13 @@
 import { scheduleEventService } from "@/services/scheduleEventService";
+import { useAuthStore } from "@/store/useAuthStore";
 import type { ScheduleEvent } from "@/types/ScheduleEvent.types";
+import type { ScheduleFilterValues } from "@/types/ScheduleFilters.types";
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
-const useSchedules = () => {
+const useSchedules = (filters: ScheduleFilterValues) => {
+  const { userData, isAuthenticated } = useAuthStore();
   const [schedules, setSchedules] = useState<ScheduleEvent[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -14,7 +17,17 @@ const useSchedules = () => {
     setError(null);
 
     try {
-      const data = await scheduleEventService.getAll();
+      const isDefaultState =
+        !filters.professorId && !filters.groupId && !filters.roomId;
+      const appliedFilters = {
+        ...filters,
+        professorId:
+          isDefaultState && isAuthenticated && userData?.role === "PROFESSOR"
+            ? userData.id
+            : filters.professorId,
+      };
+
+      const data = await scheduleEventService.get(appliedFilters);
       if (Array.isArray(data)) {
         setSchedules(data);
       } else {
@@ -35,7 +48,7 @@ const useSchedules = () => {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [filters, userData, isAuthenticated]);
 
   useEffect(() => {
     fetchSchedules();

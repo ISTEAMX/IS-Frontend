@@ -3,8 +3,21 @@ import type {
   ScheduleEvent,
   ScheduleEventDTO,
 } from "@/types/ScheduleEvent.types";
+import type { ScheduleFilterValues } from "@/types/ScheduleFilters.types";
 
 export const scheduleEventService = {
+  get: async (filters: ScheduleFilterValues) => {
+    const cleanParams = Object.fromEntries(
+      Object.entries(filters).filter(([, v]) => v != null),
+    );
+
+    const response = await api.get<ScheduleEvent[]>("/schedule/user/filter", {
+      params: cleanParams,
+      noAuth: true,
+    } as CustomConfig);
+    return response.data;
+  },
+
   getAll: async () => {
     const response = await api.get<ScheduleEvent[]>("/schedule/user", {
       noAuth: true,

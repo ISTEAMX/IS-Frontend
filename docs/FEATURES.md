@@ -31,3 +31,10 @@ The core functionality revolves around the administration of various academic en
 ## Dashboard & Scheduling (Work-in-Progress)
 - **Visual Schedule**: View upcoming events and classes.
 - **Resource Overview**: A high-level view of available rooms and current teacher assignments.
+
+## Error Tracking & Monitoring
+- **Global Error Handlers**: Catches uncaught JavaScript errors (`window.onerror`) and unhandled promise rejections, automatically reporting them to the backend.
+- **React Error Boundary**: Wraps the entire application in an `ErrorBoundary` component that catches render errors, displays a user-friendly fallback UI, and reports the error to AWS CloudWatch via the backend.
+- **API Error Reporting**: All non-401 Axios response errors are automatically reported with the HTTP method and URL context.
+- **Silent Reporting**: Error reporting never interrupts the user experience — all failures in the reporting pipeline are silently swallowed.
+

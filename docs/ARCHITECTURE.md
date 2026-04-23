@@ -37,5 +37,15 @@ We use Zustand for its lightweight nature and simplicity. Typical stores include
 - `src/components`: Reusable UI elements (buttons, inputs, tables).
 - `src/pages`: Feature-specific page components.
 - `src/store`: Zustand state definitions.
+- `src/services`: API service modules and error reporting (`errorReportService.ts`).
 - `src/types`: Centralized TypeScript interfaces and types.
 - `src/utils`: Helper functions for date formatting, validation, etc.
+
+## Error Tracking
+The application includes a multi-layered error tracking system that reports errors to AWS CloudWatch via the backend:
+1. **`window.onerror`**: Catches uncaught JavaScript errors globally (configured in `main.tsx`).
+2. **`unhandledrejection`**: Catches unhandled promise rejections (configured in `main.tsx`).
+3. **React `ErrorBoundary`**: Wraps the root `App` component to catch React render errors and display a fallback UI.
+4. **Axios Interceptor**: Reports non-401 API errors with HTTP method and URL context.
+5. **`errorReportService.ts`**: Central reporting function that POSTs structured error data to `/api/monitoring/error`.
+

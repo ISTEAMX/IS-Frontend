@@ -1,4 +1,5 @@
 import { useAuthStore } from "@/store/useAuthStore";
+import { reportError } from "@/services/errorReportService";
 import axios, { type InternalAxiosRequestConfig } from "axios";
 
 export interface CustomConfig extends InternalAxiosRequestConfig {
@@ -33,6 +34,8 @@ api.interceptors.response.use(
       if (!window.location.pathname.includes("/login")) {
         window.location.href = "/login";
       }
+    } else {
+      reportError(error, `api:${error.config?.method?.toUpperCase()} ${error.config?.url}`);
     }
 
     return Promise.reject(error);

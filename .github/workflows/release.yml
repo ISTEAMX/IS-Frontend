@@ -1,6 +1,9 @@
 name: Release
 
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
     inputs:
       component:
@@ -16,10 +19,32 @@ permissions:
   contents: write
 
 jobs:
+  check:
+    name: Check if should release
+    runs-on: ubuntu-latest
+    outputs:
+      should_release: ${{ steps.guard.outputs.should_release }}
+    steps:
+      - name: Guard against version-bump commits
+        id: guard
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "should_release=true" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          MSG="${{ github.event.head_commit.message }}"
+          if echo "$MSG" | grep -q '\[skip ci\]'; then
+            echo "should_release=false" >> $GITHUB_OUTPUT
+          else
+            echo "should_release=true" >> $GITHUB_OUTPUT
+          fi
+
   release:
     name: Frontend semantic release
+    needs: check
+    if: needs.check.outputs.should_release == 'true'
     uses: ISTEAMX/IS-DevOps/.github/workflows/continuous-release-frontend.yml@main
     with:
-      component: "${{ github.event.inputs.component }}"
-      release_type: "${{ github.event.inputs.release_type }}"
+      component: ${{ github.event.inputs.component || 'frontend' }}
+      release_type: ${{ github.event.inputs.release_type || 'patch' }}
 

@@ -7,6 +7,7 @@ import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { authService } from "@/services/authService";
 import { useAuthStore } from "@/store/useAuthStore";
+import axios from "axios";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -32,9 +33,15 @@ const Login = () => {
       } else {
         navigate("/", { replace: true });
       }
-    } catch (err) {
-      console.error("Eroare la autentificare", err);
-      toast.error("Eroare la autentificare");
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        const errorData = err.response?.data;
+
+        console.error("Eroare la autentificare", err);
+        toast.error(errorData);
+      } else {
+        console.error("A apărut o eroare", err);
+      }
     } finally {
       setIsLoading(false);
     }

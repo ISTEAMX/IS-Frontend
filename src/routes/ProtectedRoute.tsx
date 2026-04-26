@@ -14,6 +14,10 @@ const ProtectedRoute = ({ allowedRoles }: ProtectedRouteProps) => {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
+  if (userData && !userData.passwordChanged) {
+    return <Navigate to="/change-password" replace />;
+  }
+
   if (
     allowedRoles &&
     userData &&

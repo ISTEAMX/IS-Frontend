@@ -18,6 +18,7 @@ const createMockAuthStore = (overrides: Partial<AuthState> = {}) => {
     firstName: "Test",
     lastName: "User",
     role: "ADMIN",
+    passwordChanged: true,
   };
 
   return {
@@ -69,6 +70,7 @@ describe("ProtectedRoute", () => {
           firstName: "Profe",
           lastName: "Sor",
           role: "PROFESSOR",
+          passwordChanged: true,
         },
       }),
     );
@@ -98,6 +100,7 @@ describe("ProtectedRoute", () => {
           firstName: "Admin",
           lastName: "User",
           role: "ADMIN",
+    passwordChanged: true,
         },
       }),
     );

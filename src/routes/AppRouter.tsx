@@ -10,6 +10,7 @@ import Teachers from "@/pages/admin/teachers/Teachers";
 import Groups from "@/pages/admin/groups/Groups";
 import Subjects from "@/pages/admin/subjects/Subjects";
 import ProtectedRoute from "./ProtectedRoute";
+import ChangePassword from "@/pages/changePassword/ChangePassword";
 
 const AppRouter = () => {
   return (
@@ -20,6 +21,7 @@ const AppRouter = () => {
       </Route>
 
       <Route path="/login" element={<Login />} />
+      <Route path="/change-password" element={<ChangePassword />} />
 
       <Route element={<ProtectedRoute allowedRoles={["ADMIN"]} />}>
         <Route path="/admin" element={<AdminLayout />}>

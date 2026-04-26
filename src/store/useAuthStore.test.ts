@@ -20,6 +20,7 @@ describe("useAuthStore", () => {
         firstName: "John",
         lastName: "Doe",
         role: "PROFESSOR",
+        passwordChanged: true,
       };
 
       useAuthStore.getState().setAuth(token, userData);
@@ -37,6 +38,7 @@ describe("useAuthStore", () => {
         firstName: "John",
         lastName: "Doe",
         role: "PROFESSOR",
+        passwordChanged: true,
       };
 
       useAuthStore.getState().setAuth("", userData);
@@ -51,6 +53,7 @@ describe("useAuthStore", () => {
         firstName: "Admin",
         lastName: "User",
         role: "ADMIN",
+        passwordChanged: true,
       };
 
       useAuthStore.getState().setAuth("admin-token", adminUser);
@@ -68,6 +71,7 @@ describe("useAuthStore", () => {
         firstName: "John",
         lastName: "Doe",
         role: "PROFESSOR",
+        passwordChanged: true,
       };
 
       useAuthStore.getState().setAuth("token123", userData);
@@ -88,6 +92,7 @@ describe("useAuthStore", () => {
         firstName: "John",
         lastName: "Doe",
         role: "PROFESSOR",
+        passwordChanged: true,
       };
 
       expect(useAuthStore.getState().isAuthenticated).toBe(false);
@@ -106,6 +111,7 @@ describe("useAuthStore", () => {
         firstName: "John",
         lastName: "Doe",
         role: "PROFESSOR",
+        passwordChanged: true,
       };
 
       const user2: User = {
@@ -114,6 +120,7 @@ describe("useAuthStore", () => {
         firstName: "Admin",
         lastName: "User",
         role: "ADMIN",
+        passwordChanged: true,
       };
 
       useAuthStore.getState().setAuth("token1", user1);

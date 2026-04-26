@@ -27,6 +27,20 @@ const Timetable = ({
     return generateSortedTimeSlots(events, TIME_SLOTS);
   }, [events]);
 
+  const groupedEvents = useMemo(() => {
+    const map: Record<string, ScheduleEvent[]> = {};
+
+    events.forEach((event) => {
+      const timeKey = `${formatHour(event.startingHour)} - ${formatHour(event.endingHour)}`;
+      const key = `${event.scheduleDay}-${timeKey}`;
+
+      if (!map[key]) map[key] = [];
+      map[key].push(event);
+    });
+
+    return map;
+  }, [events]);
+
   return (
     <div className={styles.timetableContainer}>
       <div className={styles.timetableGrid}>
@@ -46,12 +60,7 @@ const Timetable = ({
             </div>
 
             {DAYS.map((day) => {
-              const currentEvents = events.filter(
-                (e) =>
-                  e.scheduleDay === day &&
-                  `${formatHour(e.startingHour)} - ${formatHour(e.endingHour)}` ===
-                    time,
-              );
+              const currentEvents = groupedEvents[`${day}-${time}`] || [];
 
               const isEmpty = currentEvents.length === 0;
               const canClickEmpty = isEmpty && canAdd;

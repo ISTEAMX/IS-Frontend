@@ -25,7 +25,9 @@ const Login = () => {
       const response = await authService.login({ email, password });
       const { token, userData } = response;
       setAuth(token, userData);
-      if (userData.role === "ADMIN") {
+      if (!userData.passwordChanged) {
+        navigate("/change-password", { replace: true });
+      } else if (userData.role === "ADMIN") {
         navigate("/admin", { replace: true });
       } else {
         navigate("/", { replace: true });

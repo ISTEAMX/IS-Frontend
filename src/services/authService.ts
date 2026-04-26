@@ -15,4 +15,8 @@ export const authService = {
   async register(credentials: RegisterDTO): Promise<void> {
     await api.post("/user/register", credentials);
   },
+
+  async changePassword(currentPassword: string, newPassword: string): Promise<void> {
+    await api.put("/user/change-password", { currentPassword, newPassword });
+  },
 };

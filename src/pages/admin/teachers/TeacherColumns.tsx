@@ -8,7 +8,7 @@ export const getColumns = (
   onDelete: (subject: Teacher) => void,
 ): ColumnDef<Teacher>[] => [
   {
-    accessorKey: "last_name",
+    accessorKey: "lastName",
     header: "Nume",
     cell: ({ row }) => (
       <div>
@@ -17,7 +17,7 @@ export const getColumns = (
     ),
   },
   {
-    accessorKey: "first_name",
+    accessorKey: "firstName",
     header: "Prenume",
     cell: ({ row }) => (
       <div>

@@ -16,6 +16,7 @@ import useRooms from "@/hooks/api/useRooms";
 import useSubjects from "@/hooks/api/useSubjects";
 import useGroups from "@/hooks/api/useGroups";
 import useTeachers from "@/hooks/api/useTeachers";
+import SearchableSelect from "./SearchableSelect";
 import { FiAlertCircle, FiMapPin, FiTag, FiTrash2 } from "react-icons/fi";
 import {
   BiBook,
@@ -195,20 +196,16 @@ const ScheduleEventModal = ({
             <BiBook className={styles.icon} />
             Disciplină
           </label>
-          <select
-            className={styles.input}
-            value={formData.subjectId}
-            onChange={(e) =>
-              setFormData({ ...formData, subjectId: parseInt(e.target.value) })
+          <SearchableSelect
+            options={subjects}
+            getLabel={(s) => `${s.name} (${s.activityType})`}
+            getValue={(s) => s.id}
+            placeholder="Selectează Disciplina"
+            value={formData.subjectId || undefined}
+            onChange={(val) =>
+              setFormData({ ...formData, subjectId: val ? Number(val) : 0 })
             }
-          >
-            <option value="">Selectează Disciplina</option>
-            {subjects.map((s) => (
-              <option key={s.id} value={s.id}>
-                {s.name} ({s.activityType})
-              </option>
-            ))}
-          </select>
+          />
         </div>
 
         {!isProfessor && (
@@ -217,23 +214,16 @@ const ScheduleEventModal = ({
               <BiUser className={styles.icon} />
               Profesor
             </label>
-            <select
-              className={styles.input}
-              value={formData.professorId}
-              onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  professorId: parseInt(e.target.value),
-                })
+            <SearchableSelect
+              options={teachers}
+              getLabel={(t) => `${t.lastName} ${t.firstName}`}
+              getValue={(t) => t.id}
+              placeholder="Selectează Profesorul"
+              value={formData.professorId || undefined}
+              onChange={(val) =>
+                setFormData({ ...formData, professorId: val ? Number(val) : 0 })
               }
-            >
-              <option value="">Selectează Profesorul</option>
-              {teachers.map((t) => (
-                <option key={t.id} value={t.id}>
-                  {t.lastName + " " + t.firstName}
-                </option>
-              ))}
-            </select>
+            />
           </div>
         )}
 
@@ -243,40 +233,32 @@ const ScheduleEventModal = ({
               <FiMapPin className={styles.icon} />
               Sală
             </label>
-            <select
-              className={styles.input}
-              value={formData.roomId}
-              onChange={(e) =>
-                setFormData({ ...formData, roomId: parseInt(e.target.value) })
+            <SearchableSelect
+              options={rooms}
+              getLabel={(r) => r.name}
+              getValue={(r) => r.id}
+              placeholder="Selectează Sala"
+              value={formData.roomId || undefined}
+              onChange={(val) =>
+                setFormData({ ...formData, roomId: val ? Number(val) : 0 })
               }
-            >
-              <option value="">Selectează Sala</option>
-              {rooms.map((r) => (
-                <option key={r.id} value={r.id}>
-                  {r.name}
-                </option>
-              ))}
-            </select>
+            />
           </div>
           <div className={styles.formField}>
             <label className={styles.label}>
               <FiTag className={styles.icon} />
               Grupă
             </label>
-            <select
-              className={styles.input}
-              value={formData.groupId}
-              onChange={(e) =>
-                setFormData({ ...formData, groupId: parseInt(e.target.value) })
+            <SearchableSelect
+              options={groups}
+              getLabel={(g) => g.identifier}
+              getValue={(g) => g.id}
+              placeholder="Selectează Grupa"
+              value={formData.groupId || undefined}
+              onChange={(val) =>
+                setFormData({ ...formData, groupId: val ? Number(val) : 0 })
               }
-            >
-              <option value="">Selectează Grupa</option>
-              {groups.map((g) => (
-                <option key={g.id} value={g.id}>
-                  {g.identifier}
-                </option>
-              ))}
-            </select>
+            />
           </div>
         </div>
 

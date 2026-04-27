@@ -58,6 +58,7 @@
   position: absolute;
   top: calc(100% + 4px);
   left: 0;
+  width: 100%;
   min-width: 220px;
   background: white;
   border: 1px solid var(--border-input);
@@ -105,9 +106,7 @@
   color: var(--text-main);
   cursor: pointer;
   transition: background-color var(--transition-fast) ease;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  word-break: break-word;
 }
 
 .option:hover {

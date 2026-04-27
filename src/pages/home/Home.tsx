@@ -35,6 +35,7 @@ const Home = () => {
       handleOpenConfirmDelete,
       handleConfirmDelete,
       handleSave,
+      handleDrop,
       setIsModalOpen,
       setScheduleToDelete,
     },
@@ -61,6 +62,7 @@ const Home = () => {
           events={schedules}
           handleOpenEdit={handleOpenEdit}
           handleOpenAddAtSlot={handleOpenAddAtSlot}
+          handleDrop={handleDrop}
         />
 
         {isModalOpen && (

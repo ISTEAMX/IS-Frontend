@@ -106,6 +106,57 @@ const useScheduleActions = (refetch: () => void) => {
     setConflict(null);
   };
 
+  const handleDrop = async (
+    event: ScheduleEvent,
+    newDay: DayOfWeek,
+    newTimeSlot: string,
+  ) => {
+    const [startStr, endStr] = newTimeSlot.split(" - ");
+    const newStartingHour = parseInt(startStr.split(":")[0]);
+    const newEndingHour = parseInt(endStr.split(":")[0]);
+
+    if (
+      event.scheduleDay === newDay &&
+      event.startingHour === newStartingHour &&
+      event.endingHour === newEndingHour
+    ) {
+      return;
+    }
+
+    setIsActionLoading(true);
+    try {
+      await scheduleEventService.update({
+        id: event.id,
+        subjectId: event.subjectDTO.id,
+        professorId: event.professorDTO.id,
+        groupId: event.groupDTO.id,
+        roomId: event.roomDTO.id,
+        scheduleDay: newDay,
+        startingHour: newStartingHour,
+        endingHour: newEndingHour,
+        frequency: event.frequency,
+      });
+
+      toast.success("Evenimentul a fost mutat cu succes.");
+      refetch();
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        const errorData = err.response?.data;
+        console.error(errorData);
+        toast.error(
+          typeof errorData === "string"
+            ? errorData
+            : "Eroare la mutarea evenimentului.",
+        );
+      } else {
+        console.error("A apărut o eroare", err);
+        toast.error("Eroare la mutarea evenimentului.");
+      }
+    } finally {
+      setIsActionLoading(false);
+    }
+  };
+
   return {
     state: {
       isModalOpen,
@@ -124,6 +175,7 @@ const useScheduleActions = (refetch: () => void) => {
       handleOpenConfirmDelete,
       handleConfirmDelete,
       handleSave,
+      handleDrop,
     },
   };
 };

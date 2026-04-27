@@ -29,6 +29,15 @@ const ActivityCard = ({ event, handleClick }: ActivityCardProps) => {
     }
   };
 
+  const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
+    if (!canEdit) {
+      e.preventDefault();
+      return;
+    }
+    e.dataTransfer.setData("application/json", JSON.stringify(event));
+    e.dataTransfer.effectAllowed = "move";
+  };
+
   const getCardStyle = (type: string) => {
     switch (type) {
       case "Curs":
@@ -48,8 +57,10 @@ const ActivityCard = ({ event, handleClick }: ActivityCardProps) => {
     <div
       className={`${styles.card} ${getCardStyle(event.subjectDTO.activityType)}`}
       onClick={handleInternalClick}
+      draggable={canEdit}
+      onDragStart={handleDragStart}
       style={{
-        cursor: canEdit ? "pointer" : "default",
+        cursor: canEdit ? "grab" : "default",
       }}
     >
       <div className={styles.cardHeader}>

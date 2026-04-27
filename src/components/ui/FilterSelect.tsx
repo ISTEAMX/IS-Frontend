@@ -1,4 +1,5 @@
 import styles from "./Filters.module.css";
+import SearchableSelect from "./SearchableSelect";
 
 interface FilterSelectProps<T> {
   label: string;
@@ -22,21 +23,14 @@ const FilterSelect = <T,>({
   return (
     <div className={styles.filterField}>
       <label className={styles.filterLabel}>{label}</label>
-      <select
-        className={styles.select}
-        value={value || ""}
-        onChange={(e) => {
-          const val = e.target.value;
-          onChange(val === "" ? null : parseInt(val, 10));
-        }}
-      >
-        <option value={""}>{placeHolder}</option>
-        {options.map((item) => (
-          <option key={getValue(item)} value={getValue(item)}>
-            {getLabel(item)}
-          </option>
-        ))}
-      </select>
+      <SearchableSelect
+        options={options}
+        getLabel={getLabel}
+        getValue={getValue}
+        placeholder={placeHolder}
+        value={value}
+        onChange={onChange}
+      />
     </div>
   );
 };

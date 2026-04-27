@@ -18,7 +18,7 @@ const mockEvents: ScheduleEvent[] = [
       lastName: "Smith",
       department: "Math",
     },
-    groupDTO: { id: 30, identifier: "321", specialization: "CS", year: 1 },
+    groupDTO: { id: 30, identifier: "321", specialization: "CS", year: 1, semester: 1 },
     roomDTO: {
       id: 40,
       name: "Amphi A",

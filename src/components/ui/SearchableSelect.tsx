@@ -8,7 +8,7 @@ interface SearchableSelectProps<T> {
   getValue: (item: T) => string | number;
   placeholder: string;
   value?: string | number;
-  onChange: (value: number | null) => void;
+  onChange: (value: number | string | null) => void;
 }
 
 const SearchableSelect = <T,>({
@@ -55,7 +55,7 @@ const SearchableSelect = <T,>({
     }
   }, [isOpen]);
 
-  const handleSelect = (val: number | null) => {
+  const handleSelect = (val: number | string | null) => {
     onChange(val);
     setIsOpen(false);
     setSearch("");
@@ -109,7 +109,7 @@ const SearchableSelect = <T,>({
                   <div
                     key={itemValue}
                     className={`${styles.option} ${isSelected ? styles.optionSelected : ""}`}
-                    onClick={() => handleSelect(Number(itemValue))}
+                    onClick={() => handleSelect(itemValue)}
                   >
                     {getLabel(item)}
                   </div>

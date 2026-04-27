@@ -8,7 +8,7 @@ import AddEventButton from "@/components/ui/AddEventButton";
 import useScheduleActions from "@/hooks/actions/useScheduleActions";
 import type { ScheduleEvent } from "@/types/ScheduleEvent.types";
 import ScheduleFilters from "@/components/ui/ScheduleFilters";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import type { ScheduleFilterValues } from "@/types/ScheduleFilters.types";
 
 const Home = () => {
@@ -16,9 +16,28 @@ const Home = () => {
     groupId: null,
     professorId: null,
     roomId: null,
+    specialization: null,
+    year: null,
+    semester: null,
   });
 
   const { schedules, refetch } = useSchedules(filters);
+
+  const filteredSchedules = useMemo(() => {
+    let result = schedules;
+    if (filters.specialization) {
+      result = result.filter(
+        (s) => s.groupDTO.specialization === filters.specialization,
+      );
+    }
+    if (filters.year) {
+      result = result.filter((s) => s.groupDTO.year === filters.year);
+    }
+    if (filters.semester) {
+      result = result.filter((s) => s.groupDTO.semester === filters.semester);
+    }
+    return result;
+  }, [schedules, filters.specialization, filters.year]);
   const {
     state: {
       isModalOpen,
@@ -59,7 +78,7 @@ const Home = () => {
 
       <div className={styles.contentWrapper}>
         <Timetable
-          events={schedules}
+          events={filteredSchedules}
           handleOpenEdit={handleOpenEdit}
           handleOpenAddAtSlot={handleOpenAddAtSlot}
           handleDrop={handleDrop}

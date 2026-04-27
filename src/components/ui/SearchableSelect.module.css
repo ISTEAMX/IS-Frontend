@@ -58,7 +58,7 @@
   position: absolute;
   top: calc(100% + 4px);
   left: 0;
-  right: 0;
+  min-width: 220px;
   background: white;
   border: 1px solid var(--border-input);
   border-radius: var(--radius-md);
@@ -135,7 +135,7 @@
 @media (min-width: 768px) {
   .trigger {
     padding: var(--space-2-5);
-    width: auto;
+    width: 100%;
   }
 }
 

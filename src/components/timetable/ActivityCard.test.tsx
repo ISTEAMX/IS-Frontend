@@ -30,6 +30,7 @@ const baseMockEvent: ScheduleEvent = {
     identifier: "A1",
     specialization: "Informatics",
     year: 3,
+    semester: 1,
   },
   roomDTO: {
     id: 401,

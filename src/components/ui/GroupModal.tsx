@@ -14,6 +14,7 @@ const emptyGroup: GroupDTO = {
   identifier: "",
   specialization: "",
   year: 1,
+  semester: 1,
 };
 
 const GroupModal = ({
@@ -114,6 +115,22 @@ const GroupModal = ({
             {[1, 2, 3, 4, 5, 6].map((y) => (
               <option key={y} value={y}>
                 Anul {y}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className={styles.formField}>
+          <label htmlFor="group-semester">Semestru</label>
+          <select
+            id="group-semester"
+            className={styles.select}
+            value={formData.semester}
+            onChange={(e) => handleChange("semester", parseInt(e.target.value))}
+          >
+            {[1, 2].map((s) => (
+              <option key={s} value={s}>
+                Semestrul {s}
               </option>
             ))}
           </select>

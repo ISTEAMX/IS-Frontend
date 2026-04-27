@@ -7,8 +7,10 @@ import type { ScheduleFilterValues } from "@/types/ScheduleFilters.types";
 
 export const scheduleEventService = {
   get: async (filters: ScheduleFilterValues) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { specialization: _s, year: _y, semester: _sem, ...apiFilters } = filters;
     const cleanParams = Object.fromEntries(
-      Object.entries(filters).filter(([, v]) => v != null),
+      Object.entries(apiFilters).filter(([, v]) => v != null),
     );
 
     const response = await api.get<ScheduleEvent[]>("/schedule/user/filter", {

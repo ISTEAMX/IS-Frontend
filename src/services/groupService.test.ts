@@ -48,6 +48,7 @@ describe("groupService", () => {
         identifier: "C3",
         specialization: "IR",
         year: 1,
+        semester: 1,
       };
       vi.mocked(api.post).mockResolvedValue({ data: newGroup });
 
@@ -55,12 +56,14 @@ describe("groupService", () => {
         identifier: "C3",
         specialization: "IR",
         year: 1,
+        semester: 1,
       });
 
       expect(api.post).toHaveBeenCalledWith("/group/create", {
         identifier: "C3",
         specialization: "IR",
         year: 1,
+        semester: 1,
       });
       expect(result).toEqual(newGroup);
     });
@@ -74,6 +77,7 @@ describe("groupService", () => {
           identifier: "A1",
           specialization: "IR",
           year: 1,
+          semester: 1,
         }),
       ).rejects.toThrow("Group already exists");
     });
@@ -86,6 +90,7 @@ describe("groupService", () => {
         identifier: "A1_UPDATED",
         specialization: "IR",
         year: 1,
+        semester: 1,
       };
       vi.mocked(api.put).mockResolvedValue({ data: updatedGroup });
 
@@ -94,6 +99,7 @@ describe("groupService", () => {
         identifier: "A1_UPDATED",
         specialization: "IR",
         year: 1,
+        semester: 1,
       });
 
       expect(api.put).toHaveBeenCalledWith("/group/update", {
@@ -101,6 +107,7 @@ describe("groupService", () => {
         identifier: "A1_UPDATED",
         specialization: "IR",
         year: 1,
+        semester: 1,
       });
       expect(result).toEqual(updatedGroup);
     });
@@ -115,6 +122,7 @@ describe("groupService", () => {
           identifier: "X",
           specialization: "IR",
           year: 1,
+          semester: 1,
         }),
       ).rejects.toThrow("Group not found");
     });

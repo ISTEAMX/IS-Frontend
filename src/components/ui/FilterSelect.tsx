@@ -8,7 +8,7 @@ interface FilterSelectProps<T> {
   getValue: (item: T) => string | number;
   placeHolder: string;
   value?: string | number;
-  onChange: (value: number | null) => void;
+  onChange: (value: number | string | null) => void;
 }
 
 const FilterSelect = <T,>({

@@ -3,6 +3,7 @@ export interface Group {
   identifier: string;
   specialization: string;
   year: number;
+  semester: number;
 }
 
 export interface GroupDTO extends Omit<Group, "id"> {

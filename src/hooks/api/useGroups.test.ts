@@ -14,18 +14,21 @@ describe("useGroups", () => {
       identifier: "CTI-A1",
       specialization: "Computer Science",
       year: 1,
+      semester: 1,
     },
     {
       id: 2,
       identifier: "CTI-B2",
       specialization: "Computer Science",
       year: 2,
+      semester: 1,
     },
     {
       id: 3,
       identifier: "MTM-A1",
       specialization: "Mathematics",
       year: 1,
+      semester: 1,
     },
   ];
 
@@ -89,9 +92,9 @@ describe("useGroups", () => {
 
     it("should handle case-insensitive sorting", async () => {
       const mixedCaseGroups = [
-        { id: 1, identifier: "zeta", specialization: "CS", year: 1 },
-        { id: 2, identifier: "Alpha", specialization: "CS", year: 1 },
-        { id: 3, identifier: "Beta", specialization: "CS", year: 1 },
+        { id: 1, identifier: "zeta", specialization: "CS", year: 1, semester: 1 },
+        { id: 2, identifier: "Alpha", specialization: "CS", year: 1, semester: 1 },
+        { id: 3, identifier: "Beta", specialization: "CS", year: 1, semester: 1 },
       ];
 
       vi.mocked(groupService.getAll).mockResolvedValue(mixedCaseGroups);

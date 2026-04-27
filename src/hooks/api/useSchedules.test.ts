@@ -22,7 +22,7 @@ describe("useSchedules", () => {
         lastName: "Doe",
         department: "CS",
       },
-      groupDTO: { id: 1, identifier: "CTI-A1", specialization: "CS", year: 1 },
+      groupDTO: { id: 1, identifier: "CTI-A1", specialization: "CS", year: 1, semester: 1 },
       roomDTO: {
         id: 1,
         name: "Room A101",
@@ -48,7 +48,7 @@ describe("useSchedules", () => {
         lastName: "Smith",
         department: "CS",
       },
-      groupDTO: { id: 2, identifier: "CTI-B1", specialization: "CS", year: 1 },
+      groupDTO: { id: 2, identifier: "CTI-B1", specialization: "CS", year: 1, semester: 1 },
       roomDTO: {
         id: 2,
         name: "Room B201",

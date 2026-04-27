@@ -35,6 +35,15 @@ export const getColumns = (
     ),
   },
   {
+    accessorKey: "semester",
+    header: "Semestru",
+    cell: ({ row }) => (
+      <div>
+        <div className={styles.metaText}>{row.original.semester}</div>
+      </div>
+    ),
+  },
+  {
     id: "actions",
     header: "Acțiuni",
     enableSorting: false,

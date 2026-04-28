@@ -32,7 +32,7 @@ describe("generateSortedTimeSlots", () => {
       id: 1,
       subjectDTO: { id: 1, name: "Math", activityType: "Curs" },
       professorDTO: { id: 1, firstName: "John", lastName: "Doe" },
-      groupDTO: { id: 1, identifier: "A1" },
+      groups: [{ id: 1, identifier: "A1" }],
       roomDTO: { id: 1, name: "A101", capacity: 30 },
       scheduleDay: "Luni",
       startingHour: 10,

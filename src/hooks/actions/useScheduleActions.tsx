@@ -129,7 +129,7 @@ const useScheduleActions = (refetch: () => void) => {
         id: event.id,
         subjectId: event.subjectDTO.id,
         professorId: event.professorDTO.id,
-        groupId: event.groupDTO.id,
+        groupIds: event.groups.map((g) => g.id),
         roomId: event.roomDTO.id,
         scheduleDay: newDay,
         startingHour: newStartingHour,

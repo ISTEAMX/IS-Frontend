@@ -85,7 +85,7 @@ const ActivityCard = ({ event, handleClick }: ActivityCardProps) => {
 
       <div className={styles.detailsRow}>
         <FiTag className={styles.icon} />
-        <span>{event.groupDTO.identifier}</span>
+        <span>{event.groups?.map((g) => g.identifier).join(", ")}</span>
       </div>
 
       <div className={styles.detailsRow}>

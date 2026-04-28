@@ -25,13 +25,13 @@ const baseMockEvent: ScheduleEvent = {
     lastName: "Doe",
     department: "Computer Science",
   },
-  groupDTO: {
+  groups: [{
     id: 301,
     identifier: "A1",
     specialization: "Informatics",
     year: 3,
     semester: 1,
-  },
+  }],
   roomDTO: {
     id: 401,
     name: "Room 101",

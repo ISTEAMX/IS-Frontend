@@ -3,7 +3,7 @@ import type {
   ScheduleEvent,
   ScheduleEventDTO,
 } from "@/types/ScheduleEvent.types";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import BaseModal from "./BaseModal";
 import styles from "./ModalForm.module.css";
 import {
@@ -17,6 +17,7 @@ import useSubjects from "@/hooks/api/useSubjects";
 import useGroups from "@/hooks/api/useGroups";
 import useTeachers from "@/hooks/api/useTeachers";
 import SearchableSelect from "./SearchableSelect";
+import MultiSearchableSelect from "./MultiSearchableSelect";
 import { FiAlertCircle, FiMapPin, FiTag, FiTrash2 } from "react-icons/fi";
 import {
   BiBook,
@@ -58,7 +59,7 @@ const ScheduleEventModal = ({
       ? professorIdFromStore || 0
       : (data as ScheduleEvent)?.professorDTO?.id || 0,
     roomId: (data as ScheduleEvent)?.roomDTO?.id || 0,
-    groupId: (data as ScheduleEvent)?.groupDTO?.id || 0,
+    groupIds: (data as ScheduleEvent)?.groups?.map((g) => g.id) || [],
     scheduleDay: data?.scheduleDay || "Luni",
     startingHour: data?.startingHour || 8,
     endingHour: data?.endingHour || 10,
@@ -76,6 +77,13 @@ const ScheduleEventModal = ({
     mapInitialData(initialData),
   );
 
+  // Determine if the selected subject is a "Curs"
+  const selectedSubject = useMemo(
+    () => subjects.find((s) => s.id === formData.subjectId),
+    [subjects, formData.subjectId],
+  );
+  const isCurs = selectedSubject?.activityType === "Curs";
+
   const startHourOptions = HOURS.slice(0, -1);
   const endHourOptions = HOURS.filter(
     (h) =>
@@ -83,10 +91,11 @@ const ScheduleEventModal = ({
   );
 
   const duration = (formData.endingHour || 0) - (formData.startingHour || 0);
+  const hasGroup = formData.groupIds && formData.groupIds.length > 0;
   const isValid =
     formData.subjectId &&
     formData.roomId &&
-    formData.groupId &&
+    hasGroup &&
     formData.professorId &&
     duration > 0 &&
     duration <= 2;
@@ -202,9 +211,21 @@ const ScheduleEventModal = ({
             getValue={(s) => s.id}
             placeholder="Selectează Disciplina"
             value={formData.subjectId || undefined}
-            onChange={(val) =>
-              setFormData({ ...formData, subjectId: val ? Number(val) : 0 })
-            }
+            onChange={(val) => {
+              const newSubjectId = val ? Number(val) : 0;
+              const newSubject = subjects.find((s) => s.id === newSubjectId);
+              const switchingToCurs = newSubject?.activityType === "Curs";
+              const switchingFromCurs = isCurs && !switchingToCurs;
+
+              setFormData({
+                ...formData,
+                subjectId: newSubjectId,
+                // Reset group selection when switching between Curs and non-Curs
+                ...(switchingFromCurs || (switchingToCurs && !isCurs)
+                  ? { groupIds: [] }
+                  : {}),
+              });
+            }}
           />
         </div>
 
@@ -247,18 +268,37 @@ const ScheduleEventModal = ({
           <div className={styles.formField}>
             <label className={styles.label}>
               <FiTag className={styles.icon} />
-              Grupă
+              {isCurs ? "Grupe" : "Grupă"}
             </label>
-            <SearchableSelect
-              options={groups}
-              getLabel={(g) => g.identifier}
-              getValue={(g) => g.id}
-              placeholder="Selectează Grupa"
-              value={formData.groupId || undefined}
-              onChange={(val) =>
-                setFormData({ ...formData, groupId: val ? Number(val) : 0 })
-              }
-            />
+            {isCurs ? (
+              <MultiSearchableSelect
+                options={groups}
+                getLabel={(g) => g.identifier}
+                getValue={(g) => g.id}
+                placeholder="Selectează Grupele"
+                values={formData.groupIds || []}
+                onChange={(vals) =>
+                  setFormData({
+                    ...formData,
+                    groupIds: vals.map(Number),
+                  })
+                }
+              />
+            ) : (
+              <SearchableSelect
+                options={groups}
+                getLabel={(g) => g.identifier}
+                getValue={(g) => g.id}
+                placeholder="Selectează Grupa"
+                value={formData.groupIds?.[0] || undefined}
+                onChange={(val) =>
+                  setFormData({
+                    ...formData,
+                    groupIds: val ? [Number(val)] : [],
+                  })
+                }
+              />
+            )}
           </div>
         </div>
 

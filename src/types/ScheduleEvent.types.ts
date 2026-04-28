@@ -16,7 +16,7 @@ export interface ScheduleEvent {
   id: number;
   subjectDTO: Subject;
   professorDTO: Teacher;
-  groupDTO: Group;
+  groups: Group[];
   roomDTO: Room;
   scheduleDay: DayOfWeek;
   startingHour: number;
@@ -28,7 +28,7 @@ export interface ScheduleEventDTO {
   id?: number;
   subjectId: number;
   professorId: number;
-  groupId: number;
+  groupIds: number[];
   roomId: number;
   scheduleDay: DayOfWeek;
   startingHour: number;

@@ -14,32 +14,41 @@ import type { ScheduleFilterValues } from "@/types/ScheduleFilters.types";
 import { exportSchedulePdf } from "@/utils/exportSchedulePdf";
 
 const Home = () => {
-  const [filters, setFilters] = useState<ScheduleFilterValues>({
+  const { isAuthenticated, userData } = useAuthStore();
+
+  const isProfessor =
+    isAuthenticated && userData?.role === "PROFESSOR" && !!userData.professorId;
+
+  const [filters, setFilters] = useState<ScheduleFilterValues>(() => ({
     groupId: null,
-    professorId: null,
+    professorId: isProfessor ? userData!.professorId : null,
     roomId: null,
     specialization: null,
     year: null,
     semester: null,
-  });
+  }));
 
   const { schedules, refetch } = useSchedules(filters);
 
   const filteredSchedules = useMemo(() => {
     let result = schedules;
     if (filters.specialization) {
-      result = result.filter(
-        (s) => s.groupDTO.specialization === filters.specialization,
+      result = result.filter((s) =>
+        s.groups?.some((g) => g.specialization === filters.specialization),
       );
     }
     if (filters.year) {
-      result = result.filter((s) => s.groupDTO.year === filters.year);
+      result = result.filter((s) =>
+        s.groups?.some((g) => g.year === filters.year),
+      );
     }
     if (filters.semester) {
-      result = result.filter((s) => s.groupDTO.semester === filters.semester);
+      result = result.filter((s) =>
+        s.groups?.some((g) => g.semester === filters.semester),
+      );
     }
     return result;
-  }, [schedules, filters.specialization, filters.year]);
+  }, [schedules, filters.specialization, filters.year, filters.semester]);
   const {
     state: {
       isModalOpen,
@@ -62,7 +71,6 @@ const Home = () => {
     },
   } = useScheduleActions(refetch);
 
-  const { isAuthenticated, userData } = useAuthStore();
 
   const buildPdfTitle = useCallback(() => {
     const parts: string[] = ["Orar"];

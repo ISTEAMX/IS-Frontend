@@ -16,6 +16,7 @@
   align-items: flex-start;
   flex-wrap: wrap;
   width: 100%;
+  justify-content: center;
 }
 
 .filterField {

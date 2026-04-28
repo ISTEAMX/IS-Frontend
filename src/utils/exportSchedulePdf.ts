@@ -181,6 +181,7 @@ export const exportSchedulePdf = (
   });
 
   // Legend at bottom
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const finalY = (doc as any).lastAutoTable?.finalY || 180;
   const legendY = Math.min(finalY + 8, doc.internal.pageSize.getHeight() - 12);
 

@@ -5,11 +5,13 @@ import useSchedules from "@/hooks/api/useSchedules";
 import ConfirmModal from "@/components/ui/ConfirmModal";
 import { useAuthStore } from "@/store/useAuthStore";
 import AddEventButton from "@/components/ui/AddEventButton";
+import ExportPdfButton from "@/components/ui/ExportPdfButton";
 import useScheduleActions from "@/hooks/actions/useScheduleActions";
 import type { ScheduleEvent } from "@/types/ScheduleEvent.types";
 import ScheduleFilters from "@/components/ui/ScheduleFilters";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import type { ScheduleFilterValues } from "@/types/ScheduleFilters.types";
+import { exportSchedulePdf } from "@/utils/exportSchedulePdf";
 
 const Home = () => {
   const [filters, setFilters] = useState<ScheduleFilterValues>({
@@ -62,6 +64,18 @@ const Home = () => {
 
   const { isAuthenticated, userData } = useAuthStore();
 
+  const buildPdfTitle = useCallback(() => {
+    const parts: string[] = ["Orar"];
+    if (filters.specialization) parts.push(filters.specialization);
+    if (filters.year) parts.push(`Anul ${filters.year}`);
+    if (filters.semester) parts.push(`Sem. ${filters.semester}`);
+    return parts.join(" - ");
+  }, [filters.specialization, filters.year, filters.semester]);
+
+  const handleExportPdf = useCallback(() => {
+    exportSchedulePdf(filteredSchedules, buildPdfTitle());
+  }, [filteredSchedules, buildPdfTitle]);
+
   return (
     <>
       <ScheduleFilters
@@ -69,12 +83,7 @@ const Home = () => {
         onFilterChange={(key, value) =>
           setFilters((prev) => ({ ...prev, [key]: value }))
         }
-      >
-        {isAuthenticated &&
-          (userData?.role === "ADMIN" || userData?.role === "PROFESSOR") && (
-            <AddEventButton handleClick={handleOpenAdd} />
-          )}
-      </ScheduleFilters>
+      />
 
       <div className={styles.contentWrapper}>
         <Timetable
@@ -83,6 +92,14 @@ const Home = () => {
           handleOpenAddAtSlot={handleOpenAddAtSlot}
           handleDrop={handleDrop}
         />
+
+        <div className={styles.actionsWrapper}>
+          <ExportPdfButton handleClick={handleExportPdf} />
+          {isAuthenticated &&
+            (userData?.role === "ADMIN" || userData?.role === "PROFESSOR") && (
+              <AddEventButton handleClick={handleOpenAdd} />
+            )}
+        </div>
 
         {isModalOpen && (
           <ScheduleEventModal

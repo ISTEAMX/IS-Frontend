@@ -1,0 +1,33 @@
+.exportButton {
+  background-color: var(--bg-secondary);
+  color: var(--text-main);
+  border: 1px solid var(--border-input);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-xs);
+  font-weight: var(--font-medium);
+  transition: all var(--transition-fast) ease;
+  width: 100%;
+  min-height: 40px;
+}
+
+.exportButton:hover {
+  background-color: var(--border-light);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+@media (min-width: 768px) {
+  .exportButton {
+    width: auto;
+    padding: var(--space-2) var(--space-4);
+    font-size: var(--text-sm);
+    min-height: auto;
+  }
+}
+

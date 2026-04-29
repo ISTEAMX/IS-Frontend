@@ -27,3 +27,5 @@ export const EVENT_FREQUENCY_LABELS: Record<
   PARA: "Pară",
   INPARA: "Impară",
 };
+
+export const EVENT_PENDING_STATUS = ["PENDING", "APPROVED", "DENIED"] as const;

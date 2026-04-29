@@ -1,6 +1,6 @@
 import type { ScheduleEvent } from "@/types/ScheduleEvent.types";
 import styles from "./ActivityCard.module.css";
-import { FiMapPin, FiTag, FiUser } from "react-icons/fi";
+import { FiClock, FiMapPin, FiTag, FiUser } from "react-icons/fi";
 import { useAuthStore } from "@/store/useAuthStore";
 import React, { useMemo } from "react";
 
@@ -53,9 +53,11 @@ const ActivityCard = ({ event, handleClick }: ActivityCardProps) => {
     }
   };
 
+  const isPending = event.pending === "PENDING";
+
   return (
     <div
-      className={`${styles.card} ${getCardStyle(event.subjectDTO.activityType)}`}
+      className={`${styles.card} ${getCardStyle(event.subjectDTO.activityType)} ${isPending ? styles.pendingBorder : ""}`}
       onClick={handleInternalClick}
       draggable={canEdit}
       onDragStart={handleDragStart}
@@ -92,6 +94,13 @@ const ActivityCard = ({ event, handleClick }: ActivityCardProps) => {
         <FiMapPin className={styles.icon} />
         <span>{event.roomDTO.name}</span>
       </div>
+
+      {isPending && (
+        <div className={styles.pendingBadge}>
+          <FiClock size={10} />
+          <span>{event.pending}</span>
+        </div>
+      )}
     </div>
   );
 };

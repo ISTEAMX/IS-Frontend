@@ -68,9 +68,10 @@ const Home = () => {
       handleDrop,
       setIsModalOpen,
       setScheduleToDelete,
+      handleApprove,
+      handleReject,
     },
   } = useScheduleActions(refetch);
-
 
   const buildPdfTitle = useCallback(() => {
     const parts: string[] = ["Orar"];
@@ -119,6 +120,9 @@ const Home = () => {
               setIsModalOpen(false);
               if (scheduleToEdit) handleOpenConfirmDelete(scheduleToEdit);
             }}
+            onApprove={handleApprove}
+            onReject={handleReject}
+            isLoading={isActionLoading}
             initialData={scheduleToEdit || (initialModalData as ScheduleEvent)}
             conflict={conflict}
           />

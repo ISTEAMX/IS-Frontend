@@ -32,6 +32,36 @@ const useScheduleActions = (refetch: () => void) => {
     setIsModalOpen(true);
   };
 
+  const handleApprove = async (id: number) => {
+    try {
+      setIsActionLoading(true);
+      await scheduleEventService.approve(id);
+      toast.success("Eveniment aprobat");
+      setIsModalOpen(false);
+      refetch();
+    } catch (err) {
+      console.log(err);
+      toast.error("Eroare la aprobare");
+    } finally {
+      setIsActionLoading(false);
+    }
+  };
+
+  const handleReject = async (id: number) => {
+    try {
+      setIsActionLoading(true);
+      await scheduleEventService.reject(id);
+      toast.success("Eveniment respins");
+      setIsModalOpen(false);
+      refetch();
+    } catch (err) {
+      console.log(err);
+      toast.error("Eroare la respingere");
+    } finally {
+      setIsActionLoading(false);
+    }
+  };
+
   const handleOpenConfirmDelete = (event: ScheduleEvent) => {
     setScheduleToDelete(event);
   };
@@ -172,6 +202,8 @@ const useScheduleActions = (refetch: () => void) => {
       handleOpenAdd,
       handleOpenAddAtSlot,
       handleOpenEdit,
+      handleApprove,
+      handleReject,
       handleOpenConfirmDelete,
       handleConfirmDelete,
       handleSave,

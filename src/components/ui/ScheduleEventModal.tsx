@@ -18,7 +18,14 @@ import useGroups from "@/hooks/api/useGroups";
 import useTeachers from "@/hooks/api/useTeachers";
 import SearchableSelect from "./SearchableSelect";
 import MultiSearchableSelect from "./MultiSearchableSelect";
-import { FiAlertCircle, FiMapPin, FiTag, FiTrash2 } from "react-icons/fi";
+import {
+  FiAlertCircle,
+  FiCheck,
+  FiMapPin,
+  FiTag,
+  FiTrash2,
+  FiX,
+} from "react-icons/fi";
 import {
   BiBook,
   BiCalendar,
@@ -34,8 +41,11 @@ interface ScheduleEventModalProps {
   onClose: () => void;
   onSave: (data: ScheduleEventDTO) => void;
   onDelete?: (id: number) => void;
+  onApprove?: (id: number) => void;
+  onReject?: (id: number) => void;
   initialData?: ScheduleEvent | null;
   conflict?: string | null;
+  isLoading?: boolean;
 }
 
 const ScheduleEventModal = ({
@@ -43,12 +53,17 @@ const ScheduleEventModal = ({
   onClose,
   onSave,
   onDelete,
+  onApprove,
+  onReject,
   initialData,
   conflict,
+  isLoading = false,
 }: ScheduleEventModalProps) => {
   const user = useAuthStore((state) => state.userData);
   const isProfessor = user?.role === "PROFESSOR";
+  const isAdmin = user?.role === "ADMIN";
   const professorIdFromStore = user?.professorId;
+  const isPending = initialData?.pending === "PENDING";
 
   const mapInitialData = (
     data: ScheduleEvent | Partial<ScheduleEvent> | null | undefined,
@@ -118,7 +133,7 @@ const ScheduleEventModal = ({
       onClose={onClose}
       onSubmit={() => onSave(formData)}
       submitLabel={isEditing ? "Editează" : "Adaugă"}
-      disabled={!isValid}
+      disabled={!isValid || isLoading}
     >
       <div className={styles.formContainer}>
         <div className={styles.formField}>
@@ -325,19 +340,44 @@ const ScheduleEventModal = ({
           </select>
         </div>
 
-        {initialData?.id && onDelete && (
-          <div className={styles.deleteSection}>
-            <button
-              type="button"
-              className={styles.deleteButton}
-              onClick={() => onDelete(initialData.id!)}
-            >
-              <FiTrash2 /> Șterge Activitatea
-            </button>
+        {initialData?.id && (
+          <div className={styles.actionSection}>
+            {isAdmin && isPending && (
+              <div className={styles.pendingActions}>
+                <button
+                  type="button"
+                  className={styles.approveButton}
+                  onClick={() => onApprove?.(initialData.id)}
+                  disabled={isLoading}
+                >
+                  <FiCheck /> Aprobă
+                </button>
+                <button
+                  type="button"
+                  className={styles.denyButton}
+                  onClick={() => onReject?.(initialData.id)}
+                  disabled={isLoading}
+                >
+                  <FiX /> Respinge
+                </button>
+              </div>
+            )}
 
-            <p className={styles.deleteText}>
-              Această acțiune este ireversibilă.
-            </p>
+            {onDelete && (!isPending || isAdmin || isProfessor) && (
+              <div className={styles.deleteSection}>
+                <button
+                  type="button"
+                  className={styles.deleteButton}
+                  onClick={() => onDelete?.(initialData.id!)}
+                  disabled={isLoading}
+                >
+                  <FiTrash2 /> Șterge Activitatea
+                </button>
+                <p className={styles.deleteText}>
+                  Această acțiune este ireversibilă.
+                </p>
+              </div>
+            )}
           </div>
         )}
       </div>

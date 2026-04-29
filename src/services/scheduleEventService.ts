@@ -41,4 +41,14 @@ export const scheduleEventService = {
     const response = await api.delete(`/schedule/delete/${id}`);
     return response.data;
   },
+
+  approve: async (id: number) => {
+    const response = await api.patch(`/schedule/approve/${id}`);
+    return response.data;
+  },
+
+  reject: async (id: number) => {
+    const response = await api.delete(`/schedule/delete/${id}`);
+    return response.data;
+  },
 };

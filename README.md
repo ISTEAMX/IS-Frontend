@@ -12,8 +12,8 @@ A modern, responsive administrative interface for educational resource managemen
 ## 🚀 Quick Start
 
 ### Prerequisites
-- [Node.js](https://nodejs.org/) (v18+ recommended)
-- `npm` or `yarn`
+- [Node.js](https://nodejs.org/) (v22+ recommended)
+- `npm`
 
 ### Installation
 ```bash
@@ -30,7 +30,7 @@ npm install
 # Start the development server
 npm run dev
 ```
-The application will be available at [http://localhost:5173](http://localhost:5173).
+The application will be available at [http://localhost:3000](http://localhost:3000).
 
 ---
 

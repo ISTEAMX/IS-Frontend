@@ -21,8 +21,8 @@ const ChangePassword = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (newPassword.length < 6) {
-      toast.error("Parola nouă trebuie să aibă cel puțin 6 caractere");
+    if (newPassword.length < 8) {
+      toast.error("Parola nouă trebuie să aibă cel puțin 8 caractere");
       return;
     }
 

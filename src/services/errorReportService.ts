@@ -1,8 +1,4 @@
-import axios from "axios";
-
-const baseURL = import.meta.env.VITE_API_URL
-  ? `${import.meta.env.VITE_API_URL}/api`
-  : "/api";
+import api from "@/api/axiosInstance";
 
 export function reportError(error: unknown, source = "unknown") {
   try {
@@ -11,8 +7,8 @@ export function reportError(error: unknown, source = "unknown") {
     const stack =
       error instanceof Error ? error.stack ?? "" : "";
 
-    axios.post(
-      `${baseURL}/monitoring/error`,
+    api.post(
+      "/monitoring/error",
       {
         message,
         stack: stack.substring(0, 2000),
@@ -24,7 +20,3 @@ export function reportError(error: unknown, source = "unknown") {
     void 0;
   }
 }
-
-
-
-

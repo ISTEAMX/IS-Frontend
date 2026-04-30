@@ -36,11 +36,13 @@ const Login = () => {
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
         const errorData = err.response?.data;
-
-        console.error("Eroare la autentificare", err);
-        toast.error(errorData);
+        toast.error(
+          typeof errorData === "string"
+            ? errorData
+            : "Autentificare eșuată. Verificați datele.",
+        );
       } else {
-        console.error("A apărut o eroare", err);
+        toast.error("A apărut o eroare neașteptată.");
       }
     } finally {
       setIsLoading(false);
@@ -86,11 +88,6 @@ const Login = () => {
               placeholder="Parola ta..."
               icon={<FiLock />}
               required
-              rightAction={
-                <a href="#" className={styles.forgotPassword}>
-                  Ai uitat parola?
-                </a>
-              }
             />
 
             <button

@@ -34,6 +34,11 @@ const Register = () => {
       return;
     }
 
+    if (password.length < 8) {
+      toast.error("Parola trebuie să aibă cel puțin 8 caractere.");
+      return;
+    }
+
     setIsLoading(true);
 
     const payload: RegisterDTO = {
@@ -53,8 +58,7 @@ const Register = () => {
         `${role === "ADMIN" ? "Administrator" : "Profesor"} înregistrat cu succes.`,
       );
       navigate("/admin/teachers");
-    } catch (err) {
-      console.error("Eroare la înregistrare", err);
+    } catch {
       toast.error(
         "A apărut o eroare. Verificați datele sau dacă email-ul există deja.",
       );

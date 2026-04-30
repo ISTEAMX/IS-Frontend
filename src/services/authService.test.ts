@@ -120,4 +120,26 @@ describe("authService", () => {
       );
     });
   });
+
+  describe("changePassword", () => {
+    it("should send change password request", async () => {
+      vi.mocked(api.put).mockResolvedValue({ data: {} });
+
+      await authService.changePassword("oldPassword123", "newPassword456");
+
+      expect(api.put).toHaveBeenCalledWith("/user/change-password", {
+        currentPassword: "oldPassword123",
+        newPassword: "newPassword456",
+      });
+    });
+
+    it("should handle incorrect current password error", async () => {
+      const error = new Error("Current password is incorrect");
+      vi.mocked(api.put).mockRejectedValue(error);
+
+      await expect(
+        authService.changePassword("wrongPassword", "newPassword456"),
+      ).rejects.toThrow("Current password is incorrect");
+    });
+  });
 });

@@ -23,18 +23,19 @@ describe("subjectService", () => {
           activityType: "Lab",
         },
       ];
-      vi.mocked(api.get).mockResolvedValue({ data: mockSubjects });
+      vi.mocked(api.get).mockResolvedValue({ data: { content: mockSubjects, totalElements: 2, totalPages: 1 } });
 
       const result = await subjectService.getAll();
 
       expect(api.get).toHaveBeenCalledWith("/subject/user", {
         noAuth: true,
+        params: { size: 200 },
       });
       expect(result).toEqual(mockSubjects);
     });
 
     it("should handle empty subjects list", async () => {
-      vi.mocked(api.get).mockResolvedValue({ data: [] });
+      vi.mocked(api.get).mockResolvedValue({ data: { content: [], totalElements: 0, totalPages: 0 } });
 
       const result = await subjectService.getAll();
 

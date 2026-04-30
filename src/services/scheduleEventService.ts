@@ -4,6 +4,7 @@ import type {
   ScheduleEventDTO,
 } from "@/types/ScheduleEvent.types";
 import type { ScheduleFilterValues } from "@/types/ScheduleFilters.types";
+import type { PageResponse } from "@/types/Api.types";
 
 /**
  * Ensures startingHour and endingHour are actual numbers.
@@ -25,18 +26,19 @@ export const scheduleEventService = {
       Object.entries(apiFilters).filter(([, v]) => v != null),
     );
 
-    const response = await api.get<ScheduleEvent[]>("/schedule/user/filter", {
-      params: cleanParams,
+    const response = await api.get<PageResponse<ScheduleEvent>>("/schedule/user/filter", {
+      params: { ...cleanParams, size: 200 },
       noAuth: true,
     } as CustomConfig);
-    return response.data.map(normalizeEvent);
+    return response.data.content.map(normalizeEvent);
   },
 
   getAll: async () => {
-    const response = await api.get<ScheduleEvent[]>("/schedule/user", {
+    const response = await api.get<PageResponse<ScheduleEvent>>("/schedule/user", {
       noAuth: true,
+      params: { size: 200 },
     } as CustomConfig);
-    return response.data.map(normalizeEvent);
+    return response.data.content.map(normalizeEvent);
   },
 
   create: async (data: ScheduleEventDTO) => {

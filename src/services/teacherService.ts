@@ -1,12 +1,14 @@
 import api, { type CustomConfig } from "@/api/axiosInstance";
 import type { Teacher, TeacherDTO } from "@/types/Teacher.types";
+import type { PageResponse } from "@/types/Api.types";
 
 export const teacherService = {
   getAll: async () => {
-    const response = await api.get<Teacher[]>("/professor/user", {
+    const response = await api.get<PageResponse<Teacher>>("/professor/user", {
       noAuth: true,
+      params: { size: 200 },
     } as CustomConfig);
-    return response.data;
+    return response.data.content;
   },
 
   update: async (data: TeacherDTO) => {

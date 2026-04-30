@@ -25,18 +25,19 @@ describe("teacherService", () => {
           department: "Mathematics",
         },
       ];
-      vi.mocked(api.get).mockResolvedValue({ data: mockTeachers });
+      vi.mocked(api.get).mockResolvedValue({ data: { content: mockTeachers, totalElements: 2, totalPages: 1 } });
 
       const result = await teacherService.getAll();
 
       expect(api.get).toHaveBeenCalledWith("/professor/user", {
         noAuth: true,
+        params: { size: 200 },
       });
       expect(result).toEqual(mockTeachers);
     });
 
     it("should handle empty teachers list", async () => {
-      vi.mocked(api.get).mockResolvedValue({ data: [] });
+      vi.mocked(api.get).mockResolvedValue({ data: { content: [], totalElements: 0, totalPages: 0 } });
 
       const result = await teacherService.getAll();
 

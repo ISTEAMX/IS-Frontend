@@ -15,18 +15,19 @@ describe("groupService", () => {
         { id: 1, identifier: "A1" },
         { id: 2, identifier: "B2" },
       ];
-      vi.mocked(api.get).mockResolvedValue({ data: mockGroups });
+      vi.mocked(api.get).mockResolvedValue({ data: { content: mockGroups, totalElements: 2, totalPages: 1 } });
 
       const result = await groupService.getAll();
 
       expect(api.get).toHaveBeenCalledWith("/group/user/groups", {
         noAuth: true,
+        params: { size: 200 },
       });
       expect(result).toEqual(mockGroups);
     });
 
     it("should handle empty groups list", async () => {
-      vi.mocked(api.get).mockResolvedValue({ data: [] });
+      vi.mocked(api.get).mockResolvedValue({ data: { content: [], totalElements: 0, totalPages: 0 } });
 
       const result = await groupService.getAll();
 

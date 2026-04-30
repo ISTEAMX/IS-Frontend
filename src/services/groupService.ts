@@ -1,12 +1,14 @@
 import api, { type CustomConfig } from "@/api/axiosInstance";
 import type { Group, GroupDTO } from "@/types/Group.types";
+import type { PageResponse } from "@/types/Api.types";
 
 export const groupService = {
   getAll: async () => {
-    const response = await api.get<Group[]>("/group/user/groups", {
+    const response = await api.get<PageResponse<Group>>("/group/user/groups", {
       noAuth: true,
+      params: { size: 200 },
     } as CustomConfig);
-    return response.data;
+    return response.data.content;
   },
 
   create: async (data: GroupDTO) => {

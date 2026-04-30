@@ -1,12 +1,14 @@
 import api, { type CustomConfig } from "@/api/axiosInstance";
 import type { Subject, SubjectDTO } from "@/types/Subject.types";
+import type { PageResponse } from "@/types/Api.types";
 
 export const subjectService = {
   getAll: async () => {
-    const response = await api.get<Subject[]>("/subject/user", {
+    const response = await api.get<PageResponse<Subject>>("/subject/user", {
       noAuth: true,
+      params: { size: 200 },
     } as CustomConfig);
-    return response.data;
+    return response.data.content;
   },
 
   create: async (data: SubjectDTO) => {

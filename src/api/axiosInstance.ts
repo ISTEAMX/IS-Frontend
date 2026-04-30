@@ -27,7 +27,14 @@ api.interceptors.request.use((config: CustomConfig) => {
 });
 
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    // Unwrap ApiResponseWrapper envelope: { data, message, status }
+    // After unwrapping, response.data contains the actual payload
+    if (response.data && typeof response.data === "object" && "data" in response.data && "message" in response.data && "status" in response.data) {
+      response.data = response.data.data;
+    }
+    return response;
+  },
   (error) => {
     if (error.response?.status === 401) {
       useAuthStore.getState().logout();

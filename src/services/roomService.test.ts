@@ -27,18 +27,19 @@ describe("roomService", () => {
           capacity: 200,
         },
       ];
-      vi.mocked(api.get).mockResolvedValue({ data: mockRooms });
+      vi.mocked(api.get).mockResolvedValue({ data: { content: mockRooms, totalElements: 2, totalPages: 1 } });
 
       const result = await roomService.getAll();
 
       expect(api.get).toHaveBeenCalledWith("/room/user/rooms", {
         noAuth: true,
+        params: { size: 200 },
       });
       expect(result).toEqual(mockRooms);
     });
 
     it("should handle empty rooms list", async () => {
-      vi.mocked(api.get).mockResolvedValue({ data: [] });
+      vi.mocked(api.get).mockResolvedValue({ data: { content: [], totalElements: 0, totalPages: 0 } });
 
       const result = await roomService.getAll();
 

@@ -57,18 +57,19 @@ describe("scheduleEventService", () => {
           frequency: "PARA",
         },
       ];
-      vi.mocked(api.get).mockResolvedValue({ data: mockEvents });
+      vi.mocked(api.get).mockResolvedValue({ data: { content: mockEvents, totalElements: 2, totalPages: 1 } });
 
       const result = await scheduleEventService.getAll();
 
       expect(api.get).toHaveBeenCalledWith("/schedule/user", {
         noAuth: true,
+        params: { size: 200 },
       });
       expect(result).toEqual(mockEvents);
     });
 
     it("should handle empty schedule events list", async () => {
-      vi.mocked(api.get).mockResolvedValue({ data: [] });
+      vi.mocked(api.get).mockResolvedValue({ data: { content: [], totalElements: 0, totalPages: 0 } });
 
       const result = await scheduleEventService.getAll();
 

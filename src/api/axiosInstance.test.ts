@@ -1,5 +1,4 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import axios from "axios";
 
 // Mock modules before import
 vi.mock("@/store/useAuthStore", () => ({
@@ -16,8 +15,6 @@ vi.mock("@/services/errorReportService", () => ({
 }));
 
 import api from "./axiosInstance";
-import { useAuthStore } from "@/store/useAuthStore";
-import { reportError } from "@/services/errorReportService";
 
 describe("axiosInstance", () => {
   beforeEach(() => {

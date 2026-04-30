@@ -5,6 +5,18 @@ import type {
 } from "@/types/ScheduleEvent.types";
 import type { ScheduleFilterValues } from "@/types/ScheduleFilters.types";
 
+/**
+ * Ensures startingHour and endingHour are actual numbers.
+ * The backend sends them as strings (e.g. "8"), but the frontend types expect numbers.
+ */
+function normalizeEvent(event: ScheduleEvent): ScheduleEvent {
+  return {
+    ...event,
+    startingHour: Number(event.startingHour),
+    endingHour: Number(event.endingHour),
+  };
+}
+
 export const scheduleEventService = {
   get: async (filters: ScheduleFilterValues) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -17,14 +29,14 @@ export const scheduleEventService = {
       params: cleanParams,
       noAuth: true,
     } as CustomConfig);
-    return response.data;
+    return response.data.map(normalizeEvent);
   },
 
   getAll: async () => {
     const response = await api.get<ScheduleEvent[]>("/schedule/user", {
       noAuth: true,
     } as CustomConfig);
-    return response.data;
+    return response.data.map(normalizeEvent);
   },
 
   create: async (data: ScheduleEventDTO) => {

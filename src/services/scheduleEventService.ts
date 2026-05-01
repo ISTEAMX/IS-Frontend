@@ -30,7 +30,7 @@ export const scheduleEventService = {
       params: { ...cleanParams, size: 200 },
       noAuth: true,
     } as CustomConfig);
-    return response.data.content.map(normalizeEvent);
+    return (response.data?.content ?? []).map(normalizeEvent);
   },
 
   getAll: async () => {
@@ -38,7 +38,7 @@ export const scheduleEventService = {
       noAuth: true,
       params: { size: 200 },
     } as CustomConfig);
-    return response.data.content.map(normalizeEvent);
+    return (response.data?.content ?? []).map(normalizeEvent);
   },
 
   create: async (data: ScheduleEventDTO) => {

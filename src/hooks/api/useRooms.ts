@@ -17,7 +17,7 @@ const useRooms = (sortOrder: SortOrder = "asc") => {
 
     try {
       const data = await roomService.getAll();
-      setRooms(data);
+      setRooms(Array.isArray(data) ? data : []);
     } catch (err) {
       let message = "Nu s-au putut încărca sălile.";
       if (axios.isAxiosError(err)) {

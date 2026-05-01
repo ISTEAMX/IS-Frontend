@@ -8,7 +8,7 @@ export const teacherService = {
       noAuth: true,
       params: { size: 200 },
     } as CustomConfig);
-    return response.data.content;
+    return response.data?.content ?? [];
   },
 
   update: async (data: TeacherDTO) => {

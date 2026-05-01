@@ -2,6 +2,8 @@ import { Toaster } from "react-hot-toast";
 import { Component, type ReactNode, type ErrorInfo } from "react";
 import { reportError } from "./services/errorReportService";
 import AppRouter from "./routes/AppRouter";
+import { useBackendHealth } from "./hooks/useBackendHealth";
+import OfflinePage from "./pages/offline/OfflinePage";
 
 class ErrorBoundary extends Component<{ children: ReactNode }, { hasError: boolean }> {
   state = { hasError: false };
@@ -29,6 +31,12 @@ class ErrorBoundary extends Component<{ children: ReactNode }, { hasError: boole
 }
 
 function App() {
+  const { isBackendUp, checking, retry } = useBackendHealth();
+
+  if (checking) return null; // brief initial check
+
+  if (!isBackendUp) return <OfflinePage onRetry={retry} />;
+
   return (
     <ErrorBoundary>
       <Toaster />

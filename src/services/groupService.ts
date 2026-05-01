@@ -8,7 +8,7 @@ export const groupService = {
       noAuth: true,
       params: { size: 200 },
     } as CustomConfig);
-    return response.data.content;
+    return response.data?.content ?? [];
   },
 
   create: async (data: GroupDTO) => {

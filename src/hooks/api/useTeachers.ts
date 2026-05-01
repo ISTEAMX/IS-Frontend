@@ -17,7 +17,7 @@ const useTeachers = (sortOrder: SortOrder = "asc") => {
 
     try {
       const data = await teacherService.getAll();
-      setTeachers(data);
+      setTeachers(Array.isArray(data) ? data : []);
     } catch (err) {
       let message = "Nu s-au putut încărca profesorii.";
       if (axios.isAxiosError(err)) {

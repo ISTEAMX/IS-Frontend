@@ -17,7 +17,7 @@ const useGroups = (sortOrder: SortOrder = "asc") => {
 
     try {
       const data = await groupService.getAll();
-      setGroups(data);
+      setGroups(Array.isArray(data) ? data : []);
     } catch (err) {
       let message = "Nu s-au putut încărca grupele.";
       if (axios.isAxiosError(err)) {
